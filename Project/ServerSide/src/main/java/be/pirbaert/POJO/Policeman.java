@@ -1,7 +1,12 @@
 package be.pirbaert.POJO;
 
-public class Policeman extends Account{
-	
-	private Fine[] fines;
+import java.util.ArrayList;
+import java.util.List;
 
+public class Policeman extends Account{
+	private List <Fine> fines;
+
+	public Policeman() {
+		fines = new ArrayList<Fine>();
+	}
 }
