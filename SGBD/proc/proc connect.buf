@@ -1,4 +1,4 @@
-create or replace procedure connect1 (personnelNumber ACCOUNT.PERSONELNUMBER%TYPE , password ACCOUNT.PERSONELNUMBER%TYPE) as
+create or replace procedure connect1 (personnelNumber ACCOUNT.PERSONELNUMBER%TYPE,password ACCOUNT.PASSWORD%TYPE) as
 AC_ID ACCOUNT.IDACCOUNT%TYPE;
 AC_TYPE ACCOUNT.TYPEACCOUNT%TYPE;
 AC_PN ACCOUNT.PERSONELNUMBER%TYPE;
@@ -10,5 +10,8 @@ WHERE PERSONELNUMBER=personnelNumber AND PASSWORD=password;
 DBMS_OUTPUT.PUT_LINE( AC_ID ) ;
 DBMS_OUTPUT.PUT_LINE( AC_TYPE ) ;
 DBMS_OUTPUT.PUT_LINE( AC_PN ) ;
+exception
+when Others then
+DBMS_OUTPUT.PUT_LINE('Erreur:'||substr(SQLERRM,1,40) ) ;
 END;
 /
