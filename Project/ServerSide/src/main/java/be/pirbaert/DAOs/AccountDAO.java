@@ -3,12 +3,13 @@ package be.pirbaert.DAOs;
 import java.sql.Connection;
 import java.util.List;
 
-import be.pirbaert.POJO.Account;
+import be.pirbaert.POJOs.Account;
 
 public class AccountDAO extends DAO<Account> {
 
 	public AccountDAO(Connection connection) {
 		super(connection);
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -40,5 +41,4 @@ public class AccountDAO extends DAO<Account> {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }

@@ -1,4 +1,4 @@
-package be.pirbaert.DAOs;
+package be.pirbaert.DAOc;
 import java.sql.*;
 import javax.naming.Context;
 import javax.naming.InitialContext;

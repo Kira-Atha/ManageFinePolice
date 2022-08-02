@@ -1,17 +1,19 @@
 package be.pirbaert.DAOc;
 
 import java.sql.Connection;
-import java.util.List;
 
-import be.pirbaert.POJO.Account;
+import javax.ws.rs.core.MediaType;
+
+import be.pirbaert.POJOc.Account;
 
 public class AccountDAO extends DAO<Account> {
 
 	public AccountDAO(Connection connection) {
 		super(connection);
-		// TODO Auto-generated constructor stub
+
 	}
 
+	// -> API
 	@Override
 	public boolean create(Account obj) {
 		// TODO Auto-generated method stub
@@ -32,8 +34,17 @@ public class AccountDAO extends DAO<Account> {
 
 	@Override
 	public Account find(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		String responseJSON = this.getResource()
+				.path("account")
+				.path(String.valueOf(id))
+				.accept(MediaType.APPLICATION_JSON)
+				.get(String.class);
+		try {
+			return this.getMapper().readValue(responseJSON,Account.class);
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	@Override
@@ -42,6 +53,5 @@ public class AccountDAO extends DAO<Account> {
 		return null;
 	}
 
-
-
+	
 }

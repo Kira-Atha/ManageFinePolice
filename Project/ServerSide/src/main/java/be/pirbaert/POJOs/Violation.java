@@ -1,4 +1,4 @@
-package be.pirbaert.POJO;
+package be.pirbaert.POJOs;
 
 public class Violation {
 	private String name;	
