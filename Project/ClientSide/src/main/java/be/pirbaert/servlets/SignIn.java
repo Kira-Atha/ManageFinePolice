@@ -15,10 +15,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import be.pirbaert.POJO.Account;
-import be.pirbaert.POJO.Administrator;
-import be.pirbaert.POJO.Chief;
-import be.pirbaert.POJO.Policeman;
+import be.pirbaert.POJOc.Account;
+import be.pirbaert.POJOc.Administrator;
+import be.pirbaert.POJOc.Chief;
+import be.pirbaert.POJOc.Policeman;
 
 public class SignIn extends HttpServlet {
 	private static final long serialVersionUID = 1L;

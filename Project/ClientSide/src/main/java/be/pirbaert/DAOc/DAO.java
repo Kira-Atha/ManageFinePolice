@@ -15,7 +15,7 @@ public abstract class DAO<T> {
 	protected Connection connect = null;
 	private Client client;
 	//Projet à nommer
-	private static final String baseURI = "http://localhost:8080:NONAMEPROJECT";
+	private static final String baseURI = "http://localhost:8080:NONAMEPROJECT/APIs";
 	private WebResource resource;
 	private ObjectMapper mapper;
 	
