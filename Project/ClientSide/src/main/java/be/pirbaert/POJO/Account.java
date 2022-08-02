@@ -36,11 +36,21 @@ public abstract class Account {
 				if(account instanceof Administrator){
 					toCast = (Administrator)account;
 				}
+				if(account instanceof TaxCollector){
+					toCast = (TaxCollector)account;
+				}
 			}
 		}
 		return toCast;
 	}
-	public List<Account> getAllAccount(){
+	
+	
+	public static Account getMember(int id) {
+		Account account = null;
+		
+		return account;
+	}
+	public static List<Account> getAllAccount(){
 		//Chercher tous les comptes existants en DB et return
 		List<Account> listeBidon = new ArrayList<Account>();
 		
