@@ -8,11 +8,20 @@ import be.pirbaert.POJOs.Account;
 
 
 public abstract class Account {
+	private int id;
 	private String personnelNumber ;
 	private String password ;
 	private static FactoryDAO afd;
-	private static DAO<Account> accountDAO = afd.getAccountDAO();
+	private static DAO<Account> accountDAOs = afd.getAccountDAO();
 	
+	public Account() {}
+	
+	public Account(int id,String personelNumber, String password) {
+		// Sera modifié grâce aux appels DB
+		this.id = id;
+		this.personnelNumber = personelNumber;
+		this.password = password;
+	}
 	public String getPersonnelNumber() {
 		return personnelNumber;
 	}
@@ -27,12 +36,7 @@ public abstract class Account {
 	}
 	
 	public static Account getAccount(int id) {
-		return accountDAO.find(id);
-	}
-	public static Account getMember(int id) {
-		Account account = null;
-		
-		return account;
+		return accountDAOs.find(id);
 	}
 	public static List<Account> getAllAccount(){
 		//Chercher tous les comptes existants en DB et return
@@ -40,5 +44,15 @@ public abstract class Account {
 		
 		// return accountDAO.findAll();
 		return listeBidon; 
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public String toString() {
+		return "MEC => "+this.personnelNumber+this.password;
 	}
 }

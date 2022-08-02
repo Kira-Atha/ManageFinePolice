@@ -3,13 +3,12 @@ package be.pirbaert.DAOc;
 import java.sql.Connection;
 import java.util.List;
 
-import be.pirbaert.POJO.Charged;
+import be.pirbaert.POJOc.Charged;
 
 public class ChargedDAO extends DAO<Charged>{
 
 	public ChargedDAO(Connection connection) {
-		super(connection);
-		// TODO Auto-generated constructor stub
+
 	}
 
 	@Override

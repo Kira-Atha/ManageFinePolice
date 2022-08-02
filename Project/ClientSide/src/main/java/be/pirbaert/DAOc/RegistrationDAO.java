@@ -3,12 +3,11 @@ package be.pirbaert.DAOc;
 import java.sql.Connection;
 import java.util.List;
 
-import be.pirbaert.POJO.Registration;
+import be.pirbaert.POJOc.Registration;
 
 public class RegistrationDAO extends DAO<Registration> {
 
-	public RegistrationDAO(Connection connection) {
-		super(connection);
+	public RegistrationDAO(Connection connection) {;
 		// TODO Auto-generated constructor stub
 	}
 

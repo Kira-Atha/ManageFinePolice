@@ -21,14 +21,12 @@ public class FactoryDAO extends AbstractFactoryDAO{
 
 	@Override
 	public DAO<Account> getAccountDAO() {
-		// TODO Auto-generated method stub
-		return null;
+		return new AccountDAO(conn);
 	}
 
 
 	@Override
 	public DAO<Administrator> getAdministratorDAO() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

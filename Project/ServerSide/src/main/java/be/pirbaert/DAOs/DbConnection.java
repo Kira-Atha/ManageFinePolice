@@ -7,7 +7,7 @@ import javax.naming.NamingException;
 public class DbConnection{
 
 	private static Connection instance = null;
-	private String connectionString = "@XE_CHAR";
+	private String connectionString = "jdbc:oracle:thin:@193.190.64.10:1522:XE_CHAR";
 	
 	// NE PAS LAISSER EN BRUT, TEST. UTILISER CONTEXTE D'UN SERVLET ?
 	private String username = "STUDENT03_13";

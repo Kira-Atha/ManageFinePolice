@@ -3,7 +3,7 @@ package be.pirbaert.DAOs;
 import java.sql.Connection;
 import java.util.List;
 
-import be.pirbaert.POJO.Fine;
+import be.pirbaert.POJOs.Fine;
 
 public class FineDAO extends DAO<Fine> {
 

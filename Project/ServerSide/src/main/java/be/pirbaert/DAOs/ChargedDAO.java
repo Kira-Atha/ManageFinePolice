@@ -3,7 +3,7 @@ package be.pirbaert.DAOs;
 import java.sql.Connection;
 import java.util.List;
 
-import be.pirbaert.POJO.Charged;
+import be.pirbaert.POJOs.Charged;
 
 public class ChargedDAO extends DAO<Charged>{
 

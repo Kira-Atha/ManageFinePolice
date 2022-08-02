@@ -3,7 +3,7 @@ package be.pirbaert.DAOs;
 import java.sql.Connection;
 import java.util.List;
 
-import be.pirbaert.POJO.Registration;
+import be.pirbaert.POJOs.Registration;
 
 public class RegistrationDAO extends DAO<Registration> {
 

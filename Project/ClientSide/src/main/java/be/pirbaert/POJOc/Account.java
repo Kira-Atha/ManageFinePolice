@@ -3,10 +3,13 @@ package be.pirbaert.POJOc;
 import java.util.ArrayList;
 import java.util.List;
 
+import be.pirbaert.DAOc.AccountDAO;
+
 public abstract class Account {
-	
+
 	private String personnelNumber ;
 	private String password ;
+	private static AccountDAO accountDAOc = new AccountDAO();
 	
 	public String getPersonnelNumber() {
 		return personnelNumber;
@@ -45,10 +48,8 @@ public abstract class Account {
 	}
 	
 	
-	public static Account getMember(int id) {
-		Account account = null;
-		
-		return account;
+	public static Account getAccount(int id) {
+		return accountDAOc.find(id);
 	}
 	public static List<Account> getAllAccount(){
 		//Chercher tous les comptes existants en DB et return

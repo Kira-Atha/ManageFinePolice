@@ -14,13 +14,12 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
 public abstract class DAO<T> {
 	protected Connection connect = null;
 	private Client client;
-	//Projet à nommer
-	private static final String baseURI = "http://localhost:8080:NONAMEPROJECT/APIs";
+	private static final String baseURI = "http://localhost:8080/JEE22-2/api";
+	
 	private WebResource resource;
 	private ObjectMapper mapper;
 	
-	public DAO(Connection connection) {
-		this.connect = connection;
+	public DAO() {
 		ClientConfig config = new DefaultClientConfig();
 		client = Client.create(config);
 		resource = client.resource(getBaseURI());
@@ -28,6 +27,9 @@ public abstract class DAO<T> {
 	}
 	private static URI getBaseURI() {
 		return UriBuilder.fromUri(baseURI).build();
+	}
+	public ObjectMapper getMapper() {
+		return mapper;
 	}
 	public abstract boolean create(T obj);
 	
@@ -42,7 +44,5 @@ public abstract class DAO<T> {
 	public WebResource getResource() {
 		return resource;
 	}
-	public ObjectMapper getMapper() {
-		return mapper;
-	}
+
 }

@@ -3,12 +3,11 @@ package be.pirbaert.DAOc;
 import java.sql.Connection;
 import java.util.List;
 
-import be.pirbaert.POJO.Violation;
+import be.pirbaert.POJOc.Violation;
 
 public class ViolationDAO extends DAO<Violation> {
 
 	public ViolationDAO(Connection connection) {
-		super(connection);
 		// TODO Auto-generated constructor stub
 	}
 

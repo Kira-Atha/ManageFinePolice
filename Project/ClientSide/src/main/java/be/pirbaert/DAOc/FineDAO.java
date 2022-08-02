@@ -3,12 +3,11 @@ package be.pirbaert.DAOc;
 import java.sql.Connection;
 import java.util.List;
 
-import be.pirbaert.POJO.Fine;
+import be.pirbaert.POJOc.Fine;
 
 public class FineDAO extends DAO<Fine> {
 
 	public FineDAO(Connection connection) {
-		super(connection);
 		// TODO Auto-generated constructor stub
 	}
 

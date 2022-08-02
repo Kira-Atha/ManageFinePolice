@@ -3,7 +3,7 @@ package be.pirbaert.DAOs;
 import java.sql.Connection;
 import java.util.List;
 
-import be.pirbaert.POJO.TypeVehicle;
+import be.pirbaert.POJOs.TypeVehicle;
 
 public class TypeVehicleDAO extends DAO<TypeVehicle> {
 

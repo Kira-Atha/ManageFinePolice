@@ -3,7 +3,7 @@ package be.pirbaert.DAOs;
 import java.sql.Connection;
 import java.util.List;
 
-import be.pirbaert.POJO.Violation;
+import be.pirbaert.POJOs.Violation;
 
 public class ViolationDAO extends DAO<Violation> {
 

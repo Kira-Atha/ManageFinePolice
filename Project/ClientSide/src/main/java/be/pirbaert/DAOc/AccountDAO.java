@@ -1,16 +1,12 @@
 package be.pirbaert.DAOc;
 
-import java.sql.Connection;
-
 import javax.ws.rs.core.MediaType;
 
 import be.pirbaert.POJOc.Account;
 
 public class AccountDAO extends DAO<Account> {
 
-	public AccountDAO(Connection connection) {
-		super(connection);
-
+	public AccountDAO() {
 	}
 
 	// -> API
