@@ -9,7 +9,6 @@ public class DbConnection{
 	private static Connection instance = null;
 	private String connectionString;
 	
-	// NE PAS LAISSER EN BRUT, TEST. UTILISER CONTEXTE D'UN SERVLET ?
 	private String username;
 	private String password;
 	
