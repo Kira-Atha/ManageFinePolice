@@ -2,6 +2,8 @@ package be.pirbaert.DAOc;
 
 import javax.ws.rs.core.MediaType;
 
+import org.apache.tomcat.util.json.JSONParser;
+
 import be.pirbaert.POJOc.Account;
 
 public class AccountDAO extends DAO<Account> {
@@ -36,6 +38,10 @@ public class AccountDAO extends DAO<Account> {
 				.accept(MediaType.APPLICATION_JSON)
 				.get(String.class);
 		try {
+			
+			
+			System.out.println(responseJSON);
+			
 			return this.getMapper().readValue(responseJSON,Account.class);
 		}catch(Exception e) {
 			e.printStackTrace();

@@ -8,6 +8,7 @@ public class Chief extends Policeman {
 	
 	public Chief(int id,String personelNumber, String password) {
 		super(id,personelNumber, password);
+		this.setType(this.getClass().getSimpleName());
 		
 	}
 }

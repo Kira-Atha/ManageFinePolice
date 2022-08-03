@@ -1,15 +1,24 @@
 package be.pirbaert.POJOc;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import be.pirbaert.DAOc.AccountDAO;
 
-public abstract class Account {
-
+public abstract class Account implements Serializable{
+	private static final long serialVersionUID = 7895495554055350208L;
+	private int id;
 	private String personnelNumber ;
 	private String password ;
 	private static AccountDAO accountDAOc = new AccountDAO();
+	
+	public Account() {}
+	public Account(int id, String personelNumber, String password ) {
+		this.setId(id);
+		this.personnelNumber = personelNumber;
+		this.password = password;
+	}
 	
 	public String getPersonnelNumber() {
 		return personnelNumber;
@@ -57,5 +66,13 @@ public abstract class Account {
 		
 		// return accountDAO.findAll();
 		return listeBidon; 
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 }

@@ -8,6 +8,7 @@ public class Policeman extends Account{
 	
 	public Policeman(int id,String personelNumber, String password) {
 		super(id,personelNumber, password);
+		this.setType(this.getClass().getSimpleName());
 		setFines(new ArrayList<Fine>());
 	}
 

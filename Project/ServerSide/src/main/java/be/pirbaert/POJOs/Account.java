@@ -1,5 +1,6 @@
 package be.pirbaert.POJOs;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import be.pirbaert.DAOs.DAO;
@@ -7,12 +8,14 @@ import be.pirbaert.DAOs.FactoryDAO;
 import be.pirbaert.POJOs.Account;
 
 
-public abstract class Account {
+public abstract class Account implements Serializable{
+	private static final long serialVersionUID = -5650518956213649548L;
 	private int id;
 	private String personnelNumber ;
 	private String password ;
 	private static FactoryDAO afd = new FactoryDAO();
 	private static DAO<Account> accountDAOs = afd.getAccountDAO();
+	protected String type;
 	
 	public Account() {}
 	
@@ -52,7 +55,14 @@ public abstract class Account {
 		this.id = id;
 	}
 	
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 	public String toString() {
-		return "MEC => "+this.personnelNumber+this.password;
+		return this.personnelNumber+" "+this.password+" "+this.type;
 	}
 }
