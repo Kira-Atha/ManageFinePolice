@@ -6,3 +6,4 @@ AlexDB.bat
 Project/ServerSide/target/m2e-wtp/web-resources/META-INF/maven/ServerSide/ServerSide/pom.properties
 *.properties
 Project/ClientSide/target/m2e-wtp/web-resources/META-INF/maven/ClientSide/ClientSide/pom.properties
+*.policy

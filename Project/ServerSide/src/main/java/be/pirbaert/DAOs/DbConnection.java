@@ -7,11 +7,11 @@ import javax.naming.NamingException;
 public class DbConnection{
 
 	private static Connection instance = null;
-	private String connectionString = "jdbc:oracle:thin:@193.190.64.10:1522:XE_CHAR";
+	private String connectionString;
 	
 	// NE PAS LAISSER EN BRUT, TEST. UTILISER CONTEXTE D'UN SERVLET ?
-	private String username = "STUDENT03_13";
-	private String password = "galex";
+	private String username;
+	private String password;
 	
 	
 	private DbConnection() throws NamingException{
@@ -34,9 +34,6 @@ public class DbConnection{
 		}
 		catch (SQLException ex) {
 			System.out.println("Erreur JDBC : " + ex.getMessage());
-		}
-		catch(NamingException ne) {
-			ne.printStackTrace();
 		}
 	}
 	

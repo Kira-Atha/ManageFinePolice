@@ -11,13 +11,11 @@ import javax.ws.rs.core.Response.Status;
 import be.pirbaert.POJOs.Account;
 
 @Path("/account")
-public class APIAccount extends API {
-
+public class APIAccount{
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}")
 	public Response getAccount(@PathParam("id") int id) {
-		System.out.print("API account");
 		Account account = Account.getAccount(id);
 		
 		return Response
@@ -30,6 +28,13 @@ public class APIAccount extends API {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllAccount() {
 		return Response.status(Status.OK).build();
+		
+	}
+	
+	@GET
+	@Path("/test")
+	public String test() {
+		return "test";
 		
 	}
 }

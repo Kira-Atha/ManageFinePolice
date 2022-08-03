@@ -11,7 +11,7 @@ public abstract class Account {
 	private int id;
 	private String personnelNumber ;
 	private String password ;
-	private static FactoryDAO afd;
+	private static FactoryDAO afd = new FactoryDAO();
 	private static DAO<Account> accountDAOs = afd.getAccountDAO();
 	
 	public Account() {}
