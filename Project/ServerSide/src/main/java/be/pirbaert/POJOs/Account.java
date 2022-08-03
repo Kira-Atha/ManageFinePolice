@@ -20,7 +20,6 @@ public abstract class Account implements Serializable{
 	public Account() {}
 	
 	public Account(int id,String personelNumber, String password) {
-		// Sera modifié grâce aux appels DB
 		this.id = id;
 		this.personnelNumber = personelNumber;
 		this.password = password;

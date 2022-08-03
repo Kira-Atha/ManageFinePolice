@@ -4,13 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Chief extends Account{
+	private static final long serialVersionUID = 4053951674963753923L;
 	private List<Policeman> subordinates;
 	
-	public Chief(String personelNumber,String password) {
-		this.setPersonnelNumber(personelNumber);
-		this.setPassword(password);
-		this.subordinates = new ArrayList<Policeman>();
-	
+	public Chief() {}
+	public Chief(int id,String personelNumber,String password) {
+		super(id,personelNumber,password);
+		this.setSubordinates(new ArrayList<Policeman>());
+		this.type=this.getClass().getSimpleName();
+	}
+
+	public List<Policeman> getSubordinates() {
+		return subordinates;
+	}
+
+	public void setSubordinates(List<Policeman> subordinates) {
+		this.subordinates = subordinates;
 	}
 
 }

@@ -2,9 +2,14 @@ package be.pirbaert.DAOc;
 
 import javax.ws.rs.core.MediaType;
 
-import org.apache.tomcat.util.json.JSONParser;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import be.pirbaert.POJOc.Account;
+import be.pirbaert.POJOc.Administrator;
+import be.pirbaert.POJOc.Chief;
+import be.pirbaert.POJOc.Policeman;
+import be.pirbaert.POJOc.TaxCollector;
 
 public class AccountDAO extends DAO<Account> {
 
@@ -38,15 +43,26 @@ public class AccountDAO extends DAO<Account> {
 				.accept(MediaType.APPLICATION_JSON)
 				.get(String.class);
 		try {
+			JSONParser parser = new JSONParser();
+			JSONObject obj = (JSONObject)parser.parse(responseJSON);
 			
+			System.out.println(obj.get("type"));
+			switch(String.valueOf(obj.get("type"))) {
+				case "Administrator":
+					return this.getMapper().readValue(responseJSON,Administrator.class);
+				case "Policeman":
+					return this.getMapper().readValue(responseJSON,Policeman.class);
+				case "Chief":
+					return this.getMapper().readValue(responseJSON,Chief.class);
+				case "TaxCollector":
+					return this.getMapper().readValue(responseJSON,TaxCollector.class);
+			}
 			
-			System.out.println(responseJSON);
-			
-			return this.getMapper().readValue(responseJSON,Account.class);
 		}catch(Exception e) {
 			e.printStackTrace();
 			return null;
 		}
+		return null;
 	}
 
 	@Override

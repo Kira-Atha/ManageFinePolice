@@ -12,14 +12,24 @@ public abstract class Account implements Serializable{
 	private String personnelNumber ;
 	private String password ;
 	private static AccountDAO accountDAOc = new AccountDAO();
+	protected String type;
 	
 	public Account() {}
-	public Account(int id, String personelNumber, String password ) {
+	
+	public Account(int id, String personelNumber, String password) {
 		this.setId(id);
 		this.personnelNumber = personelNumber;
 		this.password = password;
 	}
 	
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
 	public String getPersonnelNumber() {
 		return personnelNumber;
 	}

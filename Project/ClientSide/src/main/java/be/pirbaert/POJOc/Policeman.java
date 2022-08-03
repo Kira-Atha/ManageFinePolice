@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Policeman extends Account{
+	private static final long serialVersionUID = 2142714243766177482L;
 	private List <Fine> fines;
 
-	public Policeman(String personelNumber,String password) {
+	public Policeman() {}
+	public Policeman(int id,String personelNumber,String password) {
+		super(id,personelNumber,password);
 		setFines(new ArrayList<Fine>());
-		this.setPersonnelNumber(personelNumber);
-		this.setPassword(password);
+		this.type=this.getClass().getSimpleName();
 	}
 
 	
