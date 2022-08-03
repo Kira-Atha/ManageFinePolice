@@ -44,10 +44,10 @@ public abstract class Account implements Serializable{
 	}
 	
 	public Account signIn() {
-		List <Account> allAccount = getAllAccount();
+		List <Account> allAccounts = getAllAccounts();
 		Account toCast = null;
 		
-		for(Account account : allAccount) {
+		for(Account account : allAccounts) {
 			if(this.getPassword() == account.getPassword() && this.getPersonnelNumber() == account.getPersonnelNumber()) {
 				if(account instanceof Chief){
 					toCast = (Chief)account;
@@ -70,12 +70,8 @@ public abstract class Account implements Serializable{
 	public static Account getAccount(int id) {
 		return accountDAOc.find(id);
 	}
-	public static List<Account> getAllAccount(){
-		//Chercher tous les comptes existants en DB et return
-		List<Account> listeBidon = new ArrayList<Account>();
-		
-		// return accountDAO.findAll();
-		return listeBidon; 
+	public static List<Account> getAllAccounts(){
+		return accountDAOc.findAll(); 
 	}
 
 	public int getId() {

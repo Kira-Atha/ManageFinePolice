@@ -8,13 +8,13 @@ public abstract class AbstractFactoryDAO {
 	public static final int XML_DAO_FACTORY = 1;
 	
 	public abstract DAO<Account> getAccountDAO();
-	public abstract DAO<Administrator> getAdministratorDAO();
+	//public abstract DAO<Administrator> getAdministratorDAO();
 	public abstract DAO<Charged> getChargedDAO();
-	public abstract DAO<Chief> getChiefDAO();
+	//public abstract DAO<Chief> getChiefDAO();
 	public abstract DAO<Fine> getFineDAO();
-	public abstract DAO<Policeman> getPolicemanDAO();
+	//public abstract DAO<Policeman> getPolicemanDAO();
 	public abstract DAO<Registration> getRegistrationDAO();
-	public abstract DAO<TaxCollector> getTaxCollectorDAO();
+	//public abstract DAO<TaxCollector> getTaxCollectorDAO();
 	public abstract DAO<TypeVehicle> getTypeVehicleDAO();
 	public abstract DAO<Vehicle> getVehicleDAO();
 	public abstract DAO<Violation> getViolationDAO();

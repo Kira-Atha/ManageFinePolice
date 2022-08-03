@@ -1,13 +1,21 @@
 package be.pirbaert.DAOc;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.util.List;
 
+import javax.ws.rs.core.MediaType;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+
+import be.pirbaert.POJOc.Registration;
 import be.pirbaert.POJOc.TypeVehicle;
 
 public class TypeVehicleDAO extends DAO<TypeVehicle> {
 
-	public TypeVehicleDAO(Connection connection) {
+	public TypeVehicleDAO() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -31,13 +39,35 @@ public class TypeVehicleDAO extends DAO<TypeVehicle> {
 
 	@Override
 	public TypeVehicle find(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		String responseJSON = this.getResource()
+				.path("typeVehicle")
+				.path(String.valueOf(id))
+				.accept(MediaType.APPLICATION_JSON)
+				.get(String.class);
+		try {
+			return this.getMapper().readValue(responseJSON,TypeVehicle.class);
+				
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	@Override
-	public String findAll() {
-		// TODO Auto-generated method stub
+	public List<TypeVehicle> findAll() {
+		String responseJSON = this.getResource()
+				.path("typeVehicle")
+				.accept(MediaType.APPLICATION_JSON)
+				.get(String.class);
+		try {
+			return this.getMapper().readValue(responseJSON, new TypeReference<List<TypeVehicle>>(){});
+		} catch (JsonParseException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 

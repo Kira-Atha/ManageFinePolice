@@ -1,9 +1,17 @@
 package be.pirbaert.DAOs;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
+import be.pirbaert.POJOs.Account;
+import be.pirbaert.POJOs.Charged;
+import be.pirbaert.POJOs.Violation;
+import be.pirbaert.POJOs.Vehicle;
 import be.pirbaert.POJOs.Fine;
+import be.pirbaert.POJOs.Policeman;
 
 public class FineDAO extends DAO<Fine> {
 
@@ -30,16 +38,49 @@ public class FineDAO extends DAO<Fine> {
 		return false;
 	}
 
+	
 	@Override
 	public Fine find(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		Fine fine = null;
+		ResultSet result = null;
+		try{
+			result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Fine "
+					+ "INNER JOIN Vio_Fin "
+					+ "ON Fine.IdFine = Vio_Fin.IdFine "
+					+ "where IdFine="+id);
+			if(result.next()) {
+				fine=new Fine(result.getInt("IdFine"),Violation.getViolation(result.getInt("IdViolation")),(Policeman)Account.getAccount(result.getInt("IdAccount")),Vehicle.getVehicle(result.getInt("IdVehicle")),result.getString("commentfine"),result.getDate("datefine"));
+				if(result.getInt("IdCharged")!=0) {
+					fine.setCharged(Charged.getCharged(result.getInt("IdCharged")));
+				}
+			}
+		}catch(SQLException e) {
+			return null;
+		}
+		return fine;
 	}
 
+	
+	// NEED TO FIX => Policeman ??? 
 	@Override
 	public List<Fine> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		List <Fine> allFines = new ArrayList <Fine>();
+		Fine fine = null;
+		ResultSet result = null;
+		try{
+			result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Fine "
+					+"INNER JOIN Vio_Fin "
+					+"ON Fine.IdFine = Vio_Fin.IdFine");
+			while(result.next()) {
+				fine=new Fine(result.getInt("IdFine"),Violation.getViolation(result.getInt("IdViolation")),(Policeman)Account.getAccount(result.getInt("IdAccount")),Vehicle.getVehicle(result.getInt("IdVehicle")),result.getString("commentfine"),result.getDate("datefine"));
+				if(result.getInt("IdCharged")!=0) {
+					fine.setCharged(Charged.getCharged(result.getInt("IdCharged")));
+				}
+				allFines.add(fine);
+			}
+		}catch(SQLException e) {
+			return null;
+		}
+		return allFines;
 	}
-
 }

@@ -1,6 +1,9 @@
 package be.pirbaert.DAOs;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import be.pirbaert.POJOs.Charged;
@@ -32,14 +35,36 @@ public class ChargedDAO extends DAO<Charged>{
 
 	@Override
 	public Charged find(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		Charged charged = null;
+		ResultSet result = null;
+		try{
+			result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Charged where IdCharged="+id);
+			if(result.next()) {
+				charged=new Charged(result.getInt("IdCharged"),result.getString("firstname"),result.getString("lastname"),result.getString("address"));
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return charged;
 	}
 
 	@Override
 	public List<Charged> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Charged> allChargeds = new ArrayList <Charged>();
+		Charged charged = null;
+		ResultSet result = null;
+		try{
+			result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Charged");
+			while(result.next()) {
+				charged=new Charged(result.getInt("IdCharged"),result.getString("firstname"),result.getString("lastname"),result.getString("address"));
+				allChargeds.add(charged);
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return allChargeds;
 	}
 
 }

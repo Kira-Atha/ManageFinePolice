@@ -36,8 +36,15 @@ public class SignIn extends HttpServlet {
     */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Account account = Account.getAccount(1);
-		System.out.println(account.getPersonnelNumber());
+		//System.out.println("One => "+account.getPersonnelNumber());
 		
+		//TO FIX
+		//List<Account> allAccounts = Account.getAllAccounts();
+		
+		/*
+		for(Account acc : allAccounts) {
+			System.out.print("List=>"+acc+" CLASS => "+acc.getClass().getSimpleName());
+		}*/
 		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/Views/SignIn.jsp");
 		dispatcher.forward(request, response);
 	
@@ -78,7 +85,7 @@ public class SignIn extends HttpServlet {
 		}
 		Account account;
 		// Policeman => Temporaire, l'idée est de récupérer le bon objet lorsue le compte est correct en DB
-		account = new Policeman(personelNumber,password);
+		account = new Policeman(0,personelNumber,password);
 		Account accountToConnect = account.signIn();
 		if(!Objects.isNull(accountToConnect)){
 			ServletContext context = getServletContext();

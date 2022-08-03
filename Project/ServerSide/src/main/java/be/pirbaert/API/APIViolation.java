@@ -10,37 +10,31 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import be.pirbaert.POJOs.Account;
+import be.pirbaert.POJOs.Violation;
 
-@Path("/account")
-public class APIAccount{
+@Path("/violation")
+public class APIViolation {
+
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}")
-	public Response getAccount(@PathParam("id") int id) {
-		Account account = Account.getAccount(id);
+	public Response getViolation(@PathParam("id") int id) {
+		Violation violation = Violation.getViolation(id);
 		
 		return Response
 				.status(Status.OK)
-				.entity(account)
+				.entity(violation)
 				.build();
 	}
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAllAccount() {
-		List<Account> allAccounts = Account.getAllAccounts();
+	public Response getAllViolation() {
+		List<Violation> allViolations = Violation.getAllViolations();
 		
 		return Response
 				.status(Status.OK)
-				.entity(allAccounts)
+				.entity(allViolations)
 				.build();
-	}
-	
-	@GET
-	@Path("/test")
-	public String test() {
-		return "test";
-		
 	}
 }

@@ -10,37 +10,31 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import be.pirbaert.POJOs.Account;
+import be.pirbaert.POJOs.TypeVehicle;
 
-@Path("/account")
-public class APIAccount{
+@Path("/typeVehicle")
+public class APITypeVehicle {
+
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}")
-	public Response getAccount(@PathParam("id") int id) {
-		Account account = Account.getAccount(id);
+	public Response getTypeVehicle(@PathParam("id") int id) {
+		TypeVehicle typeVehicle = TypeVehicle.getType(id);
 		
 		return Response
 				.status(Status.OK)
-				.entity(account)
+				.entity(typeVehicle)
 				.build();
 	}
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAllAccount() {
-		List<Account> allAccounts = Account.getAllAccounts();
+	public Response getAllTypeVehicle() {
+		List<TypeVehicle> allTypeVehicles = TypeVehicle.getAllTypes();
 		
 		return Response
 				.status(Status.OK)
-				.entity(allAccounts)
+				.entity(allTypeVehicles)
 				.build();
-	}
-	
-	@GET
-	@Path("/test")
-	public String test() {
-		return "test";
-		
 	}
 }

@@ -3,6 +3,7 @@ package be.pirbaert.DAOs;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import be.pirbaert.POJOs.Account;
@@ -61,13 +62,40 @@ public class AccountDAO extends DAO<Account> {
 		}catch(SQLException e) {
 			
 		}
-		System.out.println("DAOs ACCOUNT => "+account);
 		return account;
 	}
 
 	@Override
 	public List<Account> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		List <Account> allAccounts = new ArrayList <Account>();
+		Account account = null;
+		ResultSet result = null;
+		try{
+			result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Account");
+			while(result.next()) {
+				switch(result.getString("TypeAccount")) {
+					case "Chief":
+						account = new Chief(result.getInt("IdAccount"),result.getString("PersonelNumber"),result.getString("Password"));
+						allAccounts.add(account);
+						break;
+					case "Policeman":
+						account = new Policeman(result.getInt("IdAccount"),result.getString("PersonelNumber"),result.getString("Password"));
+						allAccounts.add(account);
+						break;
+					case "Administrator":
+						account = new Administrator(result.getInt("IdAccount"),result.getString("PersonelNumber"),result.getString("Password"));
+						allAccounts.add(account);
+						break;
+					case "TaxCollector":
+						account = new TaxCollector(result.getInt("IdAccount"),result.getString("PersonelNumber"),result.getString("Password"));
+						allAccounts.add(account);
+						break;
+				}
+			}
+		}catch(SQLException e) {
+			
+		}
+		//System.out.println(allAccounts.get(0));
+		return allAccounts;
 	}
 }

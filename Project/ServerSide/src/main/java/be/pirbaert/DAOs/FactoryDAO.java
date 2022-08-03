@@ -24,72 +24,36 @@ public class FactoryDAO extends AbstractFactoryDAO{
 		return new AccountDAO(conn);
 	}
 
-
-	@Override
-	public DAO<Administrator> getAdministratorDAO() {
-		return null;
-	}
-
-
 	@Override
 	public DAO<Charged> getChargedDAO() {
-		// TODO Auto-generated method stub
-		return null;
+		return new ChargedDAO(conn);
 	}
-
-
-	@Override
-	public DAO<Chief> getChiefDAO() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 
 	@Override
 	public DAO<Fine> getFineDAO() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public DAO<Policeman> getPolicemanDAO() {
-		// TODO Auto-generated method stub
-		return null;
+		return new FineDAO(conn);
 	}
 
 
 	@Override
 	public DAO<Registration> getRegistrationDAO() {
-		// TODO Auto-generated method stub
-		return null;
+		return new RegistrationDAO(conn);
 	}
-
-
-	@Override
-	public DAO<TaxCollector> getTaxCollectorDAO() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 
 	@Override
 	public DAO<TypeVehicle> getTypeVehicleDAO() {
-		// TODO Auto-generated method stub
-		return null;
+		return new TypeVehicleDAO(conn);
 	}
 
 
 	@Override
 	public DAO<Vehicle> getVehicleDAO() {
-		// TODO Auto-generated method stub
-		return null;
+		return new VehicleDAO(conn);
 	}
 
 
 	@Override
 	public DAO<Violation> getViolationDAO() {
-		// TODO Auto-generated method stub
-		return null;
+		return new ViolationDAO(conn);
 	}
 }

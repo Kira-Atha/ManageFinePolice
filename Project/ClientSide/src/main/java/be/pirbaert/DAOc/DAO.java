@@ -3,6 +3,8 @@ package be.pirbaert.DAOc;
 
 import java.net.URI;
 import java.sql.Connection;
+import java.util.List;
+
 import javax.ws.rs.core.UriBuilder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -39,7 +41,7 @@ public abstract class DAO<T> {
 	
 	public abstract T find(int id);
 	
-	public abstract String findAll();
+	public abstract List<T> findAll();
 	
 	public WebResource getResource() {
 		return resource;

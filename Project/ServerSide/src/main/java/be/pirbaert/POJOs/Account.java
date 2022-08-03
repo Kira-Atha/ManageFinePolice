@@ -40,12 +40,9 @@ public abstract class Account implements Serializable{
 	public static Account getAccount(int id) {
 		return accountDAOs.find(id);
 	}
-	public static List<Account> getAllAccount(){
-		//Chercher tous les comptes existants en DB et return
-		List<Account> listeBidon = new ArrayList<Account>();
-		
-		// return accountDAO.findAll();
-		return listeBidon; 
+	public static List<Account> getAllAccounts(){
+		return accountDAOs.findAll();
+
 	}
 	public int getId() {
 		return id;

@@ -11,36 +11,31 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import be.pirbaert.POJOs.Account;
+import be.pirbaert.POJOs.Fine;
 
-@Path("/account")
-public class APIAccount{
+@Path("/fine")
+public class APIFine {
+
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}")
-	public Response getAccount(@PathParam("id") int id) {
-		Account account = Account.getAccount(id);
+	public Response getFine(@PathParam("id") int id) {
+		Fine fine = Fine.getFine(id);
 		
 		return Response
 				.status(Status.OK)
-				.entity(account)
+				.entity(fine)
 				.build();
 	}
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAllAccount() {
-		List<Account> allAccounts = Account.getAllAccounts();
+	public Response getAllFine() {
+		List<Fine> allFines = Fine.getAllFines();
 		
 		return Response
 				.status(Status.OK)
-				.entity(allAccounts)
+				.entity(allFines)
 				.build();
-	}
-	
-	@GET
-	@Path("/test")
-	public String test() {
-		return "test";
-		
 	}
 }
