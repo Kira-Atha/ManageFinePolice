@@ -14,7 +14,7 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
 public abstract class DAO<T> {
 	protected Connection connect = null;
 	private Client client;
-	private static final String baseURI = "http://localhost:8080/JEE22-2/api";
+	private static final String baseURI = "http://localhost:8080/ServerSide/api";
 	
 	private WebResource resource;
 	private ObjectMapper mapper;
