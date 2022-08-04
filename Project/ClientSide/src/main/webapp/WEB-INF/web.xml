@@ -2,8 +2,7 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" version="4.0">
   <display-name>ClientSide</display-name>
   <welcome-file-list>
-  
-    <welcome-file>SignIn.jsp</welcome-file>
+    <welcome-file>be.pirbaert.servlets.SignIn</welcome-file>
   </welcome-file-list>
   
   <!--   SERVLETS  -->
@@ -12,19 +11,40 @@
   		<servlet-class>be.pirbaert.servlets.SignIn</servlet-class>
 	</servlet>
   
+  	<servlet>
+  		<servlet-name>ConsultFines</servlet-name>
+  		<servlet-class>be.pirbaert.servlets.ConsultFines</servlet-class>
+	</servlet>
+  
+  	<servlet>
+  		<servlet-name>AddCharged</servlet-name>
+  		<servlet-class>be.pirbaert.servlets.AddCharged</servlet-class>
+	</servlet> 
+	
+  	<servlet>
+  		<servlet-name>AddVehicle</servlet-name>
+  		<servlet-class>be.pirbaert.servlets.AddVehicle</servlet-class>
+	</servlet>	 
   
   <!-- SERVLETS MAPPING -->
 	<servlet-mapping>
   		<servlet-name>SignIn</servlet-name>
   		<url-pattern>/SignIn</url-pattern>
 	</servlet-mapping>
+
+	<servlet-mapping>
+  		<servlet-name>ConsultFines</servlet-name>
+  		<url-pattern>/ConsultFines</url-pattern>
+	</servlet-mapping>
 	
+	<servlet-mapping>
+  		<servlet-name>AddCharged</servlet-name>
+  		<url-pattern>/AddCharged</url-pattern>
+	</servlet-mapping>
 	
-	<env-entry>
- 		<env-entry-name></env-entry-name>
- 		<env-entry-type>java.lang.String</env-entry-type>
- 		<env-entry-value></env-entry-value>
-  	</env-entry>
-	
-	
+	<servlet-mapping>
+  		<servlet-name>AddVehicle</servlet-name>
+  		<url-pattern>/AddVehicle</url-pattern>
+	</servlet-mapping>	
+			
 </web-app>

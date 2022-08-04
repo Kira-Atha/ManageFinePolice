@@ -19,6 +19,7 @@ import be.pirbaert.POJOc.Account;
 import be.pirbaert.POJOc.Administrator;
 import be.pirbaert.POJOc.Chief;
 import be.pirbaert.POJOc.Policeman;
+import be.pirbaert.POJOc.TaxCollector;
 
 public class SignIn extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -35,7 +36,7 @@ public class SignIn extends HttpServlet {
     }
     */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Account account = Account.getAccount(1);
+		//Account account = Account.getAccount(1);
 		//System.out.println("One => "+account.getPersonnelNumber());
 		
 		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/Views/SignIn.jsp");
@@ -69,21 +70,16 @@ public class SignIn extends HttpServlet {
 			}
 		}
 		if(errors.size()>0) {
-			// Solution 1 : Redirection vers une page d'erreur et revenir en arrière 
+			request.setAttribute("previous", request.getRequestURI());
 			request.setAttribute("errors", errors);
 			getServletContext().getRequestDispatcher("/WEB-INF/Views/errors.jsp").forward(request, response);
-			
-			// Solution 2 : Afficher les erreurs sous le formulaire ????
-			//TODO
+
 		}
 		Account account;
 		// Policeman est un objet temporaire car Account n'est pas instanciable l'idée est de récupérer le bon objet lorsue le compte est correct en DB
 		account = new Policeman(0,personelNumber,password);
 		Account accountToConnect = account.signIn();
 		if(!Objects.isNull(accountToConnect)){
-			ServletContext context = getServletContext();
-			context.setAttribute("account", accountToConnect);
-			
 			// Gérer session
 			
 			HttpSession session = request.getSession();
@@ -97,17 +93,21 @@ public class SignIn extends HttpServlet {
 			request.setAttribute("account", accountToConnect);
 			if(accountToConnect instanceof Chief) {
 				//Renvoyer vers la première page des chefs => Pourra consulter, lui
-				RequestDispatcher dispatch = request.getRequestDispatcher("ConsultFines");
-				dispatch.forward(request, response);
+				response.sendRedirect("ConsultFines");
+				//RequestDispatcher dispatch = request.getRequestDispatcher("ConsultFines");
+				//dispatch.forward(request, response);
 				//getServletContext().getRequestDispatcher("/ConsultFines").forward(request, response);
 			}
 			if(accountToConnect instanceof Policeman) {
 				//Renvoyer vers la première page des policiers => ConsultFines. Mais comme policeman, ne verra pas toutes les fines
-				getServletContext().getRequestDispatcher("/ConsultFines").forward(request, response);
+				response.sendRedirect("ConsultFines");
 			}
 			if(accountToConnect instanceof Administrator) {
 				//Renvoyer vers la première page des admins ( Gestion des comptes ? )
-				getServletContext().getRequestDispatcher("nombidon").forward(request, response);
+				response.sendRedirect("PAGEADMIN servlet // manage account?");
+			}
+			if(accountToConnect instanceof TaxCollector) {
+				response.sendRedirect("taxCollector servlet");
 			}
 		}else {
 			out.print("Incorrect account");
