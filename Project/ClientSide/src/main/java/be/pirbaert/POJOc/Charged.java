@@ -17,8 +17,6 @@ public class Charged implements Serializable {
 	private static ChargedDAO chargedDAOc = new ChargedDAO();
 	private List <Fine> fines;
 	
-	
-	
 	public Charged() {}
 	
 	public Charged(int id, String firstname, String lastname, String address) {

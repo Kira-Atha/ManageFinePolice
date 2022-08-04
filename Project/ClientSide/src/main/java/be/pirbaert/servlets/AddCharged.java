@@ -2,6 +2,7 @@ package be.pirbaert.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -14,58 +15,36 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import be.pirbaert.POJOc.Account;
-import be.pirbaert.POJOc.Administrator;
-import be.pirbaert.POJOc.Charged;
 import be.pirbaert.POJOc.Chief;
-import be.pirbaert.POJOc.Fine;
 import be.pirbaert.POJOc.Policeman;
-import be.pirbaert.POJOc.Vehicle;
-import be.pirbaert.POJOc.Violation;
 
-public class ConsultFines extends HttpServlet {
+public class AddCharged extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+       
 
-    public ConsultFines() {
+    public AddCharged() {
         super();
+
     }
 
-
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		PrintWriter out = response.getWriter();
 		HttpSession session = request.getSession(false);
+		PrintWriter out = response.getWriter();
 		Account account = null;
 		if(session==null) {
 			out.println("No session");
 		}else {
 			account = (Account) session.getAttribute("account");
 			if(session.getAttribute("account") instanceof Policeman) {
-				System.out.println("C'est un flic");
 				account = (Policeman) session.getAttribute("account");
-				if(account != null) {
-					System.out.println("Police "+account.getPersonnelNumber()+" "+account.getClass().getSimpleName());
-				}
 			}else if(session.getAttribute("account") instanceof Chief) {
 				account = (Chief) session.getAttribute("account");
-				if(account != null) {
-					System.out.println("Chief "+account.getPersonnelNumber()+" "+account.getClass().getSimpleName());
-				}
 			}
 		}
 		
-		List<Fine> allFines = Fine.getAllFines();
-		List<Violation> allViolations = Violation.getAllViolations();
-		List<Charged> allChargeds = Charged.getAllChargeds();
-		List<Vehicle> allVehicles = Vehicle.getAllVehicles();
-		
-		request.setAttribute("allFines", allFines);
-		request.setAttribute("allViolations", allViolations);
-		request.setAttribute("allChargeds", allChargeds);
-		request.setAttribute("allVehicles", allVehicles);
-		request.setAttribute("account", account);
-		
 		if(!Objects.isNull(account)) {
 			request.setAttribute("previous", request.getHeader("referer"));
-			RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/Views/ConsultFines.jsp");
+			RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/Views/AddCharged.jsp");
 			dispatcher.forward(request, response);
 		}else {
 			response.sendRedirect("SignIn");
@@ -86,36 +65,45 @@ public class ConsultFines extends HttpServlet {
 				account = (Chief) session.getAttribute("account");
 			}
 		}
-		//out.print(account);
 		
-	// CHIEF valider fine =>
-		if(!Objects.isNull(request.getParameter("fine_id"))) {
-			Fine fine = null;
-			fine = Fine.getFine(Integer.parseInt(request.getParameter("fine_id")));
-			System.out.println("Je veux valider");
-			//  add accept_fine(Fine fine) in pojo chief)
-			//account.accept_fine(fine); => UPDATE
-		}
+		String firstname = request.getParameter("firstname");
+		String lastname = request.getParameter("lastname");
+		String address = request.getParameter("address");
 		
-		String choice = request.getParameter("add");
-		
-		if(!Objects.isNull(choice)) {
-			switch(choice) {
-			case "charged":
-				response.sendRedirect("AddCharged");
-				System.out.println("add charged");
-				break;
-			case "vehicle":
-				response.sendRedirect("AddVehicle");
-				System.out.println("add vehicle");
-				break;
-			case "fine":
-				//TODO 
-				System.out.println("add fine");
-				break;
+		List <String> errors = new ArrayList<String>();
+		if(firstname == null) {
+			errors.add("Firstname field was null");
+		}else {
+			if(firstname.equals("")) {
+				errors.add("Firstname field was empty");
+			}
+			if(!firstname.matches("^[a-zA-Z]{4,}$")) {
+				errors.add("Firstname must contains min 4 characters and don't contain special characters and can't contain number");
 			}
 		}
-		
+		if(lastname == null) {
+			errors.add("Lastname field was null");
+		}else {
+			if(lastname.equals("")) {
+				errors.add("Lastname field was empty");
+			}
+			if(!lastname.matches("^[a-zA-Z]{4,}$")) {
+				errors.add("Lastname must contains min 4 characters and don't contain special characters and can't contain number");
+			}
+		}
+		if(address == null) {
+			errors.add("Address field was null");
+		}else {
+			if(address.equals("")) {
+				errors.add("Address field was empty");
+			}
+		}
+		if(errors.size()>0) {
+			request.setAttribute("previous", request.getRequestURI());
+			request.setAttribute("errors", errors);
+			getServletContext().getRequestDispatcher("/WEB-INF/Views/errors.jsp").forward(request, response);
+		}
 		
 	}
+
 }

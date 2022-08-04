@@ -44,7 +44,6 @@ public class FineDAO extends DAO<Fine> {
 				.get(String.class);
 		try {
 			return this.getMapper().readValue(responseJSON,Fine.class);
-				
 		}catch(Exception e) {
 			e.printStackTrace();
 			return null;

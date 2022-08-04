@@ -7,23 +7,23 @@
 		<title>Sign in</title>
 	</head>
 	<body>
-		<form action="SignIn" method="POST">
+		<form action="SignIn" id="form_signIn" method="POST">
 			<table border="1">
 				<tr>
-					<td> Personel Number </td>
+					<td>Personel Number </td>
 					<td>
-						<input type="text" name="personelNumber" id="personelNumber" value="" size="20" />
+						<input type="text" name="personelNumber" size="20" />
 					 </td>
 				</tr>
 				<tr>
-					<td> Password </td>
+					<td>Password </td>
 					<td>
-						<input type="text" name="password" id="password" value="" size="20" />
+						<input type="text" name="password" size="20" />
 					 </td>
 				</tr>
 				<tr>
 					 <td colspan="2" align="center">
-					 	<input type="submit" name="submit" id="submit" value="SignIn"/> 
+					 	<input type="submit" value="Sign in"/> 
 					 </td>
 				</tr>
 			</table>

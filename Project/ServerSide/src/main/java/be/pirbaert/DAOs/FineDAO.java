@@ -47,7 +47,7 @@ public class FineDAO extends DAO<Fine> {
 			result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Fine "
 					+ "INNER JOIN Vio_Fin "
 					+ "ON Fine.IdFine = Vio_Fin.IdFine "
-					+ "where IdFine="+id);
+					+ "WHERE Fine.IdFine="+id);
 			if(result.next()) {
 				fine=new Fine(result.getInt("IdFine"),Violation.getViolation(result.getInt("IdViolation")),(Policeman)Account.getAccount(result.getInt("IdAccount")),Vehicle.getVehicle(result.getInt("IdVehicle")),result.getString("commentfine"),result.getDate("datefine"));
 				if(result.getInt("IdCharged")!=0) {
@@ -55,8 +55,10 @@ public class FineDAO extends DAO<Fine> {
 				}
 			}
 		}catch(SQLException e) {
+			e.printStackTrace();
 			return null;
 		}
+		System.out.println(fine.getCommentary());
 		return fine;
 	}
 
