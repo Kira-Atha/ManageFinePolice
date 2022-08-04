@@ -1,5 +1,5 @@
 CREATE OR REPLACE PACKAGE manage_account IS
-	PROCEDURE create_account (personelNumber IN ACCOUNT.PERSONELNUMBER%TYPE,password IN ACCOUNT.PASSWORD%TYPE,type IN ACCOUNT.TYPEACCOUNT%TYPE );
+	PROCEDURE create_account (personelNumber IN ACCOUNT.PERSONELNUMBER%TYPE,password IN ACCOUNT.PASSWORD%TYPE,type IN ACCOUNT.TYPEACCOUNT%TYPE , acc_id OUT ACCOUNT.IDACCOUNT%TYPE);
 	
 	FUNCTION connect_account(personelNumber_check IN ACCOUNT.PERSONELNUMBER%TYPE,password_check IN ACCOUNT.PASSWORD%TYPE) RETURN ACCOUNT.TYPEACCOUNT%TYPE;
 	
@@ -17,16 +17,19 @@ CREATE OR REPLACE package body manage_account IS
 			RETURN DBMS_OBFUSCATION_TOOLKIT.MD5(input_string => personelNumber || v_secur ||password);
 		END get_hash;
 		
-	PROCEDURE create_account (personelNumber IN ACCOUNT.PERSONELNUMBER%TYPE,password IN ACCOUNT.PASSWORD%TYPE,type IN ACCOUNT.TYPEACCOUNT%TYPE ) IS
+	PROCEDURE create_account (personelNumber IN ACCOUNT.PERSONELNUMBER%TYPE,password IN ACCOUNT.PASSWORD%TYPE,type IN ACCOUNT.TYPEACCOUNT%TYPE , acc_id OUT ACCOUNT.IDACCOUNT%TYPE) IS
 		hash_password ACCOUNT.PASSWORD%TYPE := get_hash(personelNumber,password);
 		BEGIN
 			INSERT INTO ACCOUNT (IDACCOUNT,PERSONELNUMBER, PASSWORD,TYPEACCOUNT )
-			VALUES (ACCOUNT_SEQ.NEXTVAL,personelNumber,hash_password,type );
+			VALUES (ACCOUNT_SEQ.NEXTVAL,personelNumber,hash_password,type )
+			returning IDACCOUNT into acc_id;
+		
 		COMMIT;
 		exception
 			when Others then
 				DBMS_OUTPUT.PUT_LINE('Erreur:'||substr(SQLERRM,1,40) );
 		END create_account;
+		
 	FUNCTION connect_account(personelNumber_check IN ACCOUNT.PERSONELNUMBER%TYPE,password_check IN ACCOUNT.PASSWORD%TYPE)
 	RETURN ACCOUNT.TYPEACCOUNT%TYPE IS
 		type_account ACCOUNT.TYPEACCOUNT%TYPE;
@@ -63,6 +66,7 @@ CREATE OR REPLACE package body manage_account IS
 		BEGIN
 			DELETE FROM account
 			WHERE personelNumber = pn;
+			COMMIT;
 		END delete_account;
 		
 END manage_account;

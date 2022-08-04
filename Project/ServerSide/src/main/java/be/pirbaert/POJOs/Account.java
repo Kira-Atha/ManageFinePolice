@@ -24,6 +24,11 @@ public abstract class Account implements Serializable{
 		this.personnelNumber = personelNumber;
 		this.password = password;
 	}
+	
+	public Account(String personelNumber, String password) {
+		this.personnelNumber = personelNumber;
+		this.password = password;
+	}
 	public String getPersonnelNumber() {
 		return personnelNumber;
 	}
@@ -60,5 +65,10 @@ public abstract class Account implements Serializable{
 	}
 	public String toString() {
 		return this.personnelNumber+" "+this.password+" "+this.type;
+	}
+	
+	
+	public boolean save() {
+		return accountDAOs.create(this);
 	}
 }

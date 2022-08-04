@@ -1,8 +1,10 @@
 package be.pirbaert.DAOs;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +23,36 @@ public class AccountDAO extends DAO<Account> {
 
 	@Override
 	public boolean create(Account obj) {
-		// TODO Auto-generated method stub
+		CallableStatement proc = null;
+		ResultSet result = null;
+
+		int id = 0;
+
+		try {
+			proc = this.connect.prepareCall("{call manage_account.create_account(?,?,?,?)}");
+			proc.setString(1, obj.getPersonnelNumber());
+			proc.setString(2, obj.getPassword());
+			proc.setString(3, obj.getType());
+			proc.registerOutParameter(4, Types.NUMERIC);
+			
+
+			result = proc.executeQuery();
+
+			
+			id = proc.getInt(4);
+			
+			if(id != 0) {
+				obj.setId(id);
+				System.out.println(id);
+				return true;
+			}
+			
+			return false;
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return false;
 	}
 

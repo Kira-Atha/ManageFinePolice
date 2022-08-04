@@ -11,6 +11,11 @@ public class Policeman extends Account{
 		this.setType(this.getClass().getSimpleName());
 		setFines(new ArrayList<Fine>());
 	}
+	public Policeman(String personelNumber, String password) {
+		super(personelNumber, password);
+		this.setType(this.getClass().getSimpleName());
+		setFines(new ArrayList<Fine>());
+	}
 
 	public List <Fine> getFines() {
 		return fines;
