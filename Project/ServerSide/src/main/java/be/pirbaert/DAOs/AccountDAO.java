@@ -43,7 +43,6 @@ public class AccountDAO extends DAO<Account> {
 			
 			if(id != 0) {
 				obj.setId(id);
-				System.out.println(id);
 				return true;
 			}
 			
