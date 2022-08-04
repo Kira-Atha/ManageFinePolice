@@ -38,13 +38,6 @@ public class SignIn extends HttpServlet {
 		Account account = Account.getAccount(1);
 		//System.out.println("One => "+account.getPersonnelNumber());
 		
-		//TO FIX
-		//List<Account> allAccounts = Account.getAllAccounts();
-		
-		/*
-		for(Account acc : allAccounts) {
-			System.out.print("List=>"+acc+" CLASS => "+acc.getClass().getSimpleName());
-		}*/
 		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/Views/SignIn.jsp");
 		dispatcher.forward(request, response);
 	
@@ -76,15 +69,15 @@ public class SignIn extends HttpServlet {
 			}
 		}
 		if(errors.size()>0) {
-			// Solution 1 : Redirection vers une page d'erreur et revenir en arrière ( nul )
+			// Solution 1 : Redirection vers une page d'erreur et revenir en arrière 
 			request.setAttribute("errors", errors);
 			getServletContext().getRequestDispatcher("/WEB-INF/Views/errors.jsp").forward(request, response);
 			
-			// Solution 2 : Afficher les erreurs sous le formulaire 
+			// Solution 2 : Afficher les erreurs sous le formulaire ????
 			//TODO
 		}
 		Account account;
-		// Policeman => Temporaire, l'idée est de récupérer le bon objet lorsue le compte est correct en DB
+		// Policeman est un objet temporaire car Account n'est pas instanciable l'idée est de récupérer le bon objet lorsue le compte est correct en DB
 		account = new Policeman(0,personelNumber,password);
 		Account accountToConnect = account.signIn();
 		if(!Objects.isNull(accountToConnect)){
@@ -103,16 +96,18 @@ public class SignIn extends HttpServlet {
 			// Pour récup les values du compte connecté dans la page qui suit
 			request.setAttribute("account", accountToConnect);
 			if(accountToConnect instanceof Chief) {
-				//Renvoyer vers la première page des chefs
-				getServletContext().getRequestDispatcher("/WEB-INF/Views/NOMBIDON.jsp").forward(request, response);
+				//Renvoyer vers la première page des chefs => Pourra consulter, lui
+				RequestDispatcher dispatch = request.getRequestDispatcher("ConsultFines");
+				dispatch.forward(request, response);
+				//getServletContext().getRequestDispatcher("/ConsultFines").forward(request, response);
 			}
 			if(accountToConnect instanceof Policeman) {
-				//Renvoyer vers la première page des policiers
-				getServletContext().getRequestDispatcher("/WEB-INF/Views/NOMBIDON.jsp").forward(request, response);
+				//Renvoyer vers la première page des policiers => ConsultFines. Mais comme policeman, ne verra pas toutes les fines
+				getServletContext().getRequestDispatcher("/ConsultFines").forward(request, response);
 			}
 			if(accountToConnect instanceof Administrator) {
-				//Renvoyer vers la première page des admins
-				getServletContext().getRequestDispatcher("/WEB-INF/Views/NOMBIDON.jsp").forward(request, response);
+				//Renvoyer vers la première page des admins ( Gestion des comptes ? )
+				getServletContext().getRequestDispatcher("nombidon").forward(request, response);
 			}
 		}else {
 			out.print("Incorrect account");

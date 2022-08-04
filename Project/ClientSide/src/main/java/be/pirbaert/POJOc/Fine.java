@@ -19,7 +19,8 @@ public class Fine implements Serializable {
 	private Charged charged;
 	private Vehicle vehicle;
 	private static FineDAO fineDAOc = new FineDAO();
-
+	private float totalPrice =0;
+	
 	public Fine() {}
 	
 	public Fine(int id,Violation violation,Policeman policeman,Vehicle vehicle,String commentary,Date date) {
@@ -97,17 +98,15 @@ public class Fine implements Serializable {
 	}
 
 	public float getTotalPrice(){
-		int price = 0;
-				
+
 		if(!Objects.isNull(violations)) {
 			for(Violation violation : violations) {
 				if(!Objects.isNull(violation)) {
-					price += violation.getPrice();
+					this.totalPrice += violation.getPrice();
 				}
 			}
 		}
-		
-		return price;
+		return this.totalPrice;
 	}
 	
 	public static Fine getFine(int id) {
@@ -118,6 +117,10 @@ public class Fine implements Serializable {
 		return fineDAOc.findAll();
 	}
 	
+	@Override
+	public String toString() {
+		return " Id du fine : "+this.getId()+" Commentaire : "+this.getCommentary();
+	}
 	// OVERRIDE POUR CONTAINS ( charged.addFine(fine) )
 	@Override
 	public boolean equals(Object o) {

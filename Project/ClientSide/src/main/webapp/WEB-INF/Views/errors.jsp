@@ -38,6 +38,8 @@
 			%>
 		</ul>
 		<!--  Plutôt une redirection vers la page précédente  -->
-		<input type="submit" name="back" id="back" value=back/>
+		<form action="SignIn" method="GET">
+			<input type="submit" name="back" id="back" value=back>
+		</form>
 	</body>
 </html>
