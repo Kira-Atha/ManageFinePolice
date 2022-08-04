@@ -24,8 +24,7 @@ public class AccountDAO extends DAO<Account> {
 	@Override
 	public boolean create(Account obj) {
 		CallableStatement proc = null;
-		ResultSet result = null;
-
+		
 		int id = 0;
 
 		try {
@@ -36,7 +35,7 @@ public class AccountDAO extends DAO<Account> {
 			proc.registerOutParameter(4, Types.NUMERIC);
 			
 
-			result = proc.executeQuery();
+			proc.executeQuery();
 
 			
 			id = proc.getInt(4);
@@ -51,14 +50,33 @@ public class AccountDAO extends DAO<Account> {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
+
 		}
-		return false;
 	}
 
 	@Override
 	public boolean delete(Account obj) {
-		// TODO Auto-generated method stub
-		return false;
+		CallableStatement proc = null;
+		
+		
+		try {
+			proc = this.connect.prepareCall("{call manage_account.delete_account(?)}");
+			proc.setString(1, obj.getPersonnelNumber());
+			
+
+			proc.executeQuery();
+
+					
+			return true;
+			
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+
+		}
 	}
 
 	@Override

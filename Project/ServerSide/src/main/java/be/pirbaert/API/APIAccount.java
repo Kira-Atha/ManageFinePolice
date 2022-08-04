@@ -2,6 +2,7 @@ package be.pirbaert.API;
 
 import java.util.List;
 
+import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -87,6 +88,18 @@ public class APIAccount{
 				
 		
 		
+	}
+	
+	@DELETE
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response deleteAccount(@FormParam("personnelNumber") String personnelNumber) {
+		Account account = new Account();
+		account.setPersonnelNumber(personnelNumber);
+		
+		if(account.delete()) {
+			return Response.status(Status.NO_CONTENT).build();
+		}
+		else return Response.status(Status.NOT_FOUND).build();
 	}
 	
 	@GET

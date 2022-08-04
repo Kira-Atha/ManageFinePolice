@@ -8,7 +8,7 @@ import be.pirbaert.DAOs.FactoryDAO;
 import be.pirbaert.POJOs.Account;
 
 
-public abstract class Account implements Serializable{
+public class Account implements Serializable{
 	private static final long serialVersionUID = -5650518956213649548L;
 	private int id;
 	private String personnelNumber ;
@@ -70,5 +70,9 @@ public abstract class Account implements Serializable{
 	
 	public boolean save() {
 		return accountDAOs.create(this);
+	}
+	
+	public boolean delete() {
+		return accountDAOs.delete(this);
 	}
 }
