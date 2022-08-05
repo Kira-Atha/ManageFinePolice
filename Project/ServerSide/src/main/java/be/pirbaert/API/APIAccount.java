@@ -47,7 +47,6 @@ public class APIAccount{
 	
 	
 	@POST
-	@Path("create")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response createAccount(
 			@FormParam("personnelNumber") String personnelNumber,
