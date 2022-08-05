@@ -1,8 +1,10 @@
 package be.pirbaert.DAOs;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,20 +19,80 @@ public class TypeVehicleDAO extends DAO<TypeVehicle> {
 
 	@Override
 	public boolean create(TypeVehicle obj) {
-		// TODO Auto-generated method stub
-		return false;
+		CallableStatement proc = null;
+	
+		int id = 0;
+	
+		try {
+			proc = this.connect.prepareCall("{call manage_vehicle_type.create_vehicle_type(?,?)}");
+			proc.setString(1, obj.getName());
+			proc.registerOutParameter(2, Types.NUMERIC);
+			
+	
+			proc.executeQuery();
+	
+			
+			id = proc.getInt(2);
+			
+			if(id != 0) {
+				obj.setId(id);
+				return true;
+			}
+			
+			return false;
+	
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+	
+		}
 	}
 
 	@Override
 	public boolean delete(TypeVehicle obj) {
-		// TODO Auto-generated method stub
-		return false;
+		CallableStatement proc = null;
+		
+		
+		try {
+			proc = this.connect.prepareCall("{call  manage_vehicle_type.delete_vehicle_type(?)}");
+			proc.setInt(1, obj.getId());
+			
+
+			proc.executeQuery();
+
+					
+			return true;
+			
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+
+		}
 	}
 
 	@Override
 	public boolean update(TypeVehicle obj) {
-		// TODO Auto-generated method stub
-		return false;
+		CallableStatement proc = null;
+		
+		try {
+			proc = this.connect.prepareCall("{call manage_vehicle_type.update_vehicle_type(?,?)}");
+			proc.setInt(1, obj.getId());
+			proc.setString(2, obj.getName());
+			
+	
+			proc.executeQuery();
+			
+			return true;
+	
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+	
+		}
 	}
 
 	@Override

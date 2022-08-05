@@ -20,6 +20,10 @@ public class TypeVehicle implements Serializable{
 		this.setName(name);
 	}
 	
+	public TypeVehicle( String name) {
+		this.setName(name);
+	}
+	
 	
 	public static List<TypeVehicle> getAllTypes() {
 		return typeVehicleDAOs.findAll();
@@ -44,6 +48,15 @@ public class TypeVehicle implements Serializable{
 	public void setId(int id) {
 		this.id = id;
 	}
-
 	
+	public boolean save() {
+		return typeVehicleDAOs.create(this);
+	}
+	public boolean delete() {
+		return typeVehicleDAOs.delete(this);
+	}
+	
+	public boolean update() {
+		return typeVehicleDAOs.update(this);
+	}
 }
