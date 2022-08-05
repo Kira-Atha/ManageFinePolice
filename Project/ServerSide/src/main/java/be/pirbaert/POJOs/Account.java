@@ -75,4 +75,8 @@ public class Account implements Serializable{
 	public boolean delete() {
 		return accountDAOs.delete(this);
 	}
+	
+	public boolean update() {
+		return accountDAOs.update(this);
+	}
 }

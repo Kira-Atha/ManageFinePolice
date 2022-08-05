@@ -81,8 +81,62 @@ public class AccountDAO extends DAO<Account> {
 
 	@Override
 	public boolean update(Account obj) {
-		// TODO Auto-generated method stub
-		return false;
+		
+		if (obj.getPassword() == null) return updatePersonelNumber(obj);		
+		return updateBoth(obj);
+		
+		
+	}
+	
+	private boolean updatePersonelNumber(Account obj) {
+		CallableStatement proc = null;
+		
+		
+		try {
+			proc = this.connect.prepareCall("{call manage_account.change_personelNumber(?,?)}");
+			proc.setInt(1, obj.getId());
+			proc.setString(2, obj.getPersonnelNumber());
+			
+
+			proc.executeQuery();
+
+					
+			return true;
+			
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+
+		}
+		
+	}
+		
+	private boolean updateBoth(Account obj) {
+		CallableStatement proc = null;
+		
+		
+		try {
+			proc = this.connect.prepareCall("{call manage_account.change_account(?,?,?)}");
+			proc.setInt(1, obj.getId());
+			proc.setString(2, obj.getPersonnelNumber());
+			proc.setString(3, obj.getPassword());
+			
+
+			proc.executeQuery();
+
+					
+			return true;
+			
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+
+		}
+		
 	}
 
 	@Override
