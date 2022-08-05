@@ -10,7 +10,6 @@ public class Registration implements Serializable{
 	private static final long serialVersionUID = -279361654562947993L;
 	private int id;
 	private String serialNumber;
-	//private Vehicle vehicle;
 	private static FactoryDAO afd = new FactoryDAO();
 	private static DAO<Registration> registrationDAOs = afd.getRegistrationDAO();
 	
@@ -19,7 +18,10 @@ public class Registration implements Serializable{
 	public Registration(int id, String serialNumber) {
 		this.setId(id);
 		this.setSerialNumber(serialNumber);
-		//this.setVehicle(vehicle);
+	}
+	
+	public Registration(String serialNumber) {
+		this.setSerialNumber(serialNumber);
 	}
 
 	public int getId() {
@@ -46,4 +48,17 @@ public class Registration implements Serializable{
 		return registrationDAOs.findAll();
 	}
 	
+	public boolean save() {
+		return registrationDAOs.create(this);
+	}
+	
+	public boolean delete() {
+		return registrationDAOs.delete(this);
+
+	}
+	
+	public boolean update() {
+		return registrationDAOs.update(this);
+
+	}
 }

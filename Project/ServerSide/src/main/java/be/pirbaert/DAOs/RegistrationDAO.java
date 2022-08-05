@@ -1,8 +1,10 @@
 package be.pirbaert.DAOs;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,20 +20,71 @@ public class RegistrationDAO extends DAO<Registration> {
 
 	@Override
 	public boolean create(Registration obj) {
-		// TODO Auto-generated method stub
+		CallableStatement procedure = null;
+		int new_id = 0;
+		try {
+			procedure = this.connect.prepareCall("{call manage_registration.create_registration(?,?)}");
+			procedure.setString(1,obj.getSerialNumber());
+			procedure.registerOutParameter(2, Types.NUMERIC);
+			
+			procedure.executeQuery();
+			new_id=procedure.getInt(2);
+			
+			if(new_id!=0) {
+				obj.setId(new_id);
+				return true;
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 		return false;
 	}
 
 	@Override
 	public boolean delete(Registration obj) {
-		// TODO Auto-generated method stub
-		return false;
+		CallableStatement proc = null;
+		
+		
+		try {
+			proc = this.connect.prepareCall("{call  manage_registration.delete_registration(?)}");
+			proc.setInt(1, obj.getId());
+			
+
+			proc.executeQuery();
+
+					
+			return true;
+			
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+
+		}
 	}
 
 	@Override
 	public boolean update(Registration obj) {
-		// TODO Auto-generated method stub
-		return false;
+		CallableStatement proc = null;
+
+		try {
+			proc = this.connect.prepareCall("{call manage_registration.update_registration(?,?)}");
+			proc.setInt(1, obj.getId());
+			proc.setString(2, obj.getSerialNumber());
+			
+	
+			proc.executeQuery();
+			
+			return true;
+	
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+	
+		}
 	}
 
 	@Override
