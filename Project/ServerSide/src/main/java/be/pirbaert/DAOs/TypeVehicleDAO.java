@@ -2,6 +2,7 @@ package be.pirbaert.DAOs;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
@@ -99,8 +100,15 @@ public class TypeVehicleDAO extends DAO<TypeVehicle> {
 	public TypeVehicle find(int id) {
 		TypeVehicle type = null;
 		ResultSet result = null;
+		PreparedStatement preparedStatement = null;
+
 		try{
-			result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM TypeVehicle WHERE IDType="+id);
+			
+			preparedStatement = this.connect.prepareStatement("SELECT * FROM TypeVehicle WHERE IDType=?");
+			preparedStatement.setInt(1, id);
+			
+			result = preparedStatement.executeQuery();
+			
 			while(result.next()) {
 				type=new TypeVehicle(result.getInt("IdType"),result.getString("Name"));
 			}

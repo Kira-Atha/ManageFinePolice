@@ -2,6 +2,7 @@ package be.pirbaert.DAOs;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
@@ -91,8 +92,14 @@ public class RegistrationDAO extends DAO<Registration> {
 	public Registration find(int id) {
 		Registration registration = null;
 		ResultSet result = null;
+		PreparedStatement preparedStatement = null;
+		
 		try{
-			result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Registration where IdRegistration="+id);
+			
+			preparedStatement = this.connect.prepareStatement("SELECT * FROM Registration where IdRegistration=?");
+			preparedStatement.setInt(1, id);
+			
+			result = preparedStatement.executeQuery();
 			while(result.next()) {
 				registration=new Registration(result.getInt("IdRegistration"),result.getString("SerialNumber"));
 			}

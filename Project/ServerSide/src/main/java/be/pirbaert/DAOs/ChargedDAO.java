@@ -2,6 +2,7 @@ package be.pirbaert.DAOs;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
@@ -56,8 +57,13 @@ public class ChargedDAO extends DAO<Charged>{
 	public Charged find(int id) {
 		Charged charged = null;
 		ResultSet result = null;
+		PreparedStatement preparedStatement = null;
 		try{
-			result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Charged where IdCharged="+id);
+			
+			preparedStatement = this.connect.prepareStatement("SELECT * FROM Charged where IdCharged=?");
+			preparedStatement.setInt(1, id);
+			
+			result = preparedStatement.executeQuery();
 			if(result.next()) {
 				charged=new Charged(result.getInt("IdCharged"),result.getString("firstname"),result.getString("lastname"),result.getString("address"));
 			}

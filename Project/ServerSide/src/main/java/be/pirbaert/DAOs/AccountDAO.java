@@ -2,6 +2,7 @@ package be.pirbaert.DAOs;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
@@ -143,8 +144,16 @@ public class AccountDAO extends DAO<Account> {
 	public Account find(int id) {
 		Account account = null;
 		ResultSet result = null;
+		PreparedStatement preparedStatement = null;
+
 		try{
-			result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Account WHERE IDACCOUNT ="+id);
+			
+
+			preparedStatement = this.connect.prepareStatement("SELECT * FROM Account WHERE IDACCOUNT =?");
+			preparedStatement.setInt(1, id);
+			
+			result = preparedStatement.executeQuery();
+			
 			if(result.next()) {
 				switch(result.getString("TypeAccount")) {
 					case "Chief":

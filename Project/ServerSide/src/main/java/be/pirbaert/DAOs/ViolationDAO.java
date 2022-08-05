@@ -2,6 +2,7 @@ package be.pirbaert.DAOs;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
@@ -102,8 +103,14 @@ public class ViolationDAO extends DAO<Violation> {
 	public Violation find(int id) {
 		Violation violation = null;
 		ResultSet result = null;
+		PreparedStatement preparedStatement = null;
+
 		try{
-			result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Violation where IdViolation="+id);
+			preparedStatement = this.connect.prepareStatement("SELECT * FROM Violation where IdViolation=?");
+			preparedStatement.setInt(1, id);
+			
+			result = preparedStatement.executeQuery();
+			
 			if(result.next()) {
 				violation=new Violation(result.getInt("IdViolation"),result.getString("Name"),result.getString("Description"),result.getFloat("Price"));
 			}
