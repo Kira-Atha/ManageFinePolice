@@ -2,9 +2,14 @@ package be.pirbaert.POJOs;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import be.pirbaert.DAOs.DAO;
 
 public class Policeman extends Account{
+	private static final long serialVersionUID = 8562421127622269285L;
 	private List <Fine> fines;
+	private static DAO<Fine> fineDAOs = afd.getFineDAO();
 	
 	public Policeman(int id,String personelNumber, String password) {
 		super(id,personelNumber, password);
@@ -24,5 +29,11 @@ public class Policeman extends Account{
 	public void setFines(List <Fine> fines) {
 		this.fines = fines;
 	}
-
+	
+	public boolean createFine(Fine fine) {
+		if(!Objects.isNull(fine)) {
+			return fineDAOs.create(fine);
+		}
+		return false;
+	}
 }

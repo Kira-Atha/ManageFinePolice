@@ -148,22 +148,23 @@ public class AccountDAO extends DAO<Account> {
 			if(result.next()) {
 				switch(result.getString("TypeAccount")) {
 					case "Chief":
-						account = new Chief(result.getInt(id),result.getString("PersonelNumber"),result.getString("Password"));
+						account = new Chief(result.getInt("IdAccount"),result.getString("PersonelNumber"),result.getString("Password"));
 						break;
 					case "Policeman":
-						account = new Policeman(result.getInt(id),result.getString("PersonelNumber"),result.getString("Password"));
+						account = new Policeman(result.getInt("IdAccount"),result.getString("PersonelNumber"),result.getString("Password"));
 						break;
 					case "Administrator":
-						account = new Administrator(result.getInt(id),result.getString("PersonelNumber"),result.getString("Password"));
+						account = new Administrator(result.getInt("IdAccount"),result.getString("PersonelNumber"),result.getString("Password"));
 						break;
 					case "TaxCollector":
-						account = new TaxCollector(result.getInt(id),result.getString("PersonelNumber"),result.getString("Password"));
+						account = new TaxCollector(result.getInt("IdAccount"),result.getString("PersonelNumber"),result.getString("Password"));
 						break;
 				}
 			}
 		}catch(SQLException e) {
-			
+			e.printStackTrace();
 		}
+		//System.out.println(account.getClass().getSimpleName());
 		return account;
 	}
 

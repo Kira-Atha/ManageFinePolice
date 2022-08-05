@@ -24,6 +24,12 @@ public class Vehicle implements Serializable{
 		this.fines = new ArrayList<Fine>();
 	}
 
+	public Vehicle(Registration registration,TypeVehicle type) {
+		this.registration = registration;
+		this.type = type;
+		this.fines = new ArrayList<Fine>();
+	}
+	
 	public int getId() {
 		return id;
 	}

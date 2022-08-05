@@ -6,7 +6,7 @@ import java.util.List;
 
 import be.pirbaert.DAOc.AccountDAO;
 
-public abstract class Account implements Serializable{
+public class Account implements Serializable{
 	private static final long serialVersionUID = 7895495554055350208L;
 	private int id;
 	private String personnelNumber ;

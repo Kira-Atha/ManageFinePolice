@@ -28,6 +28,13 @@ public class Charged implements Serializable{
 		this.setAddress(address);
 		fines = new ArrayList<Fine>();
 	}
+	
+	public Charged(String firstname, String lastname, String address) {
+		this.setFirstname(firstname);
+		this.setLastname(lastname);
+		this.setAddress(address);
+		fines = new ArrayList<Fine>();
+	}
 
 	public int getId() {
 		return id;

@@ -13,7 +13,7 @@ public class Account implements Serializable{
 	private int id;
 	private String personnelNumber ;
 	private String password ;
-	private static FactoryDAO afd = new FactoryDAO();
+	protected static FactoryDAO afd = new FactoryDAO();
 	private static DAO<Account> accountDAOs = afd.getAccountDAO();
 	protected String type;
 	

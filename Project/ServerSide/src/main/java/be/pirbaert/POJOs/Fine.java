@@ -10,6 +10,7 @@ import be.pirbaert.DAOs.DAO;
 import be.pirbaert.DAOs.FactoryDAO;
 import be.pirbaert.DAOs.FineDAO;
 
+
 public class Fine implements Serializable {
 	private static final long serialVersionUID = 7830843808655380688L;
 	private int id;
@@ -20,19 +21,57 @@ public class Fine implements Serializable {
 	private Policeman policeman;
 	private Charged charged;
 	private Vehicle vehicle;
+	private float totalPrice =0;
 	private static FactoryDAO afd = new FactoryDAO();
 	private static DAO<Fine> fineDAOs = afd.getFineDAO();
+	private static DAO<Charged> chargedDAOs = afd.getChargedDAO();
+	private static DAO<Vehicle> vehicleDAOs = afd.getVehicleDAO();
 	
 	public Fine() {}
 	
-	public Fine(int id,Violation violation,Policeman policeman,Vehicle vehicle,String commentary,Date date) {
+	public Fine(int id,List<Violation> violations,Policeman policeman,Vehicle vehicle,String commentary,Date date,Charged charged) {
 		this.violations= new ArrayList<Violation>();
 		this.id=id;
-		this.violations.add(violation);
+		for(Violation violation : violations) {
+			this.violations.add(violation);
+		}
+		this.policeman = policeman;
+		this.charged = charged;
+		this.vehicle = vehicle;
+		this.commentary = commentary;
+		this.date = date;
+		this.validated = false;
+		this.totalPrice = this.getTotalPrice();
+	}
+	// Si le véhicule n'est pas dans la liste des choix, alors le fine va le créer
+	public Fine(int id,List<Violation> violations,Policeman policeman,String commentary,Date date,Charged charged,Registration registration,TypeVehicle type) {
+		this.violations= new ArrayList<Violation>();
+		this.id=id;
+		for(Violation violation : violations) {
+			this.violations.add(violation);
+		}
+		this.policeman = policeman;
+		this.commentary = commentary;
+		this.date = date;
+		if(!Objects.isNull(charged)) {
+			this.charged = charged;
+		}
+		this.validated = false;
+		this.totalPrice = this.getTotalPrice();
+		this.createVehicle(new Vehicle(0,registration,type));
+	}
+	
+	public Fine(List<Violation> violations,Policeman policeman,Vehicle vehicle,String commentary,Date date,Charged charged) {
+		this.violations= new ArrayList<Violation>();
+		for(Violation violation : violations) {
+			this.violations.add(violation);
+		}
 		this.policeman = policeman;
 		this.vehicle = vehicle;
 		this.commentary = commentary;
 		this.date = date;
+		this.validated = false;
+		this.totalPrice = this.getTotalPrice();
 	}
 	
 	public String getCommentary() {
@@ -100,16 +139,14 @@ public class Fine implements Serializable {
 	}
 
 	public float getTotalPrice(){
-		int price = 0;
-				
 		if(!Objects.isNull(violations)) {
 			for(Violation violation : violations) {
 				if(!Objects.isNull(violation)) {
-					price += violation.getPrice();
+					this.totalPrice += violation.getPrice();
 				}
 			}
 		}
-		return price;
+		return this.totalPrice;
 	}
 	
 	public static Fine getFine(int id) {
@@ -120,6 +157,22 @@ public class Fine implements Serializable {
 		return fineDAOs.findAll();
 	}
 	
+	public boolean createCharged(Charged charged) {
+		if(!Objects.isNull(charged)) {
+			this.charged = charged;
+			return(chargedDAOs.create(charged));
+		}
+		return false;
+	}
+	
+	public boolean createVehicle(Vehicle vehicle) {
+		if(!Objects.isNull(vehicle)) {
+			this.vehicle = vehicle;
+			// ??? vehicle.getFines().add(this);
+			return(vehicleDAOs.create(vehicle));
+		}
+		return false;
+	}
 	// OVERRIDE POUR CONTAINS ( charged.addFine(fine) )
 	@Override
 	public boolean equals(Object o) {

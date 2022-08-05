@@ -51,8 +51,7 @@
 							</td>
 							<td><%= fine.getCharged().getFirstname() %></td>
 							<td><%= fine.getVehicle().getType().getName() %></td>
-							<td>POLICEMAN BIDON</td>
-						<!-- QUAND POLICEMAN SERA RECUPERE l'afficher lui  fine.getPoliceman().getPersonnelNumber() -->
+							<td><%= fine.getPoliceman().getPersonnelNumber()%></td>
 							<td><%= fine.getTotalPrice() %></td>
 							<td>
 								<form action="ConsultFines" method="POST">
