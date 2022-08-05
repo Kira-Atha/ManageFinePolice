@@ -123,16 +123,5 @@ public class APIAccount{
 		}
 		else return Response.status(Status.NOT_FOUND).build();
 	}
-	
-	@GET
-	@Path("/test")
-	public boolean test() {
-		
-		
-		Chief acTest = new Chief("ccDDcc1","testtest");
 
-			
-		return acTest.save();
-		
-	}
 }

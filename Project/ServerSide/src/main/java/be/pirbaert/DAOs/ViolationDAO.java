@@ -1,8 +1,10 @@
 package be.pirbaert.DAOs;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import be.pirbaert.POJOs.Violation;
@@ -16,20 +18,84 @@ public class ViolationDAO extends DAO<Violation> {
 
 	@Override
 	public boolean create(Violation obj) {
-		// TODO Auto-generated method stub
-		return false;
+		CallableStatement proc = null;
+		
+		int id = 0;
+
+		try {
+			proc = this.connect.prepareCall("{call manage_violation.create_violation(?,?,?,?)}");
+			proc.setString(1, obj.getName());
+			proc.setFloat(2, obj.getPrice());
+			proc.setString(3, obj.getDescription());
+			proc.registerOutParameter(4, Types.NUMERIC);
+			
+
+			proc.executeQuery();
+
+			
+			id = proc.getInt(4);
+			
+			if(id != 0) {
+				obj.setId(id);
+				return true;
+			}
+			
+			return false;
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+
+		}
 	}
 
 	@Override
 	public boolean delete(Violation obj) {
-		// TODO Auto-generated method stub
-		return false;
+		CallableStatement proc = null;
+		
+		
+		try {
+			proc = this.connect.prepareCall("{call  manage_violation.delete_violation(?)}");
+			proc.setInt(1, obj.getId());
+			
+
+			proc.executeQuery();
+
+					
+			return true;
+			
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+
+		}
 	}
 
 	@Override
 	public boolean update(Violation obj) {
-		// TODO Auto-generated method stub
-		return false;
+		CallableStatement proc = null;
+		
+		try {
+			proc = this.connect.prepareCall("{call manage_violation.update_violation(?,?,?,?)}");
+			proc.setInt(1, obj.getId());
+			proc.setString(2, obj.getName());
+			proc.setFloat(3, obj.getPrice());
+			proc.setString(4, obj.getDescription());
+			
+	
+			proc.executeQuery();
+			
+			return true;
+	
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+	
+		}
 	}
 
 	@Override

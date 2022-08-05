@@ -24,6 +24,12 @@ public class Violation implements Serializable {
 		this.price = price;
 	}
 	
+	public Violation(String name,String description,float price) {
+		this.name = name;
+		this.description = description;
+		this.price = price;
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -57,6 +63,18 @@ public class Violation implements Serializable {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public boolean save() {
+		return violationDAOs.create(this);
+	}
+	
+	public boolean delete() {
+		return violationDAOs.delete(this);
+	}
+	
+	public boolean update() {
+		return violationDAOs.update(this);
 	}
 	
 }
