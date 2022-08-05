@@ -1,6 +1,7 @@
 package be.pirbaert.DAOs;
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
@@ -86,12 +87,24 @@ public class FineDAO extends DAO<Fine> {
 		Fine fine = null;
 		ResultSet result = null;
 		ResultSet result2 = null;
+		PreparedStatement preparedStatement = null;
+		PreparedStatement preparedStatement2 = null;
+
 		try{
-			result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Fine WHERE IdFine="+id);
+			
+			preparedStatement = this.connect.prepareStatement("SELECT * FROM Fine WHERE IdFine=?");
+			preparedStatement.setInt(1, id);
+			
+			result = preparedStatement.executeQuery();
+			
 			if(result.next()) {
 				List <Violation> fineViolations = new ArrayList<Violation>();
 				try {
-					result2 = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Vio_Fin WHERE IdFine="+id);
+					preparedStatement2 = this.connect.prepareStatement("SELECT * FROM Vio_Fin WHERE IdFine=");
+					preparedStatement2.setInt(1, id);
+					
+					result2 = preparedStatement2.executeQuery();
+					
 					while(result2.next()) {
 						fineViolations.add(Violation.getViolation(result2.getInt("IdViolation")));
 					}
@@ -104,7 +117,6 @@ public class FineDAO extends DAO<Fine> {
 			e.printStackTrace();
 			return null;
 		}
-		System.out.println(fine.getCommentary());
 		return fine;
 	}
 
