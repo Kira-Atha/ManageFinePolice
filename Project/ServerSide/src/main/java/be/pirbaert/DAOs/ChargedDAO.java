@@ -1,8 +1,10 @@
 package be.pirbaert.DAOs;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,8 +18,25 @@ public class ChargedDAO extends DAO<Charged>{
 	}
 
 	@Override
-	public boolean create(Charged obj) {
-		// TODO Auto-generated method stub
+	public boolean create(Charged charged) {
+		CallableStatement procedure = null;
+		int new_id = 0;
+		try {
+			procedure = this.connect.prepareCall("{call manage_charged.create_charged(?,?,?,?)}");
+			procedure.setString(1,charged.getFirstname());
+			procedure.setString(2,charged.getLastname());
+			procedure.setString(3,charged.getAddress());
+			procedure.registerOutParameter(4, Types.NUMERIC);
+			procedure.executeQuery();
+			new_id=procedure.getInt(4);
+			if(new_id!=0) {
+				charged.setId(new_id);
+				return true;
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 		return false;
 	}
 

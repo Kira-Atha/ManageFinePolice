@@ -1,8 +1,10 @@
 package be.pirbaert.DAOs;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,8 +23,24 @@ public class VehicleDAO extends DAO<Vehicle> {
 	}
 
 	@Override
-	public boolean create(Vehicle obj) {
-		// TODO Auto-generated method stub
+	public boolean create(Vehicle vehicle) {
+		CallableStatement procedure = null;
+		int new_id = 0;
+		try {
+			procedure = this.connect.prepareCall("{call manage_vehicle.create_vehicle(?,?,?)}");
+			procedure.setInt(1, vehicle.getType().getId());
+			procedure.setInt(2, vehicle.getRegistration().getId());
+			procedure.registerOutParameter(3, Types.NUMERIC);
+			procedure.executeQuery();
+			new_id = procedure.getInt(3); 
+			if(new_id!=0) {
+				vehicle.setId(procedure.getInt(new_id));
+				return true;
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 		return false;
 	}
 
