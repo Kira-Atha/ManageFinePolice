@@ -1,5 +1,6 @@
 package be.pirbaert.DAOc;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,81 +79,30 @@ public class AccountDAO extends DAO<Account> {
 				.path("account")
 				.accept(MediaType.APPLICATION_JSON)
 				.get(String.class);
-		/*
-		try {
-			//doesn't work
-			//List<Account> allAccounts= this.getMapper().readValue(responseJSON, new TypeReference<List<Account>>(){});
-			
-			//doesn't work
-			List<Account> allAccounts = this.getMapper().readValue(responseJSON, this.getMapper().getTypeFactory().constructCollectionType(List.class, Account.class));
-			System.out.println(allAccounts);
-			return allAccounts;
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-		*/
-		
-		/* DOESN'T WORK
-		 * 
-		 */
+	
 		List <Account> allAccounts = new ArrayList<Account>();
 		try{
-			System.out.println(responseJSON.getClass().getSimpleName());
 			JSONParser parser = new JSONParser();
+						
+			ArrayList<JSONObject> JSONaccounts = (ArrayList<JSONObject>) parser.parse(responseJSON);
 			
-			JSONObject JSONaccount = (JSONObject) parser.parse((String)responseJSON);
-			Object modelObject = (Account) JSONaccount.get("account");
 			
-			if(modelObject instanceof JSONArray) {
-				JSONArray itemsArray = (JSONArray)modelObject;
-				for(int index = 0;index < itemsArray.size();index++) {
-					Account account = null;
-					JSONObject modelIterative = (JSONObject) itemsArray.get(index);
-					switch(String.valueOf(modelIterative.get("type"))) {
-						case "Administrator":
-							account = new Administrator(Integer.parseInt((String) modelIterative.get("IdAccount")),(String) modelIterative.get("PersonelNumber"),(String) modelIterative.get("Password"));
-							allAccounts.add(account);
-							break;
-						case "Policeman":
-							account = new Policeman(Integer.parseInt((String) modelIterative.get("IdAccount")),(String) modelIterative.get("PersonelNumber"),(String) modelIterative.get("Password"));
-							allAccounts.add(account);
-							break;
-						case "Chief":
-							account = new Chief(Integer.parseInt((String) modelIterative.get("IdAccount")),(String) modelIterative.get("PersonelNumber"),(String) modelIterative.get("Password"));
-							allAccounts.add(account);
-							break;
-						case "TaxCollector":
-							account = new TaxCollector(Integer.parseInt((String) modelIterative.get("IdAccount")),(String) modelIterative.get("PersonelNumber"),(String) modelIterative.get("Password"));
-							allAccounts.add(account);
-							break;
-					}
-					allAccounts.add(account);
-				}
-				// S'il y en a qu'un
-			}else if(modelObject instanceof JSONObject) {
-				Account account = null;
-				JSONObject modelIterative = (JSONObject) modelObject;
-				switch(String.valueOf(modelIterative.get("type"))) {
+			for(JSONObject account : JSONaccounts) {
+				System.out.print(account);
+				switch(String.valueOf( account.get("type"))) {
 					case "Administrator":
-						account = new Administrator(Integer.parseInt((String) modelIterative.get("IdAccount")),(String) modelIterative.get("PersonelNumber"),(String) modelIterative.get("Password"));
-						allAccounts.add(account);
-						break;
+						allAccounts.add( this.getMapper().readValue(account.toJSONString(),Administrator.class));
 					case "Policeman":
-						account = new Policeman(Integer.parseInt((String) modelIterative.get("IdAccount")),(String) modelIterative.get("PersonelNumber"),(String) modelIterative.get("Password"));
-						allAccounts.add(account);
-						break;
+						allAccounts.add( this.getMapper().readValue(account.toJSONString(),Policeman.class));
 					case "Chief":
-						account = new Chief(Integer.parseInt((String) modelIterative.get("IdAccount")),(String) modelIterative.get("PersonelNumber"),(String) modelIterative.get("Password"));
-						allAccounts.add(account);
-						break;
+						allAccounts.add( this.getMapper().readValue(account.toJSONString(),Chief.class));
 					case "TaxCollector":
-						account = new TaxCollector(Integer.parseInt((String) modelIterative.get("IdAccount")),(String) modelIterative.get("PersonelNumber"),(String) modelIterative.get("Password"));
-						allAccounts.add(account);
-						break;
-				}
+						allAccounts.add( this.getMapper().readValue(account.toJSONString(),TaxCollector.class));
+					}
 			}
-		} catch (ParseException e) {
+			
+
+		} catch (ParseException | IOException e) {
 			e.printStackTrace();
 		}
 	return allAccounts;
