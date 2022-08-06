@@ -108,4 +108,8 @@ public class Account implements Serializable {
 	public String toString() {
 		return this.getPersonnelNumber() + " " + this.getPassword();
 	}
+	
+	public boolean delete() {
+		return accountDAOc.delete(this);
+	}
 }

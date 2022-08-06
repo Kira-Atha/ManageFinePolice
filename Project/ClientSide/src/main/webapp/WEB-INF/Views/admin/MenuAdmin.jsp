@@ -10,7 +10,7 @@
 <body>
 	<h1 style="text-align : center" >Menu administrateur</h1>
 	<div style="text-align : center;justify-content: center;display: flex;">
-		<button onclick="location.href='/ClientSide/test'">Gerer compte utilisateur</button>
+		<button onclick="location.href='/ClientSide/ManageAccount'">Gerer compte utilisateur</button>
 	</div>
 </body>
 </html>

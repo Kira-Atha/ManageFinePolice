@@ -65,7 +65,7 @@ public class AccountDAO extends DAO<Account> {
 		
 		try {
 			proc = this.connect.prepareCall("{call manage_account.delete_account(?)}");
-			proc.setString(1, obj.getPersonnelNumber());
+			proc.setInt(1, obj.getId());
 			
 
 			proc.executeQuery();

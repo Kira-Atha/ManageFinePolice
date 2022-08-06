@@ -61,7 +61,7 @@ public class ConsultFines extends HttpServlet {
 		request.setAttribute("allViolations", allViolations);
 		request.setAttribute("allChargeds", allChargeds);
 		request.setAttribute("allVehicles", allVehicles);
-		request.setAttribute("account", account);
+			
 		
 		if(!Objects.isNull(account)) {
 			request.setAttribute("previous", request.getHeader("referer"));

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -12,6 +13,8 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 import be.pirbaert.POJOc.Account;
 import be.pirbaert.POJOc.Administrator;
@@ -33,7 +36,15 @@ public class AccountDAO extends DAO<Account> {
 
 	@Override
 	public boolean delete(Account obj) {
-		// TODO Auto-generated method stub
+		
+		
+		ClientResponse responseJSON = this.getResource()
+				.path("account")
+				.path(String.valueOf(obj.getId()))
+				.delete(ClientResponse.class);
+		
+		if(responseJSON.getStatus() == 204) return true;
+		
 		return false;
 	}
 
@@ -88,7 +99,6 @@ public class AccountDAO extends DAO<Account> {
 			
 			
 			for(JSONObject account : JSONaccounts) {
-				System.out.print(account);
 				switch(String.valueOf( account.get("type"))) {
 					case "Administrator":
 						allAccounts.add( this.getMapper().readValue(account.toJSONString(),Administrator.class));

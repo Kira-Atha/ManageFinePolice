@@ -136,10 +136,10 @@ public class APIAccount{
 	}
 	
 	@DELETE
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response deleteAccount(@FormParam("personnelNumber") String personnelNumber) {
+	@Path("{id}")
+	public Response deleteAccount(@PathParam("id") int id) {
 		Account account = new Account();
-		account.setPersonnelNumber(personnelNumber);
+		account.setId(id);
 		
 		if(account.delete()) {
 			return Response.status(Status.NO_CONTENT).build();

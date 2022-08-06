@@ -9,7 +9,7 @@ CREATE OR REPLACE PACKAGE manage_account IS
 	
 	PROCEDURE change_personelNumber (id IN ACCOUNT.IDACCOUNT%TYPE, new_personelNumber IN ACCOUNT.PERSONELNUMBER%TYPE);
 	
-	PROCEDURE delete_account(pn IN ACCOUNT.PERSONELNUMBER%TYPE);
+	PROCEDURE delete_account(id IN ACCOUNT.IDACCOUNT%TYPE);
 	
 END manage_account;
 /
@@ -95,10 +95,10 @@ CREATE OR REPLACE package body manage_account IS
 		
 		END change_personelNumber;	
 		
-	PROCEDURE delete_account (pn IN ACCOUNT.PERSONELNUMBER%TYPE) IS
+	PROCEDURE delete_account (id IN ACCOUNT.IDACCOUNT%TYPE) IS
 		BEGIN
 			DELETE FROM account
-			WHERE personelNumber = pn;
+			WHERE IDACCOUNT = id;
 			COMMIT;
 		END delete_account;
 		
