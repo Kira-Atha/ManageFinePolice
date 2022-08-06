@@ -87,8 +87,6 @@ public class Account implements Serializable {
 	
 	public static Account signIn(String personelNumber, String password) {
 		return accountDAOc.connect(personelNumber, password);
-		
-		
 	}
 
 	public static Account getAccount(int id) {

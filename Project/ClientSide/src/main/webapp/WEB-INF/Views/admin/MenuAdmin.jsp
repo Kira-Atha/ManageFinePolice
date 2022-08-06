@@ -4,9 +4,9 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Menu administrateur</title>
 </head>
 <body>
-<h1>Menu administrateur</h1>
+	<h1 style="text-align : center" >Menu administrateur</h1>
 </body>
 </html>
