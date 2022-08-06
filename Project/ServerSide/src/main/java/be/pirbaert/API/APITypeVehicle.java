@@ -63,9 +63,9 @@ public class APITypeVehicle {
 	}
 	
 	@DELETE
-	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{id}")
 	public Response deleteTypeVehicle(
-			@FormParam("id") int id ){
+			@PathParam("id") int id ){
 		
 		TypeVehicle typeVehicle = new TypeVehicle();
 		typeVehicle.setId(id);

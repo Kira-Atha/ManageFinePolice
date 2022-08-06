@@ -63,9 +63,9 @@ public class APIRegistration {
 	}
 	
 	@DELETE
-	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{id}")
 	public Response deleteRegistration(
-			@FormParam("id") int id ){
+			@PathParam("id") int id ){
 		
 		Registration registration = new Registration();
 		registration.setId(id);

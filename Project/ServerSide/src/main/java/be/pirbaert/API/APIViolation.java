@@ -83,8 +83,8 @@ public class APIViolation {
 		
 	}
 	@DELETE
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response deleteViolation(@FormParam("id") int id) {
+	@Path("{id}")
+	public Response deleteViolation(@PathParam("id") int id) {
 		Violation violation = new Violation();
 		violation.setId(id);
 		
