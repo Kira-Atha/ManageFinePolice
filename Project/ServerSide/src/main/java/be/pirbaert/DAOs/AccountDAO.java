@@ -9,6 +9,8 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ws.rs.core.MediaType;
+
 import be.pirbaert.POJOs.Account;
 import be.pirbaert.POJOs.Administrator;
 import be.pirbaert.POJOs.Chief;
@@ -157,16 +159,16 @@ public class AccountDAO extends DAO<Account> {
 			if(result.next()) {
 				switch(result.getString("TypeAccount")) {
 					case "Chief":
-						account = new Chief(result.getInt("IdAccount"),result.getString("PersonelNumber"),result.getString("Password"));
+						account = new Chief(result.getInt("IdAccount"),result.getString("PersonelNumber"));
 						break;
 					case "Policeman":
-						account = new Policeman(result.getInt("IdAccount"),result.getString("PersonelNumber"),result.getString("Password"));
+						account = new Policeman(result.getInt("IdAccount"),result.getString("PersonelNumber"));
 						break;
 					case "Administrator":
-						account = new Administrator(result.getInt("IdAccount"),result.getString("PersonelNumber"),result.getString("Password"));
+						account = new Administrator(result.getInt("IdAccount"),result.getString("PersonelNumber"));
 						break;
 					case "TaxCollector":
-						account = new TaxCollector(result.getInt("IdAccount"),result.getString("PersonelNumber"),result.getString("Password"));
+						account = new TaxCollector(result.getInt("IdAccount"),result.getString("PersonelNumber"));
 						break;
 				}
 			}
@@ -187,19 +189,19 @@ public class AccountDAO extends DAO<Account> {
 			while(result.next()) {
 				switch(result.getString("TypeAccount")) {
 					case "Chief":
-						account = new Chief(result.getInt("IdAccount"),result.getString("PersonelNumber"),result.getString("Password"));
+						account = new Chief(result.getInt("IdAccount"),result.getString("PersonelNumber"));
 						allAccounts.add(account);
 						break;
 					case "Policeman":
-						account = new Policeman(result.getInt("IdAccount"),result.getString("PersonelNumber"),result.getString("Password"));
+						account = new Policeman(result.getInt("IdAccount"),result.getString("PersonelNumber"));
 						allAccounts.add(account);
 						break;
 					case "Administrator":
-						account = new Administrator(result.getInt("IdAccount"),result.getString("PersonelNumber"),result.getString("Password"));
+						account = new Administrator(result.getInt("IdAccount"),result.getString("PersonelNumber"));
 						allAccounts.add(account);
 						break;
 					case "TaxCollector":
-						account = new TaxCollector(result.getInt("IdAccount"),result.getString("PersonelNumber"),result.getString("Password"));
+						account = new TaxCollector(result.getInt("IdAccount"),result.getString("PersonelNumber"));
 						allAccounts.add(account);
 						break;
 				}
@@ -209,5 +211,45 @@ public class AccountDAO extends DAO<Account> {
 		}
 		//System.out.println(allAccounts.get(0));
 		return allAccounts;
+	}
+	
+	public Account connect(String personelNumber, String password) {
+		Account account = null;
+		CallableStatement proc = null;
+
+		try {
+			
+			proc = this.connect.prepareCall("{call manage_account.connect_account(?,?,?,?)}");
+			proc.setString(1, personelNumber);
+			proc.setString(2, password);
+			proc.registerOutParameter(3, Types.CHAR);
+			proc.registerOutParameter(4, Types.NUMERIC);
+			
+			proc.executeQuery();
+
+			switch(proc.getString(3)) {
+			
+			case "Chief":
+				account = new Chief(proc.getInt(4),personelNumber);
+				break;
+			case "Policeman":
+				account = new Policeman(proc.getInt(4),personelNumber);
+				break;
+			case "Administrator":
+				account = new Administrator(proc.getInt(4),personelNumber);
+				break;
+			case "TaxCollector":
+				account = new TaxCollector(proc.getInt(4),personelNumber);
+				break;
+			}
+			
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+		return account;
+		
 	}
 }

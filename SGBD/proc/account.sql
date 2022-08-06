@@ -1,7 +1,7 @@
 CREATE OR REPLACE PACKAGE manage_account IS
 	PROCEDURE create_account (personelNumber IN ACCOUNT.PERSONELNUMBER%TYPE,password IN ACCOUNT.PASSWORD%TYPE,type IN ACCOUNT.TYPEACCOUNT%TYPE , acc_id OUT ACCOUNT.IDACCOUNT%TYPE);
 	
-	FUNCTION connect_account(personelNumber_check IN ACCOUNT.PERSONELNUMBER%TYPE,password_check IN ACCOUNT.PASSWORD%TYPE) RETURN ACCOUNT.TYPEACCOUNT%TYPE;
+	PROCEDURE connect_account(personelNumber_check IN ACCOUNT.PERSONELNUMBER%TYPE,password_check IN ACCOUNT.PASSWORD%TYPE, type_account OUT ACCOUNT.TYPEACCOUNT%TYPE , id OUT ACCOUNT.IDACCOUNT%TYPE);
 	
 	PROCEDURE change_account (id IN ACCOUNT.IDACCOUNT%TYPE,new_personelNumber IN ACCOUNT.PERSONELNUMBER%TYPE,new_password IN ACCOUNT.PASSWORD%TYPE);
 	
@@ -34,21 +34,17 @@ CREATE OR REPLACE package body manage_account IS
 				DBMS_OUTPUT.PUT_LINE('Erreur:'||substr(SQLERRM,1,40) );
 		END create_account;
 		
-	FUNCTION connect_account(personelNumber_check IN ACCOUNT.PERSONELNUMBER%TYPE,password_check IN ACCOUNT.PASSWORD%TYPE)
-	RETURN ACCOUNT.TYPEACCOUNT%TYPE IS
-		type_account ACCOUNT.TYPEACCOUNT%TYPE;
+	PROCEDURE connect_account(personelNumber_check IN ACCOUNT.PERSONELNUMBER%TYPE,password_check IN ACCOUNT.PASSWORD%TYPE,type_account OUT ACCOUNT.TYPEACCOUNT%TYPE , id OUT ACCOUNT.IDACCOUNT%TYPE)	IS
 		hash_password ACCOUNT.PASSWORD%TYPE := get_hash(personelNumber_check,password_check);
 		BEGIN
-			SELECT TYPEACCOUNT
-			INTO type_account
+			SELECT TYPEACCOUNT , IDACCOUNT
+			INTO type_account , id
 			FROM ACCOUNT
 			WHERE personelNumber = personelNumber_check
 			AND password = hash_password;
-			
-			RETURN type_account;
 		EXCEPTION
 			WHEN NO_DATA_FOUND THEN
-				RETURN 'nom utilisateur/mot de passe incorrect';
+				type_account := 'nom utilisateur/mot de passe incorrect';
 			when Others then
 				DBMS_OUTPUT.PUT_LINE('Erreur:'||substr(SQLERRM,1,40) );
 		END connect_account;

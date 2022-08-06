@@ -6,6 +6,11 @@ public class Administrator extends Account {
 		super(id,personelNumber, password);
 		this.setType(this.getClass().getSimpleName());
 	}
+	
+	public Administrator(int id,String personelNumber) {
+		super(id,personelNumber);
+		this.setType(this.getClass().getSimpleName());
+	}
 
 	public Administrator(String personelNumber, String password) {
 		super(personelNumber, password);

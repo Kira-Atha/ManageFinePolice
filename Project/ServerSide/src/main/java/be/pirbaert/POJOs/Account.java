@@ -3,6 +3,8 @@ package be.pirbaert.POJOs;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import be.pirbaert.DAOs.AccountDAO;
 import be.pirbaert.DAOs.DAO;
 import be.pirbaert.DAOs.FactoryDAO;
 import be.pirbaert.POJOs.Account;
@@ -14,7 +16,7 @@ public class Account implements Serializable{
 	private String personnelNumber ;
 	private String password ;
 	protected static FactoryDAO afd = new FactoryDAO();
-	private static DAO<Account> accountDAOs = afd.getAccountDAO();
+	private static AccountDAO accountDAOs = (AccountDAO) afd.getAccountDAO();
 	protected String type;
 	
 	public Account() {}
@@ -23,6 +25,11 @@ public class Account implements Serializable{
 		this.id = id;
 		this.personnelNumber = personelNumber;
 		this.password = password;
+	}
+	
+	public Account(int id,String personelNumber) {
+		this.id = id;
+		this.personnelNumber = personelNumber;
 	}
 	
 	public Account(String personelNumber, String password) {
@@ -78,5 +85,9 @@ public class Account implements Serializable{
 	
 	public boolean update() {
 		return accountDAOs.update(this);
+	}
+	
+	public static Account connect(String personelNumber ,String password) {
+		return accountDAOs.connect(personelNumber,password);
 	}
 }

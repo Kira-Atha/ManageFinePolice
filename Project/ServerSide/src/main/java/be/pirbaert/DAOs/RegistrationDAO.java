@@ -53,7 +53,6 @@ public class RegistrationDAO extends DAO<Registration> {
 			
 
 			proc.executeQuery();
-
 					
 			return true;
 			
@@ -98,6 +97,7 @@ public class RegistrationDAO extends DAO<Registration> {
 			
 			preparedStatement = this.connect.prepareStatement("SELECT * FROM Registration where IdRegistration=?");
 			preparedStatement.setInt(1, id);
+			
 			
 			result = preparedStatement.executeQuery();
 			while(result.next()) {
