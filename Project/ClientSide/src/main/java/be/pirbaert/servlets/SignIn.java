@@ -55,9 +55,6 @@ public class SignIn extends HttpServlet {
 			if(personelNumber.equals("")) {
 				errors.add("Personel number field was empty");
 			}
-			if(!personelNumber.matches("^[0-9a-zA-Z]{5,}$")) {
-				errors.add("Personel number must contains min 5 characters and don't contain special characters");
-			}
 		}
 		if(password==null) {
 			errors.add("Password field was null");
@@ -65,9 +62,7 @@ public class SignIn extends HttpServlet {
 			if(password.equals("")) {
 				errors.add("Password field was empty");
 			}
-			if(!password.matches("^[0-9a-zA-Z]{4,}$")) {
-				errors.add("Password must contains min 5 characters and don't contain special characters");
-			}
+		
 		}
 		if(errors.size()>0) {
 			request.setAttribute("previous", request.getRequestURI());
@@ -75,11 +70,8 @@ public class SignIn extends HttpServlet {
 			getServletContext().getRequestDispatcher("/WEB-INF/Views/errors.jsp").forward(request, response);
 
 		}
-		Account account;
-		// Policeman est un objet temporaire car Account n'est pas instanciable l'idée est de récupérer le bon objet lorsue le compte est correct en DB
-		account = new Policeman(0,personelNumber,password);
-		Account accountToConnect = account.signIn();
-		if(!Objects.isNull(accountToConnect)){
+		Account account = Account.signIn(personelNumber,password);
+		if(!Objects.isNull(account)){
 			// Gérer session
 			
 			HttpSession session = request.getSession();
@@ -88,25 +80,25 @@ public class SignIn extends HttpServlet {
 				// Je veux la recréer
 				session = request.getSession();
 			}
-			session.setAttribute("account", accountToConnect);
+			session.setAttribute("account", account);
 			// Pour récup les values du compte connecté dans la page qui suit
-			request.setAttribute("account", accountToConnect);
-			if(accountToConnect instanceof Chief) {
+			request.setAttribute("account", account);
+			if(account instanceof Chief) {
 				//Renvoyer vers la première page des chefs => Pourra consulter, lui
 				response.sendRedirect("ConsultFines");
 				//RequestDispatcher dispatch = request.getRequestDispatcher("ConsultFines");
 				//dispatch.forward(request, response);
 				//getServletContext().getRequestDispatcher("/ConsultFines").forward(request, response);
 			}
-			if(accountToConnect instanceof Policeman) {
+			if(account instanceof Policeman) {
 				//Renvoyer vers la première page des policiers => ConsultFines. Mais comme policeman, ne verra pas toutes les fines
 				response.sendRedirect("ConsultFines");
 			}
-			if(accountToConnect instanceof Administrator) {
+			if(account instanceof Administrator) {
 				//Renvoyer vers la première page des admins ( Gestion des comptes ? )
-				response.sendRedirect("PAGEADMIN servlet // manage account?");
+				response.sendRedirect("MenuAdmin");
 			}
-			if(accountToConnect instanceof TaxCollector) {
+			if(account instanceof TaxCollector) {
 				response.sendRedirect("taxCollector servlet");
 			}
 		}else {

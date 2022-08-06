@@ -158,4 +158,37 @@ public class AccountDAO extends DAO<Account> {
 	return allAccounts;
 	
 	}
+	
+	public Account connect(String personelNumber, String password) {
+		
+		try {
+			String responseJSON = this.getResource()
+					.path("account/connect")
+					.queryParam("personelNumber",personelNumber )
+					.queryParam("password", password)
+					.accept(MediaType.APPLICATION_JSON)
+					.get(String.class);
+			
+			JSONParser parser = new JSONParser();
+			JSONObject obj = (JSONObject)parser.parse(responseJSON);
+			
+			//System.out.println(obj.get("type"));
+			switch(String.valueOf(obj.get("type"))) {
+				case "Administrator":
+					return this.getMapper().readValue(responseJSON,Administrator.class);
+				case "Policeman":
+					return this.getMapper().readValue(responseJSON,Policeman.class);
+				case "Chief":
+					return this.getMapper().readValue(responseJSON,Chief.class);
+				case "TaxCollector":
+					return this.getMapper().readValue(responseJSON,TaxCollector.class);
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		return null;
+		
+	}
 }
