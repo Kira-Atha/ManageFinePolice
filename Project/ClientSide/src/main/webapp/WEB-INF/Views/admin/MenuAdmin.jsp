@@ -3,10 +3,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>Menu administrateur</title>
+	<meta charset="ISO-8859-1">
+	<title>Menu administrateur</title>
+	
 </head>
 <body>
 	<h1 style="text-align : center" >Menu administrateur</h1>
+	<div style="text-align : center;justify-content: center;display: flex;">
+		<button onclick="location.href='/ClientSide/test'">Gerer compte utilisateur</button>
+	</div>
 </body>
 </html>

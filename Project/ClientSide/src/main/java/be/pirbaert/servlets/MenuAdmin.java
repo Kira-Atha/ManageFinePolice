@@ -1,4 +1,4 @@
-package be.pirbaert.servlets.admin;
+package be.pirbaert.servlets;
 
 import java.io.IOException;
 
