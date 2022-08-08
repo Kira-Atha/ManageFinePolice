@@ -9,20 +9,27 @@ public class Chief extends Policeman {
 	public Chief(int id,String personelNumber, String password) {
 		super(id,personelNumber, password);
 		this.setType(this.getClass().getSimpleName());
-		this.subordinates = new ArrayList<Policeman>();
+		this.setSubordinates(new ArrayList<Policeman>());
 		
 	}
 	
 	public Chief(int id,String personelNumber) {
 		super(id,personelNumber);
 		this.setType(this.getClass().getSimpleName());
-		this.subordinates = new ArrayList<Policeman>();
+		setSubordinates(new ArrayList<Policeman>());
 		
 	}
 	
 	public Chief(String personelNumber, String password) {
 		super(personelNumber, password);
-		this.setType(this.getClass().getSimpleName());
-		
+		this.setType(this.getClass().getSimpleName());		
+	}
+
+	public List<Policeman> getSubordinates() {
+		return subordinates;
+	}
+
+	public void setSubordinates(List<Policeman> subordinates) {
+		this.subordinates = subordinates;
 	}
 }

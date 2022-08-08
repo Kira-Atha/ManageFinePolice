@@ -3,7 +3,7 @@ package be.pirbaert.POJOc;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Chief extends Account{
+public class Chief extends Policeman{
 	private static final long serialVersionUID = 4053951674963753923L;
 	private List<Policeman> subordinates;
 	

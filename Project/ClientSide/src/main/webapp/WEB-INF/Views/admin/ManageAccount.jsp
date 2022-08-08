@@ -5,7 +5,7 @@
 <%@page import="java.util.ArrayList"%>
 
 <% ArrayList<Account> accounts = (ArrayList<Account>)request.getAttribute("accounts"); %>
-
+		
 
 <!DOCTYPE html>
 <html>
