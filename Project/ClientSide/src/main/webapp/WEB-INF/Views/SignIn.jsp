@@ -8,7 +8,6 @@
 	</head>
 	<body >
 		<h1 style="text-align : center" >Page de connection</h1>
-		
 		<div style="text-align : center;justify-content: center;display: flex;">
 			<form action="SignIn" id="form_signIn" method="POST">
 				<table border="1">
@@ -32,6 +31,5 @@
 				</table>
 			</form>
 		</div>
-		
 	</body>
 </html>

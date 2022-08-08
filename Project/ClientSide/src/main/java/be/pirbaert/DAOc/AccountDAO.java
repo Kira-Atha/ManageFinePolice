@@ -103,11 +103,11 @@ public class AccountDAO extends DAO<Account> {
 					case "Administrator":
 						allAccounts.add( this.getMapper().readValue(account.toJSONString(),Administrator.class));
 						break;
-					case "Policeman":
-						allAccounts.add( this.getMapper().readValue(account.toJSONString(),Policeman.class));
-						break;
 					case "Chief":
 						allAccounts.add( this.getMapper().readValue(account.toJSONString(),Chief.class));
+						break;
+					case "Policeman":
+						allAccounts.add( this.getMapper().readValue(account.toJSONString(),Policeman.class));
 						break;
 					case "TaxCollector":
 						allAccounts.add( this.getMapper().readValue(account.toJSONString(),TaxCollector.class));
@@ -140,10 +140,10 @@ public class AccountDAO extends DAO<Account> {
 			switch(String.valueOf(obj.get("type"))) {
 				case "Administrator":
 					return this.getMapper().readValue(responseJSON,Administrator.class);
-				case "Policeman":
-					return this.getMapper().readValue(responseJSON,Policeman.class);
 				case "Chief":
 					return this.getMapper().readValue(responseJSON,Chief.class);
+				case "Policeman":
+					return this.getMapper().readValue(responseJSON,Policeman.class);
 				case "TaxCollector":
 					return this.getMapper().readValue(responseJSON,TaxCollector.class);
 			}

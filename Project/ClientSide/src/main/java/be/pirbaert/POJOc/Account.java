@@ -47,43 +47,37 @@ public class Account implements Serializable {
 		this.password = password;
 	}
 
-	/*
-	 * public Account signIn() {
-	 * 
-	 * List <Account> allAccounts = getAllAccounts(); Account toCast = null;
-	 * 
-	 * for(Account account : allAccounts) { if(this.getPassword() ==
-	 * account.getPassword() && this.getPersonnelNumber() ==
-	 * account.getPersonnelNumber()) { if(account instanceof Chief){ toCast =
-	 * (Chief)account; } if(account instanceof Policeman){ toCast =
-	 * (Policeman)account; } if(account instanceof Administrator){ toCast =
-	 * (Administrator)account; } if(account instanceof TaxCollector){ toCast =
-	 * (TaxCollector)account; } } }
-	 * 
-	 * // SOLUTION TEMPORAIRE EN ATTENDANT DE FIX LE GET ALL DE TOUS LES COMPTES
-	 * List <Account> fakeAllAccounts = new ArrayList <Account>();
-	 * fakeAllAccounts.add(new Chief(1,"Chief0","012345")); fakeAllAccounts.add(new
-	 * Chief(2,"Chief1","012345")); fakeAllAccounts.add(new
-	 * Policeman(3,"Policeman0","012345")); fakeAllAccounts.add(new
-	 * Policeman(4,"Policeman1","012345"));
-	 * 
-	 * Account toCast = null;
-	 * //System.out.println("PSW TO CONNECT => "+this.getPassword());
-	 * //System.out.println("COMPTE TO CONNECT => "+this.getPersonnelNumber());
-	 * for(Account account : fakeAllAccounts) {
-	 * //System.out.println("FAKE PSW TO CONNECT "+account.getPassword());
-	 * //System.out.println("FAKE COMPTE TO CONNECT "+account.getPersonnelNumber());
-	 * 
-	 * if(this.getPassword().equals(account.getPassword()) &&
-	 * this.getPersonnelNumber().equals(account.getPersonnelNumber())) {
-	 * //System.out.println("Il y a égalité"); if(account instanceof Chief){
-	 * //System.out.println("C'est un chef qui veut se co"); toCast =
-	 * (Chief)account; } if(account instanceof Policeman){
-	 * //System.out.println("C'est un policeman qui veut se co"); toCast =
-	 * (Policeman)account; } if(account instanceof Administrator){ toCast =
-	 * (Administrator)account; } if(account instanceof TaxCollector){ toCast =
-	 * (TaxCollector)account; } } } //System.out.println(toCast); return toCast; }
-	 */
+/*
+	  public Account signIn() {
+	  
+	  List <Account> allAccounts = getAllAccounts(); 
+	  Account toCast = null;
+	  List <Account> fakeAllAccounts = new ArrayList <Account>();
+	  fakeAllAccounts.add(new Chief(1,"Chief0","012345")); 
+	  fakeAllAccounts.add(new Chief(2,"Chief1","012345"));
+	  fakeAllAccounts.add(new Policeman(3,"Policeman0","012345")); 
+	  fakeAllAccounts.add(new Policeman(4,"Policeman1","012345"));
+	  for(Account account : fakeAllAccounts) {
+		  if(this.getPassword().equals(account.getPassword()) && this.getPersonnelNumber().equals(account.getPersonnelNumber())) {
+			  if(account instanceof Chief ) {
+				  toCast = (Chief)account;
+			  }
+			  if(account instanceof Policeman){ 
+				  toCast =(Policeman)account; 
+			  }
+			  if(account instanceof Administrator){ 
+				  toCast = (Administrator)account; 
+			  }
+			  if(account instanceof TaxCollector){
+				  toCast = (TaxCollector)account;
+			  }
+		  }
+	  } 
+	  System.out.println(toCast); 
+	  return toCast; 
+	 }
+	 
+*/
 	
 	public static Account signIn(String personelNumber, String password) {
 		return accountDAOc.connect(personelNumber, password);

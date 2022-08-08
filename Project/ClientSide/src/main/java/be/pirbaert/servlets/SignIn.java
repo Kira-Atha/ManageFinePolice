@@ -36,9 +36,6 @@ public class SignIn extends HttpServlet {
     }
     */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//Account account = Account.getAccount(1);
-		//System.out.println("One => "+account.getPersonnelNumber());
-		
 		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/Views/SignIn.jsp");
 		dispatcher.forward(request, response);
 	
@@ -70,7 +67,9 @@ public class SignIn extends HttpServlet {
 			getServletContext().getRequestDispatcher("/WEB-INF/Views/errors.jsp").forward(request, response);
 
 		}
+	//Hash
 		Account account = Account.signIn(personelNumber,password);
+
 		if(!Objects.isNull(account)){
 			// Gérer session
 			
@@ -82,15 +81,11 @@ public class SignIn extends HttpServlet {
 			}
 			session.setAttribute("account", account);
 			// Pour récup les values du compte connecté dans la page qui suit
-			request.setAttribute("account", account);
+			//request.setAttribute("account", account);
 			if(account instanceof Chief) {
 				//Renvoyer vers la première page des chefs => Pourra consulter, lui
 				response.sendRedirect("ConsultFines");
-				//RequestDispatcher dispatch = request.getRequestDispatcher("ConsultFines");
-				//dispatch.forward(request, response);
-				//getServletContext().getRequestDispatcher("/ConsultFines").forward(request, response);
-			}
-			if(account instanceof Policeman) {
+			}else if(account instanceof Policeman) {
 				//Renvoyer vers la première page des policiers => ConsultFines. Mais comme policeman, ne verra pas toutes les fines
 				response.sendRedirect("ConsultFines");
 			}

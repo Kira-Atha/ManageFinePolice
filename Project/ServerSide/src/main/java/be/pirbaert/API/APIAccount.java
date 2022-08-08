@@ -85,12 +85,12 @@ public class APIAccount{
 			account = new Administrator(personnelNumber,password);
 			break;
 			
-		case "Policeman" :
-			account = new Policeman(personnelNumber,password);
-			break;
-			
 		case "Chief" :
 			account = new Chief(personnelNumber,password);
+			break;
+			
+		case "Policeman" :
+			account = new Policeman(personnelNumber,password);
 			break;
 			
 		case "TaxCollector" :

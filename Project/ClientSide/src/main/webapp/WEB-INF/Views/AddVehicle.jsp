@@ -1,6 +1,3 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<%String back = (String)request.getAttribute("previous");%>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -8,7 +5,7 @@
 		<title>ADD vehicle</title>
 	</head>
 	<body>
-		<form action="AddVehicle" method="POST">
+		<form action="AddVehicle" class="form" method="POST">
 			<table border="1">
 				<tr>
 					<td> Personel Number </td>
@@ -29,9 +26,5 @@
 				</tr>
 			</table>
 		</form>
-		<form action="<%=back%>" method="GET">
-			<input type="submit" value=back>
-		</form>
 	</body>
-	
 </html>

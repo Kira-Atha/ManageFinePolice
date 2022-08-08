@@ -38,16 +38,16 @@ public class ConsultFines extends HttpServlet {
 			out.println("No session");
 		}else {
 			account = (Account) session.getAttribute("account");
-			if(session.getAttribute("account") instanceof Policeman) {
-				System.out.println("C'est un flic");
+			if(session.getAttribute("account") instanceof Chief) {
+				account = (Chief) session.getAttribute("account");
+				if(account != null) {
+					System.out.println("C'est un chief");
+					System.out.println("Chief "+account.getPersonnelNumber()+" "+account.getClass().getSimpleName());
+				}
+			}else if(session.getAttribute("account") instanceof Policeman) {
 				account = (Policeman) session.getAttribute("account");
 				if(account != null) {
 					System.out.println("Police "+account.getPersonnelNumber()+" "+account.getClass().getSimpleName());
-				}
-			}else if(session.getAttribute("account") instanceof Chief) {
-				account = (Chief) session.getAttribute("account");
-				if(account != null) {
-					System.out.println("Chief "+account.getPersonnelNumber()+" "+account.getClass().getSimpleName());
 				}
 			}
 		}
@@ -80,10 +80,10 @@ public class ConsultFines extends HttpServlet {
 			out.println("No session");
 		}else {
 			account = (Account) session.getAttribute("account");
-			if(session.getAttribute("account") instanceof Policeman) {
-				account = (Policeman) session.getAttribute("account");
-			}else if(session.getAttribute("account") instanceof Chief) {
+			if(session.getAttribute("account") instanceof Chief) {
 				account = (Chief) session.getAttribute("account");
+			}else if(session.getAttribute("account") instanceof Policeman) {
+				account = (Policeman) session.getAttribute("account");
 			}
 		}
 		//out.print(account);
@@ -101,9 +101,17 @@ public class ConsultFines extends HttpServlet {
 		
 		if(!Objects.isNull(choice)) {
 			switch(choice) {
+		// Malgré le formulaire dans AddCharged.html qui mène à la servlet AddCharged en post, retour à cette servlet en post. 
+		// Traitement par session du coup
 			case "charged":
+				String firstname = request.getParameter("firstname");
+				String lastname = request.getParameter("lastname");
+				String address = request.getParameter("address");
+				session.setAttribute("firstname",firstname);
+				session.setAttribute("lastname",lastname);
+				session.setAttribute("address",address);
+				
 				response.sendRedirect("AddCharged");
-				System.out.println("add charged");
 				break;
 			case "vehicle":
 				response.sendRedirect("AddVehicle");
@@ -115,7 +123,5 @@ public class ConsultFines extends HttpServlet {
 				break;
 			}
 		}
-		
-		
 	}
 }

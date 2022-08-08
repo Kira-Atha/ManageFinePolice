@@ -28,6 +28,7 @@ public class AddCharged extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		/*
 		HttpSession session = request.getSession(false);
 		PrintWriter out = response.getWriter();
 		Account account = null;
@@ -49,9 +50,7 @@ public class AddCharged extends HttpServlet {
 		}else {
 			response.sendRedirect("SignIn");
 		}
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		*/
 		HttpSession session = request.getSession(false);
 		PrintWriter out = response.getWriter();
 		Account account = null;
@@ -66,9 +65,9 @@ public class AddCharged extends HttpServlet {
 			}
 		}
 		
-		String firstname = request.getParameter("firstname");
-		String lastname = request.getParameter("lastname");
-		String address = request.getParameter("address");
+		String firstname = (String) session.getAttribute("firstname");
+		String lastname = (String) session.getAttribute("lastname");
+		String address = (String) session.getAttribute("address");
 		
 		List <String> errors = new ArrayList<String>();
 		if(firstname == null) {
@@ -102,8 +101,13 @@ public class AddCharged extends HttpServlet {
 			request.setAttribute("previous", request.getRequestURI());
 			request.setAttribute("errors", errors);
 			getServletContext().getRequestDispatcher("/WEB-INF/Views/errors.jsp").forward(request, response);
+		}else {
+			
 		}
-		
+
 	}
 
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	}
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Chief extends Policeman {
+	private static final long serialVersionUID = -4394891119807101120L;
 	private List<Policeman> subordinates;
 	
 	public Chief(int id,String personelNumber, String password) {

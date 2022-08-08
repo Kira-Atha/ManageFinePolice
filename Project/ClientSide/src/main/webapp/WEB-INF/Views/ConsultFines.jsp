@@ -22,7 +22,8 @@
 	</head>
 	<body>
 	<!--  CONSULT + ACCEPT -->
-		<%if(request.getAttribute("account") instanceof Chief){
+	
+		<%if(session.getAttribute("account") instanceof Chief){
 			if(!Objects.isNull(request.getAttribute("allFines"))){
 				ArrayList<Fine> allFines = (ArrayList<Fine>)request.getAttribute("allFines");%>
 				<span id="span_consult_fines">
@@ -94,17 +95,17 @@
 							<legend>Charged</legend>
 							<select name="charged">
 								<%if(!Objects.isNull(request.getAttribute("allChargeds"))){
-									ArrayList<Charged> allChargeds = (ArrayList<Charged>)request.getAttribute("allChargeds");
-									
+									ArrayList<Charged> allChargeds = (ArrayList<Charged>)request.getAttribute("allChargeds");%>
+									<option value="0">- - Unknown - -</option><%
 									for(Charged charged : allChargeds){%>
 										<option value=<%=charged%>><%=charged.getFirstname()+ " "+charged.getLastname()%> </option>
 									<%}%>
+										
 							</select>
-							<button type="submit" name="add" value="charged">Add charged</button> 
+							<p>Not in the list? Add a charged</p>
+							<%@ include file="AddCharged.html" %>
 								<%}else{%>
 									<p>No chargeds were recorded</p>
-						<!-- PERMETTRE L'AJOUT -->
-									<button type="submit" name="add" value="charged">Add charged</button> 
 								<%}%>
 						</fieldset></td>
 					</tr>
