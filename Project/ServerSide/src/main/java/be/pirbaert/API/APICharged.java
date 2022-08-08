@@ -45,22 +45,19 @@ public class APICharged {
 				.build();
 	}
 	
-	/*
 	@POST
-	@Path("create")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response createCharged(
 			@FormParam("firstname") String firstname,
 			@FormParam("lastname") String lastname,
-			@FormParam("address") String address,
-			@FormParam("fine")Fine fine)
+			@FormParam("address") String address)
 	{
 		if(Objects.isNull(firstname) || Objects.isNull(lastname)||Objects.isNull(address) || firstname =="" || lastname =="" || address=="") {
 			return Response.status(Status.BAD_REQUEST).build();
 		}
 		Charged charged = new Charged(firstname,lastname,address);
 	
-		if(fine.createCharged(charged)) {
+		if(charged.create()) {
 			return Response
 					.status(Status.CREATED)
 					.header("Location","charged"+charged.getId())
@@ -69,5 +66,5 @@ public class APICharged {
 			return Response.status(Status.CONFLICT).build();
 		}
 	}
-	*/
+	
 }

@@ -139,4 +139,5 @@ public class Fine implements Serializable {
 	public int hashCode() {
 		return this.getId();
 	}
+	
 }

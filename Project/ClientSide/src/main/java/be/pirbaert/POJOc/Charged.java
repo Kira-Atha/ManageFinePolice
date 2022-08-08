@@ -64,17 +64,15 @@ public class Charged implements Serializable {
 		if(!this.fines.contains(fine)) {
 			this.fines.add(fine);
 			
-			//DAO CREATE
-			/*
-			if(fineDAOs.create(fine)) {
-				return true;
-			}*/
 		}
 		return false;
 	}
 	
 	public static Charged getCharged(int id) {
 		return chargedDAOc.find(id);
+	}
+	public boolean create() {
+		return chargedDAOc.create(this);
 	}
 	
 	public static List<Charged> getAllChargeds(){

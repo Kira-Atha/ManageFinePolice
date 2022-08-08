@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import be.pirbaert.DAOs.DAO;
 import be.pirbaert.DAOs.FactoryDAO;
@@ -87,5 +88,11 @@ public class Charged implements Serializable{
 	
 	public static List<Charged> getAllChargeds(){
 		return chargedDAOs.findAll();
+	}
+	public boolean create() {
+		if(!Objects.isNull(this)) {
+			return(chargedDAOs.create(this));
+		}
+		return false;
 	}
 }

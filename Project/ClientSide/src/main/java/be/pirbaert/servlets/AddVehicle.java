@@ -2,6 +2,8 @@ package be.pirbaert.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.servlet.RequestDispatcher;
@@ -15,6 +17,9 @@ import javax.servlet.http.HttpSession;
 import be.pirbaert.POJOc.Account;
 import be.pirbaert.POJOc.Chief;
 import be.pirbaert.POJOc.Policeman;
+import be.pirbaert.POJOc.Registration;
+import be.pirbaert.POJOc.TypeVehicle;
+import be.pirbaert.POJOc.Vehicle;
 
 public class AddVehicle extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -61,8 +66,27 @@ public class AddVehicle extends HttpServlet {
 				account = (Chief) session.getAttribute("account");
 			}
 		}
+
+		List<String> errors = new ArrayList<String>();
 		
-		// traitement vehicle reçu 
+	// TODO => Gérer le fait qu'il ne puisse y avoir qu'un seul véhicule possédant une plaque. La supprimer de la liste d'affichage dans consultFines?
 		
+		if(!Objects.isNull(request.getParameter("type")) || !Objects.isNull(request.getParameter("registration"))){
+			TypeVehicle type = TypeVehicle.getType(Integer.parseInt(request.getParameter("type")));
+			Registration registration = null;
+			if(Integer.parseInt(request.getParameter("registration")) != 0) {
+				registration = Registration.getRegistration(Integer.parseInt(request.getParameter("registration")));
+			}
+			
+			Vehicle vehicle = new Vehicle(0,registration,type);
+			if(vehicle.create()) {
+				response.sendRedirect("ConsultFines");
+			}else {
+				errors.add("Vehicle not created");
+				request.setAttribute("previous", request.getHeader("referer"));
+				request.setAttribute("errors", errors);
+				getServletContext().getRequestDispatcher("/WEB-INF/Views/errors.jsp").forward(request, response);
+			}
+		}
 	}
 }

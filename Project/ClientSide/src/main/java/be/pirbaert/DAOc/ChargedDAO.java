@@ -5,11 +5,14 @@ import java.sql.Connection;
 import java.util.List;
 
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 import be.pirbaert.POJOc.Administrator;
 import be.pirbaert.POJOc.Charged;
@@ -22,8 +25,18 @@ public class ChargedDAO extends DAO<Charged>{
 	public ChargedDAO() {}
 
 	@Override
-	public boolean create(Charged obj) {
-		// TODO Auto-generated method stub
+	public boolean create(Charged charged) {
+		MultivaluedMap<String,String> params = new MultivaluedMapImpl();
+		params.add("firstname", charged.getFirstname());
+		params.add("lastname", charged.getLastname());
+		params.add("address", charged.getAddress());
+		ClientResponse res = this.getResource()
+				.path("charged")
+				.post(ClientResponse.class,params);
+		System.out.println(res.getStatus());
+		if(res.getStatus() == 201) {
+			return true;
+		}
 		return false;
 	}
 

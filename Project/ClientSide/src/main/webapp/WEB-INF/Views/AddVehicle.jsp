@@ -1,3 +1,10 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="be.pirbaert.POJOc.TypeVehicle"%>
+<%@page import="be.pirbaert.POJOc.Registration"%>
+<%@page import="java.util.Objects"%>
+
 <!DOCTYPE html>
 <html>
 	<head>
@@ -8,20 +15,46 @@
 		<form action="AddVehicle" class="form" method="POST">
 			<table border="1">
 				<tr>
-					<td> Personel Number </td>
+					<td>Type vehicle</td>
 					<td>
-						<input type="text" name="personelNumber" id="personelNumber" value="" size="20" />
+						<select name="type">
+							<%if(!Objects.isNull(request.getAttribute("allTypes"))){
+								ArrayList<TypeVehicle> allTypes = (ArrayList<TypeVehicle>)request.getAttribute("allTypes");%>
+								<%
+								for(TypeVehicle type : allTypes){%>
+									<option value=<%=type.getId()%>><%=type.getName()%> </option>
+								<%}%>	
+								</select>
+								<p> Not in the list ? Ask admin for add type of vehicle.</p>
+							<%}else{ %>
+								<p> No type were recorded. Ask admin for add type of vehicle.</p>
+							<%} %>
+						
 					 </td>
 				</tr>
 				<tr>
-					<td> Password </td>
+					<td>Registration </td>
 					<td>
-						<input type="text" name="password" id="password" value="" size="20" />
+						<select name="registration">
+							<%if(!Objects.isNull(request.getAttribute("allRegistrations"))){
+								ArrayList<Registration> allRegistrations = (ArrayList<Registration>)request.getAttribute("allRegistrations");
+								%><option value="0">- - UNKNOWN - -</option>
+								<%for(Registration registration : allRegistrations){%>
+									<option value=<%=registration.getId()%>><%=registration.getSerialNumber()%></option>
+								<%}%>
+						</select>
+								<p> Not in the list ? Add a registration.</p>
+								<%@ include file="AddRegistration.jsp" %>
+							<%}else{%>
+								<p> Not in the list ? Add a registration.</p>
+								<%@ include file="AddRegistration.jsp" %>
+							<%}%>
+						
 					 </td>
 				</tr>
 				<tr>
 					 <td colspan="2" align="center">
-					 	<input type="submit" name="submit" id="submit" value="SignIn"/> 
+					 	<button type="submit" name="add" value="vehicle">Add Vehicle</button> 
 					 </td>
 				</tr>
 			</table>

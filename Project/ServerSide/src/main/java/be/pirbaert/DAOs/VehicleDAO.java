@@ -8,12 +8,14 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import be.pirbaert.POJOs.Account;
 import be.pirbaert.POJOs.Vehicle;
 import be.pirbaert.POJOs.Policeman;
 import be.pirbaert.POJOs.Registration;
 import be.pirbaert.POJOs.Violation;
+import javassist.bytecode.analysis.Type;
 import be.pirbaert.POJOs.TypeVehicle;
 
 public class VehicleDAO extends DAO<Vehicle> {
@@ -30,12 +32,16 @@ public class VehicleDAO extends DAO<Vehicle> {
 		try {
 			procedure = this.connect.prepareCall("{call manage_vehicle.create_vehicle(?,?,?)}");
 			procedure.setInt(1, vehicle.getType().getId());
-			procedure.setInt(2, vehicle.getRegistration().getId());
+			if(!Objects.isNull(vehicle.getRegistration())) {
+				procedure.setInt(2, vehicle.getRegistration().getId());
+			}else {
+				procedure.setNull(2, Types.INTEGER);
+			}
 			procedure.registerOutParameter(3, Types.NUMERIC);
 			procedure.executeQuery();
 			new_id = procedure.getInt(3); 
 			if(new_id!=0) {
-				vehicle.setId(procedure.getInt(new_id));
+				vehicle.setId(procedure.getInt(3));
 				return true;
 			}
 		}catch(SQLException e) {

@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import be.pirbaert.POJOc.Account;
+import be.pirbaert.POJOc.Charged;
 import be.pirbaert.POJOc.Chief;
 import be.pirbaert.POJOc.Policeman;
 
@@ -98,11 +99,19 @@ public class AddCharged extends HttpServlet {
 			}
 		}
 		if(errors.size()>0) {
-			request.setAttribute("previous", request.getRequestURI());
+			request.setAttribute("previous", request.getHeader("referer"));
 			request.setAttribute("errors", errors);
 			getServletContext().getRequestDispatcher("/WEB-INF/Views/errors.jsp").forward(request, response);
 		}else {
-			
+			Charged charged = new Charged(0,firstname,lastname,address);
+			if(charged.create()) {
+				response.sendRedirect("ConsultFines");
+			}else {
+				errors.add("Charged not created");
+				request.setAttribute("previous", request.getHeader("referer"));
+				request.setAttribute("errors", errors);
+				getServletContext().getRequestDispatcher("/WEB-INF/Views/errors.jsp").forward(request, response);
+			}
 		}
 
 	}

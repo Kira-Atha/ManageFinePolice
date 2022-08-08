@@ -15,7 +15,6 @@ public class ChargedDAO extends DAO<Charged>{
 
 	public ChargedDAO(Connection connection) {
 		super(connection);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

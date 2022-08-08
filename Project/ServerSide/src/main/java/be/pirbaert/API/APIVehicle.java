@@ -49,21 +49,23 @@ public class APIVehicle {
 				.build();
 	}
 	
-	/*
 	@POST
-	@Path("create")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response createVehicle(
-			@FormParam("type") TypeVehicle type,
-			@FormParam("registration") Registration registration,
-			@FormParam("fine") Fine fine)
+			@FormParam("id_type") int id_type,
+			@FormParam("id_registration") int id_registration)
 	{
-		if(Objects.isNull(type) || Objects.isNull(registration)||Objects.isNull(fine)) {
+		if(id_type ==0) {
 			return Response.status(Status.BAD_REQUEST).build();
 		}
-		Vehicle vehicle = new Vehicle(registration,type);
+		Registration reg = null;
+		if(id_registration!=0) {
+			reg = Registration.getRegistration(id_registration);
+		}
+		TypeVehicle type = TypeVehicle.getType(id_type);
+		Vehicle vehicle = new Vehicle(reg,type);
 	
-		if(fine.createVehicle(vehicle)) {
+		if(vehicle.create()) {
 			return Response
 					.status(Status.CREATED)
 					.header("Location","vehicle"+vehicle.getId())
@@ -72,5 +74,4 @@ public class APIVehicle {
 			return Response.status(Status.CONFLICT).build();
 		}
 	}
-	*/
 }

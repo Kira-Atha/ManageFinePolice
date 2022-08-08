@@ -58,7 +58,7 @@ public class Fine implements Serializable {
 		}
 		this.validated = false;
 		this.totalPrice = this.getTotalPrice();
-		this.createVehicle(new Vehicle(0,registration,type));
+		this.setVehicle(new Vehicle(0,registration,type));
 	}
 	
 	public Fine(List<Violation> violations,Policeman policeman,Vehicle vehicle,String commentary,Date date,Charged charged) {
@@ -157,23 +157,6 @@ public class Fine implements Serializable {
 		return fineDAOs.findAll();
 	}
 	
-	public boolean createCharged(Charged charged) {
-		if(!Objects.isNull(charged)) {
-			this.charged = charged;
-			return(chargedDAOs.create(charged));
-		}
-		return false;
-	}
-	
-	public boolean createVehicle(Vehicle vehicle) {
-		if(!Objects.isNull(vehicle)) {
-			this.vehicle = vehicle;
-			// ??? vehicle.getFines().add(this);
-			return(vehicleDAOs.create(vehicle));
-		}
-		return false;
-	}
-	// OVERRIDE POUR CONTAINS ( charged.addFine(fine) )
 	@Override
 	public boolean equals(Object o) {
 		if(this == o) {

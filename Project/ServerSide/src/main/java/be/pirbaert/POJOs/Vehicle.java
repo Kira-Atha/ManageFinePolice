@@ -3,6 +3,7 @@ package be.pirbaert.POJOs;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import be.pirbaert.DAOs.DAO;
 import be.pirbaert.DAOs.FactoryDAO;
@@ -67,5 +68,8 @@ public class Vehicle implements Serializable{
 	
 	public static List<Vehicle>getAllVehicles() {
 		return vehicleDAOs.findAll();
+	}
+	public boolean create() {
+		return vehicleDAOs.create(this);
 	}
 }

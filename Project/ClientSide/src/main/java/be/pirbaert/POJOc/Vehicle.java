@@ -3,6 +3,8 @@ package be.pirbaert.POJOc;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
 import be.pirbaert.DAOc.VehicleDAO;
 
 
@@ -60,5 +62,9 @@ public class Vehicle implements Serializable{
 	
 	public static List<Vehicle>getAllVehicles() {
 		return vehicleDAOc.findAll();
+	}
+	
+	public boolean create() {
+		return vehicleDAOc.create(this);
 	}
 }

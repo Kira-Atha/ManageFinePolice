@@ -19,6 +19,8 @@ import be.pirbaert.POJOc.Charged;
 import be.pirbaert.POJOc.Chief;
 import be.pirbaert.POJOc.Fine;
 import be.pirbaert.POJOc.Policeman;
+import be.pirbaert.POJOc.Registration;
+import be.pirbaert.POJOc.TypeVehicle;
 import be.pirbaert.POJOc.Vehicle;
 import be.pirbaert.POJOc.Violation;
 
@@ -56,12 +58,15 @@ public class ConsultFines extends HttpServlet {
 		List<Violation> allViolations = Violation.getAllViolations();
 		List<Charged> allChargeds = Charged.getAllChargeds();
 		List<Vehicle> allVehicles = Vehicle.getAllVehicles();
+		List<Registration> allRegistrations = Registration.getAllRegistrations();
+		List<TypeVehicle> allTypes = TypeVehicle.getAllTypes();
 		
 		request.setAttribute("allFines", allFines);
 		request.setAttribute("allViolations", allViolations);
 		request.setAttribute("allChargeds", allChargeds);
 		request.setAttribute("allVehicles", allVehicles);
-			
+		request.setAttribute("allRegistrations", allRegistrations);
+		request.setAttribute("allTypes", allTypes);	
 		
 		if(!Objects.isNull(account)) {
 			request.setAttribute("previous", request.getHeader("referer"));
@@ -101,21 +106,16 @@ public class ConsultFines extends HttpServlet {
 		
 		if(!Objects.isNull(choice)) {
 			switch(choice) {
-		// Malgré le formulaire dans AddCharged.html qui mène à la servlet AddCharged en post, retour à cette servlet en post. 
-		// Traitement par session du coup
+			
 			case "charged":
+				// OK
 				String firstname = request.getParameter("firstname");
 				String lastname = request.getParameter("lastname");
 				String address = request.getParameter("address");
 				session.setAttribute("firstname",firstname);
 				session.setAttribute("lastname",lastname);
 				session.setAttribute("address",address);
-				
 				response.sendRedirect("AddCharged");
-				break;
-			case "vehicle":
-				response.sendRedirect("AddVehicle");
-				System.out.println("add vehicle");
 				break;
 			case "fine":
 				//TODO 

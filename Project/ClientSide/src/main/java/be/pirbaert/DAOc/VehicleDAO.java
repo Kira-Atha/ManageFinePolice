@@ -3,12 +3,16 @@ package be.pirbaert.DAOc;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.List;
+import java.util.Objects;
 
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 import be.pirbaert.POJOc.TypeVehicle;
 import be.pirbaert.POJOc.Vehicle;
@@ -16,12 +20,24 @@ import be.pirbaert.POJOc.Vehicle;
 public class VehicleDAO extends DAO<Vehicle> {
 
 	public VehicleDAO() {
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public boolean create(Vehicle obj) {
-		// TODO Auto-generated method stub
+	public boolean create(Vehicle vehicle) {
+		MultivaluedMap<String,String> params = new MultivaluedMapImpl();
+		params.add("id_type",String.valueOf(vehicle.getType().getId()));
+		String id_registration = "0";
+		if(!Objects.isNull(vehicle.getRegistration())) {
+			id_registration = String.valueOf(vehicle.getRegistration().getId());
+		}
+		params.add("id_registration",id_registration);
+		ClientResponse res = this.getResource()
+				.path("vehicle")
+				.post(ClientResponse.class,params);
+		System.out.println(res.getStatus());
+		if(res.getStatus() == 201) {
+			return true;
+		}
 		return false;
 	}
 

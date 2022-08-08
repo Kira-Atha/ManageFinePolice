@@ -21,7 +21,7 @@
 		<title>Consult fines</title>
 	</head>
 	<body>
-	<!--  CONSULT + ACCEPT -->
+	<!--  CONSULT + ACCEPT CHIEF -->
 	
 		<%if(session.getAttribute("account") instanceof Chief){
 			if(!Objects.isNull(request.getAttribute("allFines"))){
@@ -102,10 +102,11 @@
 									<%}%>
 										
 							</select>
-							<p>Not in the list? Add a charged</p>
-							<%@ include file="AddCharged.html" %>
+									<p>Not in the list? Add a charged</p>
+									<%@ include file="AddCharged.jsp" %>
 								<%}else{%>
 									<p>No chargeds were recorded</p>
+									<%@ include file="AddCharged.jsp" %>
 								<%}%>
 						</fieldset></td>
 					</tr>
@@ -118,14 +119,18 @@
 								ArrayList<Vehicle> allVehicles = (ArrayList<Vehicle>)request.getAttribute("allVehicles");
 								for(Vehicle vehicle : allVehicles){%>
 								<!--  Oui mais dans le cas où il n'y a pas de numéro de plaque ?  -->
+									<%if(!Objects.isNull(vehicle.getRegistration())){ %>
 										<option value=<%=vehicle%>><%=vehicle.getType().getName()+"=>"+vehicle.getRegistration().getSerialNumber()%></option>
+									<%}else{%>
+										<option value=<%=vehicle%>><%=vehicle.getType().getName()+"=> NO REGISTRATION."%></option>
 									<%}%>
+								<%}%>
 							</select>
-							<button type="submit" name="add" value="vehicle">Add Vehicle</button> 
+								<p>Not in the list ? Add vehicle</p>
+								<%@ include file="AddVehicle.jsp" %>
 							<%}else{%>
 									<p>No vehicles were recorded</p>
-						<!-- PERMETTRE L'AJOUT -->
-									<input type="submit" value="Add vehicle"/> 
+									<%@ include file="AddVehicle.jsp" %>
 								<%}%>
 						</fieldset></td>
 					</tr>
@@ -139,9 +144,11 @@
 									String description = violation.getDescription();
 								%>
 									<input type="checkbox" name="violation" value=<%=violation%>/> <abbr title="<%=description%>"><%=violation.getName()%></abbr><br>
-								<%}
-								}else{%>
-									<p>No violations were recorded, please ask admin to add one</p>
+								
+								<%}%>
+								<p> Not in the list? Ask admin to add one</p>
+								<%}else{%>
+									<p>No violations were recorded, please ask admin for add one</p>
 								<%}%>
 						</fieldset></td>
 					</tr>
