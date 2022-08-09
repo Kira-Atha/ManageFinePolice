@@ -84,14 +84,14 @@ public class AccountDAO extends DAO<Account> {
 
 	@Override
 	public boolean update(Account obj) {
-		
-		if (obj.getPassword() == null) return updatePersonelNumber(obj);		
+		if (obj.getPassword().length() == 0) return updatePersonelNumber(obj);		
 		return updateBoth(obj);
 		
 		
 	}
 	
 	private boolean updatePersonelNumber(Account obj) {
+		System.out.println("pn");
 		CallableStatement proc = null;
 		
 		
@@ -117,6 +117,7 @@ public class AccountDAO extends DAO<Account> {
 	}
 		
 	private boolean updateBoth(Account obj) {
+		System.out.println("both");
 		CallableStatement proc = null;
 		
 		

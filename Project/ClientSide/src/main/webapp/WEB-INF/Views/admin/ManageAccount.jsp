@@ -14,22 +14,31 @@
 	<title>Gestion compte utilisateur</title>
 </head>
 <body>
-	<button onclick="location.href='/ClientSide/CreateAccount'">Créer un compte</button>
+	<button onclick="location.href='/ClientSide/MenuAdmin'">back</button>
 	<h1 style="text-align : center">Liste des comptes</h1>
+	<button onclick="location.href='/ClientSide/CreateAccount'">Créer un compte</button>
+	
 	<div justify-content: center;display: flex;">
 		
 			
 			<%for(Account account : accounts){
 			
 				%>
-				<form action="ManageAccount" method="POST">
-					<fieldset>
+				<fieldset>
+				
+					<form action="ManageAccount" method="POST">
 						<legend><%= account.getId() %></legend>
 						<p>PN :<%= account.getPersonnelNumber() %> </p>
 						<p>TYPE :<%= account.getType() %> </p>
 						<button type="submit" name="delete" value="<%= account.getId() %>">DELETE</button>
-					</fieldset>
-				</form>
+						
+						
+					</form>
+					<% 
+							String updateUrl = String.format("location.href='/ClientSide/UpdateAccount?id=%s'",account.getId());
+							out.println("<button onclick="+updateUrl+">UPDATE</button>"); %>
+				</fieldset>
+					
 				<%
 			} %>
 	</div>

@@ -63,7 +63,19 @@ public class AccountDAO extends DAO<Account> {
 
 	@Override
 	public boolean update(Account obj) {
-		// TODO Auto-generated method stub
+		
+		MultivaluedMap<String,String> paramsPost = new MultivaluedMapImpl();
+		
+		paramsPost.add("personnelNumber",obj.getPersonnelNumber());
+		paramsPost.add("password",obj.getPassword());
+		paramsPost.add("id",String.valueOf(obj.getId()));
+		
+		ClientResponse responseJSON = this.getResource()
+				.path("account")
+				.put(ClientResponse.class,paramsPost);
+		
+		if(responseJSON.getStatus() == 204) return true;
+		
 		return false;
 	}
 

@@ -117,4 +117,8 @@ public class Account implements Serializable {
 		
 	}
 
+	public boolean update() {
+		return accountDAOc.update(this);
+	}
+
 }
