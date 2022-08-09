@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-
 import be.pirbaert.DAOc.FineDAO;
 
 
@@ -23,14 +22,19 @@ public class Fine implements Serializable {
 	
 	public Fine() {}
 	
-	public Fine(int id,Violation violation,Policeman policeman,Vehicle vehicle,String commentary,Date date) {
+	public Fine(int id,List<Violation> violations,Policeman policeman,Vehicle vehicle,String commentary,Date date,Charged charged) {
 		this.violations= new ArrayList<Violation>();
 		this.id=id;
-		this.violations.add(violation);
+		for(Violation violation : violations) {
+			this.violations.add(violation);
+		}
 		this.policeman = policeman;
+		this.charged = charged;
 		this.vehicle = vehicle;
 		this.commentary = commentary;
 		this.date = date;
+		this.validated = false;
+		this.totalPrice = this.getTotalPrice();
 	}
 	
 	public String getCommentary() {
@@ -98,7 +102,6 @@ public class Fine implements Serializable {
 	}
 
 	public float getTotalPrice(){
-
 		if(!Objects.isNull(violations)) {
 			for(Violation violation : violations) {
 				if(!Objects.isNull(violation)) {
@@ -115,6 +118,10 @@ public class Fine implements Serializable {
 	
 	public static List<Fine> getAllFines(){
 		return fineDAOc.findAll();
+	}
+	
+	public boolean create() {
+		return fineDAOc.create(this);
 	}
 	
 	@Override
@@ -138,6 +145,5 @@ public class Fine implements Serializable {
 	@Override
 	public int hashCode() {
 		return this.getId();
-	}
-	
+	}	
 }

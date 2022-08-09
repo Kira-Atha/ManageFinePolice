@@ -96,9 +96,9 @@
 							<select name="charged">
 								<%if(!Objects.isNull(request.getAttribute("allChargeds"))){
 									ArrayList<Charged> allChargeds = (ArrayList<Charged>)request.getAttribute("allChargeds");%>
-									<option value="0">- - Unknown - -</option><%
+									<option value="0">- - UNKNOWN - -</option><%
 									for(Charged charged : allChargeds){%>
-										<option value=<%=charged%>><%=charged.getFirstname()+ " "+charged.getLastname()%> </option>
+										<option value=<%=charged.getId()%>><%=charged.getFirstname()+ " "+charged.getLastname()%> </option>
 									<%}%>
 										
 							</select>
@@ -120,9 +120,9 @@
 								for(Vehicle vehicle : allVehicles){%>
 								<!--  Oui mais dans le cas où il n'y a pas de numéro de plaque ?  -->
 									<%if(!Objects.isNull(vehicle.getRegistration())){ %>
-										<option value=<%=vehicle%>><%=vehicle.getType().getName()+"=>"+vehicle.getRegistration().getSerialNumber()%></option>
+										<option value=<%=vehicle.getId()%>><%=vehicle.getType().getName()+"=>"+vehicle.getRegistration().getSerialNumber()%></option>
 									<%}else{%>
-										<option value=<%=vehicle%>><%=vehicle.getType().getName()+"=> NO REGISTRATION."%></option>
+										<option value=<%=vehicle.getId()%>><%=vehicle.getType().getName()+"=> NO REGISTRATION."%></option>
 									<%}%>
 								<%}%>
 							</select>
@@ -137,13 +137,14 @@
 					
 					<tr>
 						<td><fieldset>
+						<!--  JAVA SCRIPT POUR CALCULER LE TOTAL ? -->
 							<legend>Violations</legend>
 							<%if(!Objects.isNull(request.getAttribute("allViolations"))){
 								ArrayList<Violation> allViolations = (ArrayList<Violation>)request.getAttribute("allViolations");
 								for(Violation violation : allViolations){
 									String description = violation.getDescription();
 								%>
-									<input type="checkbox" name="violation" value=<%=violation%>/> <abbr title="<%=description%>"><%=violation.getName()%></abbr><br>
+									<input type="checkbox" name="violation" value=<%=violation.getId()%>/> <abbr title="<%=description%>"><%=violation.getName()%></abbr><br>
 								
 								<%}%>
 								<p> Not in the list? Ask admin to add one</p>

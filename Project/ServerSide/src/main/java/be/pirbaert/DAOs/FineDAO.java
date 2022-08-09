@@ -7,10 +7,12 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import be.pirbaert.POJOs.Account;
 import be.pirbaert.POJOs.Charged;
 import be.pirbaert.POJOs.Violation;
+import oracle.jdbc.OracleDriver;
 import oracle.sql.ARRAY;
 import oracle.sql.ArrayDescriptor;
 import be.pirbaert.POJOs.Vehicle;
@@ -31,20 +33,28 @@ public class FineDAO extends DAO<Fine> {
 	public boolean create(Fine fine) {
 		CallableStatement procedure = null;
 		int new_id = 0;
+		
 		try {
 			procedure = this.connect.prepareCall("{call manage_fine.create_fine(?,?,?,?,?,?,?)}");
 			procedure.setDate(1,new java.sql.Date(fine.getDate().getTime()));
 			procedure.setString(2, fine.getCommentary());
-			procedure.setBoolean(3, fine.isValidated());
+			procedure.setInt(3, 0);
 			procedure.setInt(4, fine.getVehicle().getId());
-			procedure.setInt(5, fine.getCharged().getId());
+
+			if(!Objects.isNull(fine.getCharged())) {
+				procedure.setInt(5, fine.getCharged().getId());
+			}else {
+				procedure.setNull(5, Types.INTEGER);
+			}
 			procedure.setInt(6, fine.getPoliceman().getId());
 			procedure.registerOutParameter(7, Types.NUMERIC);
 			procedure.executeQuery();
+			System.out.println("in dao server 1st query");
 			new_id = procedure.getInt(7);
 			if(new_id!=0) {
 				fine.setId(new_id);
 				try {
+					System.out.println("Before pass array");
 					procedure = this.connect.prepareCall("{call manage_fine.create_fine_violation(?,?)}");
 					int[] idsViolations = new int[fine.getViolations().size()];
 					
@@ -52,10 +62,14 @@ public class FineDAO extends DAO<Fine> {
 						idsViolations[i] = fine.getViolations().get(i).getId();
 					}
 				// PAS SÛR QUE CA MARCHE ?
-					ArrayDescriptor descriptor = ArrayDescriptor.createDescriptor("tab", this.connect);
-			        ARRAY array = new ARRAY(descriptor , this.connect, idsViolations);
+					
+					
+					ArrayDescriptor descriptor = ArrayDescriptor.createDescriptor("tab_num", procedure.getConnection());
+			        ARRAY array = new ARRAY(descriptor ,this.connect, idsViolations);
 					procedure.setArray(1,array);
+					procedure.setInt(2, fine.getId());
 					procedure.executeQuery();
+					System.out.println("after pass array");
 					return true;
 				}catch(SQLException e) {
 					e.printStackTrace();

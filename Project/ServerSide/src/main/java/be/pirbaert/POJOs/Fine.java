@@ -43,24 +43,7 @@ public class Fine implements Serializable {
 		this.validated = false;
 		this.totalPrice = this.getTotalPrice();
 	}
-	// Si le véhicule n'est pas dans la liste des choix, alors le fine va le créer
-	public Fine(int id,List<Violation> violations,Policeman policeman,String commentary,Date date,Charged charged,Registration registration,TypeVehicle type) {
-		this.violations= new ArrayList<Violation>();
-		this.id=id;
-		for(Violation violation : violations) {
-			this.violations.add(violation);
-		}
-		this.policeman = policeman;
-		this.commentary = commentary;
-		this.date = date;
-		if(!Objects.isNull(charged)) {
-			this.charged = charged;
-		}
-		this.validated = false;
-		this.totalPrice = this.getTotalPrice();
-		this.setVehicle(new Vehicle(0,registration,type));
-	}
-	
+
 	public Fine(List<Violation> violations,Policeman policeman,Vehicle vehicle,String commentary,Date date,Charged charged) {
 		this.violations= new ArrayList<Violation>();
 		for(Violation violation : violations) {

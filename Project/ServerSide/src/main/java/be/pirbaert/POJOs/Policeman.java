@@ -35,11 +35,15 @@ public class Policeman extends Account{
 	public void setFines(List <Fine> fines) {
 		this.fines = fines;
 	}
-	
 	public boolean createFine(Fine fine) {
+		boolean success = false;
 		if(!Objects.isNull(fine)) {
-			return fineDAOs.create(fine);
+			// Permet ainsi de set l'id de fine
+			success = fineDAOs.create(fine);
+			if(success && !this.fines.contains(fine)) {
+				this.fines.add(fine);
+			}
 		}
-		return false;
+		return success;
 	}
 }

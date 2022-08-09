@@ -2,24 +2,58 @@ package be.pirbaert.DAOc;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Objects;
 
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 import be.pirbaert.POJOc.Charged;
 import be.pirbaert.POJOc.Fine;
+import be.pirbaert.POJOc.Violation;
 
 public class FineDAO extends DAO<Fine> {
 
 	public FineDAO() {}
 
 	@Override
-	public boolean create(Fine obj) {
-		// TODO Auto-generated method stub
+	public boolean create(Fine fine) {
+		MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+		SimpleDateFormat dayMonthYear = new SimpleDateFormat("dd/MM/yyyy");
+		String id_charged = "0";
+		String ids_violation="";
+		
+		for(Violation violation : fine.getViolations()) {
+			ids_violation+=String.valueOf(violation.getId())+";";
+		}
+		
+		// Retirer le dernier ";"
+		StringBuffer sb = new StringBuffer(ids_violation);
+		sb.deleteCharAt(sb.length()-1);
+		params.add("ids_violation", sb.toString());
+		params.add("id_policeman", String.valueOf(fine.getPoliceman().getId()));
+		params.add("id_vehicle", String.valueOf(fine.getVehicle().getId()));
+		params.add("comment", fine.getCommentary());
+		params.add("date", dayMonthYear.format(fine.getDate()));
+		if(!Objects.isNull(fine.getCharged())) {
+			id_charged = String.valueOf(fine.getCharged().getId());
+		}
+
+		params.add("id_charged", id_charged);
+		ClientResponse res = this.getResource()
+				.path("fine")
+				.post(ClientResponse.class,params);
+		System.out.println("DAO côté client => "+res.getStatus());
+		if(res.getStatus() == 201) {
+			return true;
+		}
 		return false;
 	}
 

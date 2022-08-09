@@ -1,5 +1,8 @@
 package be.pirbaert.API;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -47,31 +50,46 @@ public class APIFine {
 				.build();
 	}
 	
-	/*
+	
 	@POST
-	@Path("create")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response createFine(
-			@FormParam("violations") List<Violation> violations,
-			@FormParam("policeman") Policeman policeman,
-			@FormParam("vehicle") Vehicle vehicle,
-			@FormParam("commentary")String comment,
-			@FormParam("date") Date date,
-			@FormParam("charged")Charged charged)
+			@FormParam("ids_violation") String ids_violation,
+			@FormParam("id_policeman") int id_policeman,
+			@FormParam("id_vehicle") int id_vehicle,
+			@FormParam("comment")String comment,
+			@FormParam("date") String s_date,
+			@FormParam("id_charged")int id_charged)
 	{
-		if(Objects.isNull(violations) || Objects.isNull(policeman)||Objects.isNull(date)) {
-			return Response.status(Status.BAD_REQUEST).build();
+		System.out.println("API FINE JE SUIS PASSE ICI");
+		Policeman policeman = (Policeman) Account.getAccount(id_policeman);
+		Charged charged = null;
+		if(id_charged!=0) {
+			charged = Charged.getCharged(id_charged);
 		}
-		Fine fine = new Fine(violations,policeman,vehicle,comment,date,charged);
-	
+		// Les ids ont reçus sous forme de string, split pour en faire un tableau, puis add dans une liste pour le constructeur de fine
+		String[] ids = ids_violation.split(";");
+		List<Violation> violations = new ArrayList<Violation>();
+		for(int i = 0; i < ids.length;i++) {
+			System.out.println(ids[i]);
+			violations.add(Violation.getViolation(Integer.parseInt(ids[i])));
+		}
+		  
+	    Date date=null;
+		try {
+			date = new SimpleDateFormat("dd/MM/yyyy").parse(s_date);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		Fine fine = new Fine(violations,policeman,Vehicle.getVehicle(id_vehicle),comment,date,charged);
 		if(policeman.createFine(fine)) {
 			return Response
 					.status(Status.CREATED)
-					.header("Location","fine"+charged.getId())
+					.header("Location","fine"+fine.getId())
 					.build();
 		}else {
 			return Response.status(Status.CONFLICT).build();
 		}
 	}
-	*/
 }
