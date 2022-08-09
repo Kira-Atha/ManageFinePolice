@@ -13,6 +13,11 @@ public class Chief extends Policeman{
 		this.setSubordinates(new ArrayList<Policeman>());
 		this.type=this.getClass().getSimpleName();
 	}
+	public Chief(String personelNumber,String password) {
+		super(personelNumber,password);
+		this.setSubordinates(new ArrayList<Policeman>());
+		this.type=this.getClass().getSimpleName();
+	}
 
 	public List<Policeman> getSubordinates() {
 		return subordinates;

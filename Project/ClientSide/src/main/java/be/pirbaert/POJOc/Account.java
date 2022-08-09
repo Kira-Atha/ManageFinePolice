@@ -16,9 +16,14 @@ public class Account implements Serializable {
 
 	public Account() {
 	}
-
+	
 	public Account(int id, String personelNumber, String password) {
 		this.setId(id);
+		this.personnelNumber = personelNumber;
+		this.password = password;
+	}
+
+	public Account( String personelNumber, String password) {
 		this.personnelNumber = personelNumber;
 		this.password = password;
 	}
@@ -106,4 +111,10 @@ public class Account implements Serializable {
 	public boolean delete() {
 		return accountDAOc.delete(this);
 	}
+
+	public boolean save() {
+		return accountDAOc.create(this);
+		
+	}
+
 }

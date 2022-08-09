@@ -13,6 +13,11 @@ public class Policeman extends Account{
 		setFines(new ArrayList<Fine>());
 		this.type=this.getClass().getSimpleName();
 	}
+	public Policeman(String personelNumber,String password) {
+		super(personelNumber,password);
+		setFines(new ArrayList<Fine>());
+		this.type=this.getClass().getSimpleName();
+	}
 
 	
 	public List <Fine> getFines() {
