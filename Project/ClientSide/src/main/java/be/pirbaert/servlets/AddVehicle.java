@@ -78,14 +78,24 @@ public class AddVehicle extends HttpServlet {
 				registration = Registration.getRegistration(Integer.parseInt(request.getParameter("registration")));
 			}
 			
-			Vehicle vehicle = new Vehicle(0,registration,type);
-			if(vehicle.create()) {
-				response.sendRedirect("ConsultFines");
-			}else {
-				errors.add("Vehicle not created");
-				request.setAttribute("previous", request.getHeader("referer"));
-				request.setAttribute("errors", errors);
-				getServletContext().getRequestDispatcher("/WEB-INF/Views/errors.jsp").forward(request, response);
+			String choice = request.getParameter("add");
+			switch(choice) {
+				case "registration":
+					String serialNumber = request.getParameter("serialNumber");
+					session.setAttribute("serialNumber", serialNumber);
+					response.sendRedirect("AddRegistration");
+					break;
+				case "vehicle":
+					Vehicle vehicle = new Vehicle(0,registration,type);
+					if(vehicle.create()) {
+						response.sendRedirect("ConsultFines");
+					}else {
+						errors.add("Vehicle not created");
+						request.setAttribute("previous", request.getHeader("referer"));
+						request.setAttribute("errors", errors);
+						getServletContext().getRequestDispatcher("/WEB-INF/Views/errors.jsp").forward(request, response);
+					}
+					break;
 			}
 		}
 	}

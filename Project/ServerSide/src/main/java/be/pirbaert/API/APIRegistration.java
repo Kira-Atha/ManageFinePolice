@@ -51,7 +51,6 @@ public class APIRegistration {
 		
 		Registration registration = new Registration(serialNumber);
 		
-		
 		if(registration.save()) {
 			return Response
 					.status(Status.CREATED)

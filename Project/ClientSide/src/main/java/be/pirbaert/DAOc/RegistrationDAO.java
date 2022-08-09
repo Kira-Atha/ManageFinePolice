@@ -3,12 +3,16 @@ package be.pirbaert.DAOc;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.List;
+import java.util.Objects;
 
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 import be.pirbaert.POJOc.Fine;
 import be.pirbaert.POJOc.Registration;
@@ -20,8 +24,17 @@ public class RegistrationDAO extends DAO<Registration> {
 	}
 
 	@Override
-	public boolean create(Registration obj) {
-		// TODO Auto-generated method stub
+	public boolean create(Registration registration) {
+		MultivaluedMap<String,String> params = new MultivaluedMapImpl();
+		params.add("serialNumber",String.valueOf(registration.getSerialNumber()));
+
+		ClientResponse res = this.getResource()
+				.path("registration")
+				.post(ClientResponse.class,params);
+		System.out.println(res.getStatus());
+		if(res.getStatus() == 201) {
+			return true;
+		}
 		return false;
 	}
 

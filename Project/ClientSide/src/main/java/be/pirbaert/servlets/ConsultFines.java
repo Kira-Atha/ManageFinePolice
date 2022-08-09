@@ -103,7 +103,6 @@ public class ConsultFines extends HttpServlet {
 		}
 		
 		String choice = request.getParameter("add");
-		
 		if(!Objects.isNull(choice)) {
 			switch(choice) {
 			
@@ -118,7 +117,9 @@ public class ConsultFines extends HttpServlet {
 				response.sendRedirect("AddCharged");
 				break;
 			case "fine":
-				//TODO 
+				
+				
+				
 				System.out.println("add fine");
 				break;
 			}

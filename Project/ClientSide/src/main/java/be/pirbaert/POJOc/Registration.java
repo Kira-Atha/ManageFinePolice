@@ -42,6 +42,8 @@ public class Registration implements Serializable{
 	public static List<Registration> getAllRegistrations(){
 		return registrationDAOc.findAll();
 	}
-	
+	public boolean create() {
+		return registrationDAOc.create(this);
+	}
 }
 

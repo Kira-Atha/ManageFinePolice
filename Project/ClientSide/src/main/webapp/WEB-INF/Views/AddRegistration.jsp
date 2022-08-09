@@ -8,7 +8,7 @@
 	</head>
 	<body>
 		<form action="AddRegistration" class="form" method="POST">
-			Serial number : <input type=text name=registration>
+			Serial number : <input type=text name="serialNumber">
 			<button type="submit" name="add" value="registration">Add Registration</button> 
 		</form>
 	</body>
