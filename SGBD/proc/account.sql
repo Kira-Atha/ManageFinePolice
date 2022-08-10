@@ -15,14 +15,14 @@ END manage_account;
 /
 CREATE OR REPLACE package body manage_account IS
 
-	FUNCTION get_hash (personelNumber IN ACCOUNT.PERSONELNUMBER%TYPE,password IN ACCOUNT.PASSWORD%TYPE) RETURN ACCOUNT.PASSWORD%TYPE IS
+	FUNCTION get_hash (password IN ACCOUNT.PASSWORD%TYPE) RETURN ACCOUNT.PASSWORD%TYPE IS
 		v_secur VARCHAR2(30) := 'hgkh4zgkz5hlg';
 		BEGIN
-			RETURN DBMS_OBFUSCATION_TOOLKIT.MD5(input_string => personelNumber || v_secur ||password);
+			RETURN DBMS_OBFUSCATION_TOOLKIT.MD5(input_string => v_secur ||password);
 		END get_hash;
 		
 	PROCEDURE create_account (personelNumber IN ACCOUNT.PERSONELNUMBER%TYPE,password IN ACCOUNT.PASSWORD%TYPE,type IN ACCOUNT.TYPEACCOUNT%TYPE , acc_id OUT ACCOUNT.IDACCOUNT%TYPE) IS
-		hash_password ACCOUNT.PASSWORD%TYPE := get_hash(personelNumber,password);
+		hash_password ACCOUNT.PASSWORD%TYPE := get_hash(password);
 		BEGIN
 			INSERT INTO ACCOUNT (IDACCOUNT,PERSONELNUMBER, PASSWORD,TYPEACCOUNT )
 			VALUES (ACCOUNT_SEQ.NEXTVAL,personelNumber,hash_password,type )
@@ -35,7 +35,7 @@ CREATE OR REPLACE package body manage_account IS
 		END create_account;
 		
 	PROCEDURE connect_account(personelNumber_check IN ACCOUNT.PERSONELNUMBER%TYPE,password_check IN ACCOUNT.PASSWORD%TYPE,type_account OUT ACCOUNT.TYPEACCOUNT%TYPE , id OUT ACCOUNT.IDACCOUNT%TYPE)	IS
-		hash_password ACCOUNT.PASSWORD%TYPE := get_hash(personelNumber_check,password_check);
+		hash_password ACCOUNT.PASSWORD%TYPE := get_hash(password_check);
 		BEGIN
 			SELECT TYPEACCOUNT , IDACCOUNT
 			INTO type_account , id
@@ -53,7 +53,7 @@ CREATE OR REPLACE package body manage_account IS
 		
 	PROCEDURE change_account (id IN ACCOUNT.IDACCOUNT%TYPE,new_personelNumber IN ACCOUNT.PERSONELNUMBER%TYPE,new_password IN ACCOUNT.PASSWORD%TYPE) IS
 
-		hash_new_password ACCOUNT.PASSWORD%TYPE := get_hash(new_personelNumber,new_password);
+		hash_new_password ACCOUNT.PASSWORD%TYPE := get_hash(new_password);
 		old_password ACCOUNT.PASSWORD%TYPE;
 		BEGIN
 			
@@ -75,7 +75,7 @@ CREATE OR REPLACE package body manage_account IS
 		END change_account;
 		
 	PROCEDURE change_password (pn IN ACCOUNT.PERSONELNUMBER%TYPE,new_password IN ACCOUNT.PASSWORD%TYPE) IS
-		hash_new_password ACCOUNT.PASSWORD%TYPE := get_hash(pn,new_password);
+		hash_new_password ACCOUNT.PASSWORD%TYPE := get_hash(new_password);
 		BEGIN
 			UPDATE account
 			SET password = hash_new_password
