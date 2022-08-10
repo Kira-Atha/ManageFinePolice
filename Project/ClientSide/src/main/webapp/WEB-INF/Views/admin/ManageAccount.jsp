@@ -14,7 +14,7 @@
 	<title>Gestion compte utilisateur</title>
 </head>
 <body>
-	<button onclick="location.href='/ClientSide/MenuAdmin'">back</button>
+	<button onclick="window.history.go(-1)">back</button>
 	<h1 style="text-align : center">Liste des comptes</h1>
 	<button onclick="location.href='/ClientSide/CreateAccount'">Créer un compte</button>
 	

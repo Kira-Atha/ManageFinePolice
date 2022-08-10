@@ -5,10 +5,13 @@ import java.sql.Connection;
 import java.util.List;
 
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 import be.pirbaert.POJOc.Vehicle;
 import be.pirbaert.POJOc.Violation;
@@ -21,7 +24,19 @@ public class ViolationDAO extends DAO<Violation> {
 
 	@Override
 	public boolean create(Violation obj) {
-		// TODO Auto-generated method stub
+		
+		MultivaluedMap<String,String> paramsPost = new MultivaluedMapImpl();
+		
+		paramsPost.add("name",obj.getName());
+		paramsPost.add("description",obj.getDescription());
+		paramsPost.add("price",String.valueOf(obj.getPrice()));
+		
+		ClientResponse responseJSON = this.getResource()
+				.path("violation")
+				.post(ClientResponse.class, paramsPost);
+				
+		if(responseJSON.getStatus() == 201) return true;
+		
 		return false;
 	}
 
