@@ -36,10 +36,10 @@
 					<td>Registration </td>
 					<td>
 						<select name="registration">
-							<%if(!Objects.isNull(request.getAttribute("allRegistrations"))){
-								ArrayList<Registration> allRegistrations = (ArrayList<Registration>)request.getAttribute("allRegistrations");
+							<%if(!Objects.isNull(request.getAttribute("allRegistrationsWithoutVehicle"))){
+								ArrayList<Registration> allRegistrationsWithoutVehicle = (ArrayList<Registration>)request.getAttribute("allRegistrationsWithoutVehicle");
 								%><option value="0">- - UNKNOWN - -</option>
-								<%for(Registration registration : allRegistrations){%>
+								<%for(Registration registration : allRegistrationsWithoutVehicle){%>
 									<option value=<%=registration.getId()%>><%=registration.getSerialNumber()%></option>
 								<%}%>
 						</select>

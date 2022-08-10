@@ -43,7 +43,11 @@
   		<servlet-name>DownstreamFine</servlet-name>
   		<servlet-class>be.pirbaert.servlets.DownstreamFine</servlet-class>
 	</servlet>
-  
+ 
+ 	<servlet>
+  		<servlet-name>SendLetter</servlet-name>
+  		<servlet-class>be.pirbaert.servlets.SendLetter</servlet-class>
+	</servlet>
   <!-- SERVLETS MAPPING -->
 	<servlet-mapping>
   		<servlet-name>SignIn</servlet-name>
@@ -73,5 +77,10 @@
 	<servlet-mapping>
   		<servlet-name>DownstreamFine</servlet-name>
   		<url-pattern>/DownstreamFine</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+  		<servlet-name>SendLetter</servlet-name>
+  		<url-pattern>/SendLetter</url-pattern>
 	</servlet-mapping>
 </web-app>

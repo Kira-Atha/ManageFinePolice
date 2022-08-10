@@ -45,5 +45,23 @@ public class Registration implements Serializable{
 	public boolean create() {
 		return registrationDAOc.create(this);
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(this == o) {
+			return true;
+		}
+			
+		if((o == null) || (o.getClass() != this.getClass())) {
+			return false;
+		}
+
+		final Registration test = (Registration)o;
+		return this.getId() == (test.getId());
+	}
+	@Override
+	public int hashCode() {
+		return this.getId();
+	}	
 }
 

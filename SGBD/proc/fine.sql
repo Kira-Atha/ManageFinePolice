@@ -8,6 +8,7 @@ CREATE OR REPLACE PACKAGE manage_fine IS
 	PROCEDURE create_fine_violation(in_idsViolation IN tab_num,in_idFine IN FINE.IDFINE%TYPE);
 	PROCEDURE delete_fine(in_idFine IN Fine.IDFINE%TYPE);
 	PROCEDURE delete_fine_violation(in_idFine IN FINE.IDFINE%TYPE);
+	PROCEDURE update_fine(in_idFine IN FINE.IDFINE%TYPE);
 END manage_fine;
 /
 CREATE SEQUENCE fine_seq
@@ -101,10 +102,30 @@ CREATE OR REPLACE package body manage_fine IS
 				dbms_output.put_line('Wrong values (format? number->String?)');
 			WHEN NO_DATA_FOUND THEN
 				dbms_output.put_line('IN values not found');
-			WHEN COLLECTION_IS_NULL THEN
-				dbms_output.put_line('No collection');
 			WHEN others THEN
 				dbms_output.put_line('Error -> ' ||substr(SQLERRM,1,60));
 		END delete_fine_violation;
+		
+		
+	PROCEDURE update_fine(in_idFine IN FINE.IDFINE%TYPE) IS
+		BEGIN
+			UPDATE FINE 
+			SET VALIDATED = 1
+			WHERE IDFINE = in_idFine;
+			COMMIT;
+		exception
+			WHEN NOT_LOGGED_ON THEN
+				dbms_output.put_line('You are not connected');
+			WHEN LOGIN_DENIED THEN
+				dbms_output.put_line('Connection to db impossible');
+			WHEN STORAGE_ERROR THEN
+				dbms_output.put_line('Not enough memory');
+			WHEN VALUE_ERROR THEN
+				dbms_output.put_line('Wrong values (format? number->String?)');
+			WHEN NO_DATA_FOUND THEN
+				dbms_output.put_line('IN values not found');
+			WHEN others THEN
+				dbms_output.put_line('Error -> ' ||substr(SQLERRM,1,60));
+		END update_fine;
 END manage_fine;
 /

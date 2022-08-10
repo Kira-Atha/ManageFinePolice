@@ -41,7 +41,7 @@ public class Fine implements Serializable {
 		this.commentary = commentary;
 		this.date = date;
 		this.validated = false;
-		this.totalPrice = this.getTotalPrice();
+		this.totalPrice = 0;
 	}
 
 	public Fine(List<Violation> violations,Policeman policeman,Vehicle vehicle,String commentary,Date date,Charged charged) {
@@ -122,6 +122,7 @@ public class Fine implements Serializable {
 	}
 
 	public float getTotalPrice(){
+		this.totalPrice = 0;
 		if(!Objects.isNull(violations)) {
 			for(Violation violation : violations) {
 				if(!Objects.isNull(violation)) {
@@ -135,7 +136,12 @@ public class Fine implements Serializable {
 	public static Fine getFine(int id) {
 		return fineDAOs.find(id);
 	}
-	
+	public boolean delete() {
+		return fineDAOs.delete(this);
+	}
+	public boolean update() {
+		return fineDAOs.update(this);
+	}
 	public static List<Fine> getAllFines(){
 		return fineDAOs.findAll();
 	}

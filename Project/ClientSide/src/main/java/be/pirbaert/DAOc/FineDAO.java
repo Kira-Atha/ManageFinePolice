@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
+import be.pirbaert.POJOc.Account;
 import be.pirbaert.POJOc.Charged;
 import be.pirbaert.POJOc.Fine;
 import be.pirbaert.POJOc.Violation;
@@ -56,16 +57,33 @@ public class FineDAO extends DAO<Fine> {
 		}
 		return false;
 	}
-
+// cas decline
 	@Override
-	public boolean delete(Fine obj) {
-		// TODO Auto-generated method stub
+	public boolean delete(Fine fine) {
+		ClientResponse responseJSON = this.getResource()
+				.path("fine")
+				.path(String.valueOf(fine.getId()))
+				.delete(ClientResponse.class);
+		
+		if(responseJSON.getStatus() == 204) {
+			return true;
+		}
 		return false;
 	}
 
+	//S'il y a update, c'est forcément pour mettre validated à true
 	@Override
-	public boolean update(Fine obj) {
-		// TODO Auto-generated method stub
+	public boolean update(Fine fine) {
+		MultivaluedMap<String,String> paramsPut = new MultivaluedMapImpl();
+		//int boolValue = fine.isValidated()?1:0;
+		//paramsPut.add("validated",String.valueOf(boolValue));
+		
+		paramsPut.add("id_fine", String.valueOf(fine.getId()));
+		ClientResponse responseJSON = this.getResource()
+				.path("fine")
+				.put(ClientResponse.class,paramsPut);
+		
+		if(responseJSON.getStatus() == 204) return true;
 		return false;
 	}
 
@@ -101,6 +119,4 @@ public class FineDAO extends DAO<Fine> {
 		}
 		return null;
 	}
-
-
 }

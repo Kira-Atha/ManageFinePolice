@@ -29,29 +29,6 @@ public class AddCharged extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		/*
-		HttpSession session = request.getSession(false);
-		PrintWriter out = response.getWriter();
-		Account account = null;
-		if(session==null) {
-			out.println("No session");
-		}else {
-			account = (Account) session.getAttribute("account");
-			if(session.getAttribute("account") instanceof Policeman) {
-				account = (Policeman) session.getAttribute("account");
-			}else if(session.getAttribute("account") instanceof Chief) {
-				account = (Chief) session.getAttribute("account");
-			}
-		}
-		
-		if(!Objects.isNull(account)) {
-			request.setAttribute("previous", request.getHeader("referer"));
-			RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/Views/AddCharged.jsp");
-			dispatcher.forward(request, response);
-		}else {
-			response.sendRedirect("SignIn");
-		}
-		*/
 		HttpSession session = request.getSession(false);
 		PrintWriter out = response.getWriter();
 		Account account = null;
@@ -117,6 +94,5 @@ public class AddCharged extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
 	}
 }

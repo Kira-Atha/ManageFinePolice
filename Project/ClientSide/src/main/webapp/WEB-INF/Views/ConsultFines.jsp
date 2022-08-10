@@ -20,12 +20,18 @@
 	<head>
 		<meta charset="ISO-8859-1">
 		<title>Consult fines</title>
+		<link rel="stylesheet" type="text/css" href="/resources/style.css"/>
 	</head>
 	<body>
-	<!--  CONSULT + ACCEPT CHIEF -->
-	
-		<%if(session.getAttribute("account") instanceof Chief){
-			if(!Objects.isNull(request.getAttribute("allFines"))){
+		<form action="SignIn" class="form" method="GET">
+			<input type="submit" value="Logout"/>
+		</form>
+<!--  CONSULT ALL + ACCEPT CHIEF CONCERNE UNIQUEMENT SES POLICIERS MAIS ALL POUR L'INSTANT -->
+		<%if(session.getAttribute("account") instanceof Chief){%>
+			<form action="ViolationMenu" method="GET">
+				<button type="submit" class="btn" id="btn_updateViolationChief">Update violation</button> 
+			</form>
+			<%if(!Objects.isNull(request.getAttribute("allFines"))){
 				ArrayList<Fine> allFines = (ArrayList<Fine>)request.getAttribute("allFines");%>
 				<span id="span_consult_fines">
 				<p>Consult fines</p>
@@ -55,16 +61,19 @@
 							if(Objects.isNull(fine.getCharged())){%>
 								<td>- - UNKNOWN - -</td>
 							<%}else{%>
-								<td><%= fine.getCharged().getFirstname() %></td>
+								<td><%= fine.getCharged().getFirstname() %> <%= fine.getCharged().getLastname() %></td>
 							<%}%>
 							<td><%= fine.getVehicle().getType().getName() %></td>
 							<td><%= fine.getPoliceman().getPersonnelNumber()%></td>
 							<td><%= fine.getTotalPrice() %></td>
-							<td>
+							<td><%if(!fine.isValidated()){ %>
 								<form action="DownstreamFine" method="POST">
-									<button type="submit" name="accept" value=<%=fine_id %>>Accept</button> 
-									<button type="submit" name="decline" value=<%=fine_id %>>Decline</button> 
+									<button type="submit" class="btn" name="accept" value=<%=fine_id %>>Accept</button> 
+									<button type="submit" class="btn" name="decline" value=<%=fine_id %>>Decline</button> 
 								</form>
+								<%}else{%>
+									<p> Already accepted </p>
+								<%}%>
 							</td>
 						</tr>
 					<%}%>
@@ -72,14 +81,58 @@
 				<%}else{%>
 					<p>No fines were recorded</p>
 				<%}%>
-			<%}else if(session.getAttribute("account") instanceof TaxCollector){%>
-				<p>Coucou tax collector<p>
-								
-				
-				
-				
+					</span>
+<!--  -->				
+			<%}else if(session.getAttribute("account") instanceof TaxCollector){
+				ArrayList<Fine> allFinesAccepted = (ArrayList<Fine>)request.getAttribute("allFinesAccepted");
+				if(allFinesAccepted.size()>0){%>
+				<span id="span_consult_fines">
+				<p>Consult fines</p>
+					<table border="1">
+						<tr>
+							<th>Date</th>
+							<th>Comment</th>
+							<th>Violations</th>
+							<th>Charged</th>
+							<th>Vehicle</th>
+							<th>Policeman</th>
+							<th>TotalPrice</th>
+						</tr>
+						
+					<%for(Fine fine : allFinesAccepted){
+						String fine_id = String.valueOf(fine.getId());%>	
+						<tr>
+							<td><%= dayMonthYear.format(fine.getDate()) %></td>
+							<td><%= fine.getCommentary() %></td>
+							<td> <% for(Violation violation : fine.getViolations()){%>
+										<%=violation.getName()%> 
+									<%}%>
+							</td>
+							<%
+							if(Objects.isNull(fine.getCharged())){%>
+								<td>- - UNKNOWN - -</td>
+							<%}else{%>
+								<td><%= fine.getCharged().getFirstname() %> <%= fine.getCharged().getLastname() %></td>
+							<%}%>
+							<td><%= fine.getVehicle().getType().getName() %></td>
+							<td><%= fine.getPoliceman().getPersonnelNumber()%></td>
+							<td><%= fine.getTotalPrice() %></td>
+							<td>
+							<%if(!Objects.isNull(fine.getCharged())){ %>
+							<form action="SendLetter" method="POST">
+								<button type="submit" class="btn" id="btn_sendLetter" name="sendLetter" value=<%=fine.getCharged().getId() %>>send letter</button> 
+							</form>
+							<%}%>
+							</td>
+						</tr>
+					<%}%>
+					</table>
+				<%}else{%>
+					<p>No accepted fines were recorded</p>
+				<%}%>
+					</span>
 			<%}%>
-		<!--  ADD  -->
+<!--  ADD  -->
 			<%if(!Objects.isNull(request.getAttribute("allViolations"))){
 				ArrayList<Violation> allViolations = (ArrayList<Violation>)request.getAttribute("allViolations");%>
 			<%}%>
@@ -88,7 +141,7 @@
 				ArrayList<Vehicle> allVehicles = (ArrayList<Vehicle>)request.getAttribute("allVehicles");%>
 				
 			<%}%>
-		</span>
+		
 		
 		<%if(session.getAttribute("account") instanceof Policeman){%>
 			<p>ADD FINE</p>
@@ -168,7 +221,7 @@
 						
 						<tr>
 							 <td colspan="2" align="center">
-							 	<button type="submit" name="add" value="fine">Add fine</button>  
+							 	<button class="btn" type="submit" name="add" value="fine">Add fine</button>  
 							 </td>
 						</tr>
 					</table>

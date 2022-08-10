@@ -25,6 +25,7 @@ import be.pirbaert.POJOc.Chief;
 import be.pirbaert.POJOc.Fine;
 import be.pirbaert.POJOc.Policeman;
 import be.pirbaert.POJOc.Registration;
+import be.pirbaert.POJOc.TaxCollector;
 import be.pirbaert.POJOc.TypeVehicle;
 import be.pirbaert.POJOc.Vehicle;
 import be.pirbaert.POJOc.Violation;
@@ -48,39 +49,48 @@ public class ConsultFines extends HttpServlet {
 			if(session.getAttribute("account") instanceof Chief) {
 				account = (Chief) session.getAttribute("account");
 				if(account != null) {
-					System.out.println("C'est un chief");
-					System.out.println("Chief "+account.getPersonnelNumber()+" "+account.getClass().getSimpleName());
 				}
 			}else if(session.getAttribute("account") instanceof Policeman) {
 				account = (Policeman) session.getAttribute("account");
-				if(account != null) {
-					System.out.println("Police "+account.getPersonnelNumber()+" "+account.getClass().getSimpleName());
-				}
+			}else if(session.getAttribute("account") instanceof TaxCollector) {
+				account = (TaxCollector) session.getAttribute("account");
 			}
 		}
 		
 		List<Fine> allFines = Fine.getAllFines();
-		
 		List<Fine> allFinesAccepted = new ArrayList<Fine>();
-		
 		for (Fine fine : allFines) {
 			if(fine.isValidated()) {
 				allFinesAccepted.add(fine);
 			}
 		}
-		
 		List<Violation> allViolations = Violation.getAllViolations();
 		List<Charged> allChargeds = Charged.getAllChargeds();
 		List<Vehicle> allVehicles = Vehicle.getAllVehicles();
 		List<Registration> allRegistrations = Registration.getAllRegistrations();
+		List<Registration> allRegistrationsWithoutVehicle = new ArrayList<Registration>();
+		List<Registration> allRegistrationsInVehicle = new ArrayList<Registration>();
+		for(Vehicle vehicle  : allVehicles) {
+			allRegistrationsInVehicle.add(vehicle.getRegistration());
+		}
+		
+		for(int i = 0; i < allRegistrations.size() ; i++) {
+			for(int j=0; j<allVehicles.size();j++) {
+				if(!allRegistrationsWithoutVehicle.contains(allRegistrations.get(i)) && !allRegistrationsInVehicle.contains(allRegistrations.get(i))) {
+					allRegistrationsWithoutVehicle.add(allRegistrations.get(i));
+				}
+			}
+		}
 		List<TypeVehicle> allTypes = TypeVehicle.getAllTypes();
 		
 		request.setAttribute("allFines", allFines);
 		request.setAttribute("allViolations", allViolations);
 		request.setAttribute("allChargeds", allChargeds);
 		request.setAttribute("allVehicles", allVehicles);
-		request.setAttribute("allRegistrations", allRegistrations);
+		//request.setAttribute("allRegistrations", allRegistrations);
+		request.setAttribute("allRegistrationsWithoutVehicle", allRegistrationsWithoutVehicle);
 		request.setAttribute("allTypes", allTypes);	
+		request.setAttribute("allFinesAccepted", allFinesAccepted);
 		
 		if(!Objects.isNull(account)) {
 			request.setAttribute("previous", request.getHeader("referer"));
@@ -103,6 +113,8 @@ public class ConsultFines extends HttpServlet {
 				account = (Chief) session.getAttribute("account");
 			}else if(session.getAttribute("account") instanceof Policeman) {
 				account = (Policeman) session.getAttribute("account");
+			}else if(session.getAttribute("account") instanceof TaxCollector) {
+				account = (TaxCollector) session.getAttribute("account");
 			}
 		}
 		//out.print(account);
@@ -167,7 +179,8 @@ public class ConsultFines extends HttpServlet {
 					Fine fine = new Fine(0,violations,(Policeman)account,vehicle,commentary,localToDate,charged);
 					
 					if(fine.create()) {
-						System.out.println("A été créé");
+						System.out.println("Le fine a été créé ( msg temp)");
+						response.sendRedirect("ConsultFines");
 					}else {
 						errors.add("Can't create fine");
 						request.setAttribute("previous", request.getHeader("referer"));
@@ -184,5 +197,5 @@ public class ConsultFines extends HttpServlet {
 	      .filter(str -> str.length() != 0)
 	      .map(str -> str.substring(0, str.length() - 1))
 	      .orElse(s);
-	    }
+	}
 }

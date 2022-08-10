@@ -79,17 +79,40 @@ public class FineDAO extends DAO<Fine> {
 		}
 		return false;
 	}
-
+//decline
 	@Override
-	public boolean delete(Fine obj) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean delete(Fine fine) {
+		CallableStatement procedure = null;
+		CallableStatement procedure2 = null;
+		System.out.println(fine.getId());
+		try {
+			procedure2 = this.connect.prepareCall("{call manage_fine.delete_fine_violation(?)}");
+			procedure2.setInt(1, fine.getId());
+			procedure2.executeQuery();
+			
+			procedure = this.connect.prepareCall("{call manage_fine.delete_fine(?)}");
+			procedure.setInt(1, fine.getId());
+			procedure.executeQuery();
+			
+			return true;
+		}catch(SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
-
+//accept
 	@Override
-	public boolean update(Fine obj) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean update(Fine fine) {
+		CallableStatement procedure = null;
+		try {
+			procedure = this.connect.prepareCall("{call manage_fine.update_fine(?)}");
+			procedure.setInt(1, fine.getId());
+			procedure.executeQuery();
+			return true;
+		}catch(SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 // FIND/FINDALL => Policeman à null
@@ -111,7 +134,7 @@ public class FineDAO extends DAO<Fine> {
 			if(result.next()) {
 				List <Violation> fineViolations = new ArrayList<Violation>();
 				try {
-					preparedStatement2 = this.connect.prepareStatement("SELECT * FROM Vio_Fin WHERE IdFine=");
+					preparedStatement2 = this.connect.prepareStatement("SELECT * FROM Vio_Fin WHERE IdFine=?");
 					preparedStatement2.setInt(1, id);
 					
 					result2 = preparedStatement2.executeQuery();
@@ -123,6 +146,12 @@ public class FineDAO extends DAO<Fine> {
 					e.printStackTrace();
 				}
 				fine=new Fine(result.getInt("IdFine"),fineViolations,(Policeman)Account.getAccount(result.getInt("IdAccount")),Vehicle.getVehicle(result.getInt("IdVehicle")),result.getString("commentfine"),result.getDate("datefine"),Charged.getCharged(result.getInt("IdCharged")));
+				boolean validated = false;
+				if(result.getInt("VALIDATED") == 1) {
+					validated = true;
+				}
+				
+				fine.setValidated(validated);
 			}
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -144,7 +173,7 @@ public class FineDAO extends DAO<Fine> {
 			while(result.next()) {
 				List <Violation> fineViolations = new ArrayList<Violation>();
 				try {
-					result2 = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Vio_Fin");
+					result2 = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Vio_Fin WHERE IDFINE="+result.getInt("IdFine"));
 					while(result2.next()) {
 						fineViolations.add(Violation.getViolation(result2.getInt("IdViolation")));
 					}
@@ -152,6 +181,12 @@ public class FineDAO extends DAO<Fine> {
 					e.printStackTrace();
 				}
 				fine=new Fine(result.getInt("IdFine"),fineViolations,(Policeman)Account.getAccount(result.getInt("IdAccount")),Vehicle.getVehicle(result.getInt("IdVehicle")),result.getString("commentfine"),result.getDate("datefine"),Charged.getCharged(result.getInt("IdCharged")));
+				boolean validated = false;
+				if(result.getInt("VALIDATED") == 1) {
+					validated = true;
+				}
+				
+				fine.setValidated(validated);
 				allFines.add(fine);
 			}
 		}catch(SQLException e) {

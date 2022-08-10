@@ -7,9 +7,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -59,9 +61,8 @@ public class APIFine {
 			@FormParam("id_vehicle") int id_vehicle,
 			@FormParam("comment")String comment,
 			@FormParam("date") String s_date,
-			@FormParam("id_charged")int id_charged)
-	{
-		System.out.println("API FINE JE SUIS PASSE ICI");
+			@FormParam("id_charged")int id_charged){
+		System.out.println("API CREATEFINE JE SUIS PASSE ICI");
 		Policeman policeman = (Policeman) Account.getAccount(id_policeman);
 		Charged charged = null;
 		if(id_charged!=0) {
@@ -91,5 +92,33 @@ public class APIFine {
 		}else {
 			return Response.status(Status.CONFLICT).build();
 		}
+	}
+	
+	@PUT
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response updateFine(
+			@FormParam("id_fine") int id_fine){
+		
+		Fine fine = Fine.getFine(id_fine);
+		fine.setValidated(true);
+		
+		
+		if(fine.update()) {
+			return Response
+					.status(Status.NO_CONTENT)
+					.build();
+		}
+		else return Response.status(Status.NOT_FOUND).build();
+	}
+	
+	@DELETE
+	@Path("{id}")
+	public Response deleteFine(@PathParam("id") int id) {
+		Fine fine = Fine.getFine(id);
+		//System.out.print(fine.getId());
+		if(fine.delete()) {
+			return Response.status(Status.NO_CONTENT).build();
+		}
+		else return Response.status(Status.NOT_FOUND).build();
 	}
 }

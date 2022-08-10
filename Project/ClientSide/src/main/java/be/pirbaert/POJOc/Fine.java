@@ -34,7 +34,7 @@ public class Fine implements Serializable {
 		this.commentary = commentary;
 		this.date = date;
 		this.validated = false;
-		this.totalPrice = this.getTotalPrice();
+		this.totalPrice = 0;
 	}
 	
 	public String getCommentary() {
@@ -102,6 +102,7 @@ public class Fine implements Serializable {
 	}
 
 	public float getTotalPrice(){
+		this.totalPrice = 0;
 		if(!Objects.isNull(violations)) {
 			for(Violation violation : violations) {
 				if(!Objects.isNull(violation)) {
@@ -124,6 +125,13 @@ public class Fine implements Serializable {
 		return fineDAOc.create(this);
 	}
 	
+	public boolean update() {
+		return fineDAOc.update(this);
+	}
+	
+	public boolean delete() {
+		return fineDAOc.delete(this);
+	}
 	@Override
 	public String toString() {
 		return " Id du fine : "+this.getId()+" Commentaire : "+this.getCommentary();

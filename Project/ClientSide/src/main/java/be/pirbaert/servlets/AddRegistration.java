@@ -61,20 +61,17 @@ public class AddRegistration extends HttpServlet {
 			request.setAttribute("previous", request.getHeader("referer"));
 			request.setAttribute("errors", errors);
 			getServletContext().getRequestDispatcher("/WEB-INF/Views/errors.jsp").forward(request, response);
-		}
-		
-		Registration registration = new Registration(0,serialNumber);
-		
-		
-		if(registration.create()) {
-			response.sendRedirect("ConsultFines");
 		}else {
-			errors.add("Registration not created");
-			request.setAttribute("previous", request.getHeader("referer"));
-			request.setAttribute("errors", errors);
-			getServletContext().getRequestDispatcher("/WEB-INF/Views/errors.jsp").forward(request, response);
+			Registration registration = new Registration(0,serialNumber);
+			if(registration.create()) {
+				response.sendRedirect("ConsultFines");
+			}else {
+				errors.add("Registration not created");
+				request.setAttribute("previous", request.getHeader("referer"));
+				request.setAttribute("errors", errors);
+				getServletContext().getRequestDispatcher("/WEB-INF/Views/errors.jsp").forward(request, response);
+			}
 		}
-		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
