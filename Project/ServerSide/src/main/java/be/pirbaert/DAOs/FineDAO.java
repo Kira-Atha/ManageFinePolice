@@ -61,10 +61,7 @@ public class FineDAO extends DAO<Fine> {
 					for(int i=0;i<idsViolations.length;i++) {
 						idsViolations[i] = fine.getViolations().get(i).getId();
 					}
-				// PAS SÛR QUE CA MARCHE ?
-					
-					
-					ArrayDescriptor descriptor = ArrayDescriptor.createDescriptor("tab_num", procedure.getConnection());
+					ArrayDescriptor descriptor = ArrayDescriptor.createDescriptor("TAB_NUM", procedure.getConnection());
 			        ARRAY array = new ARRAY(descriptor ,this.connect, idsViolations);
 					procedure.setArray(1,array);
 					procedure.setInt(2, fine.getId());

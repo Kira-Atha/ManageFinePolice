@@ -94,7 +94,7 @@ public class SignIn extends HttpServlet {
 				response.sendRedirect("MenuAdmin");
 			}
 			if(account instanceof TaxCollector) {
-				response.sendRedirect("taxCollector servlet");
+				response.sendRedirect("ConsultFines");
 			}
 		}else {
 			out.print("Incorrect account");

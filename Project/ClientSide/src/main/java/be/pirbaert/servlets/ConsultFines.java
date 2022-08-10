@@ -60,6 +60,15 @@ public class ConsultFines extends HttpServlet {
 		}
 		
 		List<Fine> allFines = Fine.getAllFines();
+		
+		List<Fine> allFinesAccepted = new ArrayList<Fine>();
+		
+		for (Fine fine : allFines) {
+			if(fine.isValidated()) {
+				allFinesAccepted.add(fine);
+			}
+		}
+		
 		List<Violation> allViolations = Violation.getAllViolations();
 		List<Charged> allChargeds = Charged.getAllChargeds();
 		List<Vehicle> allVehicles = Vehicle.getAllVehicles();

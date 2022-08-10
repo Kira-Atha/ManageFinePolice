@@ -38,6 +38,11 @@
   		<servlet-name>AddRegistration</servlet-name>
   		<servlet-class>be.pirbaert.servlets.AddRegistration</servlet-class>
 	</servlet>		
+	
+	<servlet>
+  		<servlet-name>DownstreamFine</servlet-name>
+  		<servlet-class>be.pirbaert.servlets.DownstreamFine</servlet-class>
+	</servlet>
   
   <!-- SERVLETS MAPPING -->
 	<servlet-mapping>
@@ -64,5 +69,9 @@
   		<servlet-name>AddRegistration</servlet-name>
   		<url-pattern>/AddRegistration</url-pattern>
 	</servlet-mapping>		
-			
+
+	<servlet-mapping>
+  		<servlet-name>DownstreamFine</servlet-name>
+  		<url-pattern>/DownstreamFine</url-pattern>
+	</servlet-mapping>
 </web-app>

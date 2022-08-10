@@ -6,6 +6,7 @@
 <%@page import="be.pirbaert.POJOc.Policeman"%>
 <%@page import="be.pirbaert.POJOc.Vehicle"%>
 <%@page import="be.pirbaert.POJOc.Charged"%>
+<%@page import="be.pirbaert.POJOc.TaxCollector"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Objects"%>
@@ -47,18 +48,22 @@
 							<td><%= dayMonthYear.format(fine.getDate()) %></td>
 							<td><%= fine.getCommentary() %></td>
 							<td> <% for(Violation violation : fine.getViolations()){%>
-										<%=violation.getName() %>
+										<%=violation.getName()%> 
 									<%}%>
 							</td>
-							<td><%= fine.getCharged().getFirstname() %></td>
+							<%
+							if(Objects.isNull(fine.getCharged())){%>
+								<td>- - UNKNOWN - -</td>
+							<%}else{%>
+								<td><%= fine.getCharged().getFirstname() %></td>
+							<%}%>
 							<td><%= fine.getVehicle().getType().getName() %></td>
 							<td><%= fine.getPoliceman().getPersonnelNumber()%></td>
 							<td><%= fine.getTotalPrice() %></td>
 							<td>
-								<form action="ConsultFines" method="POST">
-								<!-- Mettre l'objet en session ? Envoyer l'objet à la servlet ou l'id  -->
-									<input type="hidden" name="fine_id" value=<%=fine_id%>>
-									<input type="submit" name="submit" id="submit" value="Accept"/>
+								<form action="DownstreamFine" method="POST">
+									<button type="submit" name="accept" value=<%=fine_id %>>Accept</button> 
+									<button type="submit" name="decline" value=<%=fine_id %>>Decline</button> 
 								</form>
 							</td>
 						</tr>
@@ -67,6 +72,12 @@
 				<%}else{%>
 					<p>No fines were recorded</p>
 				<%}%>
+			<%}else if(session.getAttribute("account") instanceof TaxCollector){%>
+				<p>Coucou tax collector<p>
+								
+				
+				
+				
 			<%}%>
 		<!--  ADD  -->
 			<%if(!Objects.isNull(request.getAttribute("allViolations"))){
@@ -79,91 +90,93 @@
 			<%}%>
 		</span>
 		
-		<p>ADD FINE</p>
-		<span id="span_add_fine">
-			<form action="ConsultFines" method="POST">
-				<table>
-					<tr>
-						<td><fieldset>
-							<legend>Comment</legend>
-								<textarea name="comment" rows="4" cols="50"></textarea>
-						</fieldset></td>
-					</tr>
-					<!-- SELECT WITH OPTION -->
-					<tr>
-						<td><fieldset>
-							<legend>Charged</legend>
-							<select name="charged">
-								<%if(!Objects.isNull(request.getAttribute("allChargeds"))){
-									ArrayList<Charged> allChargeds = (ArrayList<Charged>)request.getAttribute("allChargeds");%>
-									<option value="0">- - UNKNOWN - -</option><%
-									for(Charged charged : allChargeds){%>
-										<option value=<%=charged.getId()%>><%=charged.getFirstname()+ " "+charged.getLastname()%> </option>
-									<%}%>
-										
-							</select>
-									<p>Not in the list? Add a charged</p>
-									<%@ include file="AddCharged.jsp" %>
-								<%}else{%>
-									<p>No chargeds were recorded</p>
-									<%@ include file="AddCharged.jsp" %>
-								<%}%>
-						</fieldset></td>
-					</tr>
-					
-					<tr>
-						<td><fieldset>
-							<legend>Vehicle</legend>
-							<select name="vehicle">
-							<%if(!Objects.isNull(request.getAttribute("allVehicles"))){
-								ArrayList<Vehicle> allVehicles = (ArrayList<Vehicle>)request.getAttribute("allVehicles");
-								for(Vehicle vehicle : allVehicles){%>
-								<!--  Oui mais dans le cas où il n'y a pas de numéro de plaque ?  -->
-									<%if(!Objects.isNull(vehicle.getRegistration())){ %>
-										<option value=<%=vehicle.getId()%>><%=vehicle.getType().getName()+"=>"+vehicle.getRegistration().getSerialNumber()%></option>
+		<%if(session.getAttribute("account") instanceof Policeman){%>
+			<p>ADD FINE</p>
+			<span id="span_add_fine">
+				<form action="ConsultFines" method="POST">
+					<table>
+						<tr>
+							<td><fieldset>
+								<legend>Comment</legend>
+									<textarea name="comment" rows="4" cols="50"></textarea>
+							</fieldset></td>
+						</tr>
+						<!-- SELECT WITH OPTION -->
+						<tr>
+							<td><fieldset>
+								<legend>Charged</legend>
+								<select name="charged">
+									<%if(!Objects.isNull(request.getAttribute("allChargeds"))){
+										ArrayList<Charged> allChargeds = (ArrayList<Charged>)request.getAttribute("allChargeds");%>
+										<option value="0">- - UNKNOWN - -</option><%
+										for(Charged charged : allChargeds){%>
+											<option value=<%=charged.getId()%>><%=charged.getFirstname()+ " "+charged.getLastname()%> </option>
+										<%}%>
+											
+								</select>
+										<p>Not in the list? Add a charged</p>
+										<%@ include file="AddCharged.jsp" %>
 									<%}else{%>
-										<option value=<%=vehicle.getId()%>><%=vehicle.getType().getName()+"=> NO REGISTRATION."%></option>
+										<p>No chargeds were recorded</p>
+										<%@ include file="AddCharged.jsp" %>
 									<%}%>
-								<%}%>
-							</select>
-								<p>Not in the list ? Add vehicle</p>
-								<%@ include file="AddVehicle.jsp" %>
-							<%}else{%>
-									<p>No vehicles were recorded</p>
+							</fieldset></td>
+						</tr>
+						
+						<tr>
+							<td><fieldset>
+								<legend>Vehicle</legend>
+								<select name="vehicle">
+								<%if(!Objects.isNull(request.getAttribute("allVehicles"))){
+									ArrayList<Vehicle> allVehicles = (ArrayList<Vehicle>)request.getAttribute("allVehicles");
+									for(Vehicle vehicle : allVehicles){%>
+									<!--  Oui mais dans le cas où il n'y a pas de numéro de plaque ?  -->
+										<%if(!Objects.isNull(vehicle.getRegistration())){ %>
+											<option value=<%=vehicle.getId()%>><%=vehicle.getType().getName()+"=>"+vehicle.getRegistration().getSerialNumber()%></option>
+										<%}else{%>
+											<option value=<%=vehicle.getId()%>><%=vehicle.getType().getName()+"=> NO REGISTRATION."%></option>
+										<%}%>
+									<%}%>
+								</select>
+									<p>Not in the list ? Add vehicle</p>
 									<%@ include file="AddVehicle.jsp" %>
-								<%}%>
-						</fieldset></td>
-					</tr>
-					
-					<tr>
-						<td><fieldset>
-						<!--  JAVA SCRIPT POUR CALCULER LE TOTAL ? -->
-							<legend>Violations</legend>
-							<%if(!Objects.isNull(request.getAttribute("allViolations"))){
-								ArrayList<Violation> allViolations = (ArrayList<Violation>)request.getAttribute("allViolations");
-								for(Violation violation : allViolations){
-									String description = violation.getDescription();
-								%>
-									<input type="checkbox" name="violation" value=<%=violation.getId()%>/> <abbr title="<%=description%>"><%=violation.getName()%></abbr><br>
-								
-								<%}%>
-								<p> Not in the list? Ask admin to add one</p>
 								<%}else{%>
-									<p>No violations were recorded, please ask admin for add one</p>
-								<%}%>
-						</fieldset></td>
-					</tr>
-					
-					<tr>
-						 <td colspan="2" align="center">
-						 	<button type="submit" name="add" value="fine">Add fine</button>  
-						 </td>
-					</tr>
-				</table>
-			</form>
-		</span>
+										<p>No vehicles were recorded</p>
+										<%@ include file="AddVehicle.jsp" %>
+									<%}%>
+							</fieldset></td>
+						</tr>
+						
+						<tr>
+							<td><fieldset>
+							<!--  JAVA SCRIPT POUR CALCULER LE TOTAL ? -->
+								<legend>Violations</legend>
+								<%if(!Objects.isNull(request.getAttribute("allViolations"))){
+									ArrayList<Violation> allViolations = (ArrayList<Violation>)request.getAttribute("allViolations");
+									for(Violation violation : allViolations){
+										String description = violation.getDescription();
+									%>
+										<input type="checkbox" name="violation" value=<%=violation.getId()%>/> <abbr title="<%=description%>"><%=violation.getName()%></abbr><br>
+									
+									<%}%>
+									<p> Not in the list? Ask admin to add one</p>
+									<%}else{%>
+										<p>No violations were recorded, please ask admin for add one</p>
+									<%}%>
+							</fieldset></td>
+						</tr>
+						
+						<tr>
+							 <td colspan="2" align="center">
+							 	<button type="submit" name="add" value="fine">Add fine</button>  
+							 </td>
+						</tr>
+					</table>
+				</form>
+			</span>
 		<form action="<%=back%>" method="GET">
 			<input type="submit" value=back>
-		</form>		
+		</form>
+		<%}%>
 	</body>
 	</html>
