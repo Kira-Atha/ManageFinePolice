@@ -33,7 +33,7 @@
 							
 						</form>
 						<% 
-								String updateUrl = String.format("location.href='/ClientSide/UpdateAccount?id=%s'",violation.getId());
+								String updateUrl = String.format("location.href='/ClientSide/ViolationUpdate?id=%s'",violation.getId());
 								out.println("<button onclick="+updateUrl+">UPDATE</button>"); %>
 					</fieldset>
 						

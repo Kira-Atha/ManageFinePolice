@@ -72,8 +72,7 @@ public class APIViolation {
 			@FormParam("description") String description) {
 		
 		Violation violation = new Violation(id,name,description,price);
-		
-		
+				
 		if(violation.update()) {
 			return Response
 					.status(Status.NO_CONTENT)

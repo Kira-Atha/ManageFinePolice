@@ -55,7 +55,20 @@ public class ViolationDAO extends DAO<Violation> {
 
 	@Override
 	public boolean update(Violation obj) {
-		// TODO Auto-generated method stub
+		
+		MultivaluedMap<String,String> paramsPost = new MultivaluedMapImpl();
+		
+		paramsPost.add("id",String.valueOf(obj.getId()));
+		paramsPost.add("name",obj.getName());
+		paramsPost.add("description",obj.getDescription());
+		paramsPost.add("price",String.valueOf(obj.getPrice()));
+		
+		ClientResponse responseJSON = this.getResource()
+				.path("violation")
+				.put(ClientResponse.class, paramsPost);
+				
+		if(responseJSON.getStatus() == 204) return true;
+		
 		return false;
 	}
 

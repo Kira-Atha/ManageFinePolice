@@ -64,6 +64,9 @@ public class Violation implements Serializable {
 	public void setId(int id) {
 		this.id = id;
 	}
+	public String toString() {
+		return this.id+ " : "+this.name+" "+this.price+" "+this.description;
+	}
 	
 	public boolean save() {
 		return violationDAOs.create(this);
