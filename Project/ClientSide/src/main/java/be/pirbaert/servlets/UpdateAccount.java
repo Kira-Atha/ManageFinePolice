@@ -79,7 +79,6 @@ public class UpdateAccount extends HttpServlet {
 		}
 		else doGet(request,response);
 
-		System.out.println(account);
 	}
 
 }

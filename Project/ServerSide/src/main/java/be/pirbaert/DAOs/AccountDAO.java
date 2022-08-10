@@ -91,9 +91,7 @@ public class AccountDAO extends DAO<Account> {
 	}
 	
 	private boolean updatePersonelNumber(Account obj) {
-		System.out.println("pn");
 		CallableStatement proc = null;
-		
 		
 		try {
 			proc = this.connect.prepareCall("{call manage_account.change_personelNumber(?,?)}");
@@ -117,7 +115,6 @@ public class AccountDAO extends DAO<Account> {
 	}
 		
 	private boolean updateBoth(Account obj) {
-		System.out.println("both");
 		CallableStatement proc = null;
 		
 		
