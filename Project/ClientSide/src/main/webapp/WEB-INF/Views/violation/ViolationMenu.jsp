@@ -23,7 +23,7 @@
 					%>
 					<fieldset>
 					
-						<form action="ManageAccount" method="POST">
+						<form action="ViolationMenu" method="POST">
 							<legend><%= violation.getId() %></legend>
 							<p>Name : <%= violation.getName() %> </p>
 							<p>Price : <%= violation.getPrice() %> </p>

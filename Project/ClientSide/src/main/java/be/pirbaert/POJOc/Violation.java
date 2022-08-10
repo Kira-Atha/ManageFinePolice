@@ -68,5 +68,9 @@ public class Violation implements Serializable {
 		return violationDAOc.create(this);
 	}
 	
+	public boolean delete() {
+		return violationDAOc.delete(this);
+	}
+	
 }
 

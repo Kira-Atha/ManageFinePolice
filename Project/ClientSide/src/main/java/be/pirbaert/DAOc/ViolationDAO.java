@@ -42,7 +42,14 @@ public class ViolationDAO extends DAO<Violation> {
 
 	@Override
 	public boolean delete(Violation obj) {
-		// TODO Auto-generated method stub
+
+		ClientResponse responseJSON = this.getResource()
+				.path("violation")
+				.path(String.valueOf(obj.getId()))
+				.delete(ClientResponse.class);
+		
+		if(responseJSON.getStatus() == 204) return true;
+		
 		return false;
 	}
 

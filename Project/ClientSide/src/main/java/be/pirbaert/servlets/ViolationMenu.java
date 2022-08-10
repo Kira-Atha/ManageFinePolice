@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import be.pirbaert.POJOc.Violation;
 
 
+
 /**
  * Servlet implementation class ViolationMenu
  */
@@ -44,8 +45,19 @@ public class ViolationMenu extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+if( request.getParameter("delete") != null) {
+			
+			deleteViolation(request.getParameter("delete"),request,response);
+		}
+		
+		
+	}
+	
+	private void deleteViolation(String id , HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Violation violations = new Violation();
+		violations.setId(Integer.valueOf(id));
+		violations.delete();
+		doGet(request,response);
 	}
 
 }
