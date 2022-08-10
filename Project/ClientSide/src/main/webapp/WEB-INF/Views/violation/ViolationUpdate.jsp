@@ -10,7 +10,7 @@
 	<title>Update Violation</title>
 </head>
 <body>
-<button onclick="window.history.go(-1)">back</button>
+<button onclick="location.href='/ClientSide/ViolationMenu'">back</button>
 	<h1 style="text-align : center">Update Violation</h1>
 	<form action="ViolationUpdate" class="form" method="POST">
 	<input type="hidden" id="id" name="id" value="<%= violation.getId()%>" />

@@ -11,7 +11,7 @@
 	<title>Violation list</title>
 </head>
 	<body>
-		<button onclick="window.history.go(-1)">back</button>
+		<button onclick="location.href='/ClientSide/MenuAdmin'">back</button>
 		<h1 style="text-align : center">Violation list</h1>
 		<button onclick="location.href='/ClientSide/ViolationCreate'">Create Violation</button>
 		

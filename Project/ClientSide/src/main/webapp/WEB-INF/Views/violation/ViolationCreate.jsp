@@ -9,7 +9,7 @@
 	<title>Create Violation</title>
 </head>
 <body>
-	<button onclick="window.history.go(-1)">back</button>
+	<button onclick="location.href='/ClientSide/ViolationMenu'">back</button>
 	<h1 style="text-align : center">Create Violation</h1>
 	<div justify-content: center;display: flex;">
 			<%

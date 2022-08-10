@@ -9,7 +9,7 @@
 <title>Update Account</title>
 </head>
 <body>
-	<button onclick="window.history.go(-1)">back</button>
+	<button onclick="location.href='/ClientSide/ManageAccount'">back</button>
 	<h1 style="text-align : center">Update account</h1>
 	<form action="UpdateAccount" class="form" method="POST">
 	<input type="hidden" id="id" name="id" value="<%= account.getId()%>" />
