@@ -5624,7 +5624,7 @@
 							"top": 152,
 							"width": 97,
 							"height": 51,
-							"text": "If charged has not insurance"
+							"text": "If vehicle has not insurance"
 						},
 						{
 							"_type": "UMLNoteLinkView",

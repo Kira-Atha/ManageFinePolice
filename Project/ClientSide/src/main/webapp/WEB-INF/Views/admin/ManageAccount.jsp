@@ -14,6 +14,10 @@
 	<title>Gestion compte utilisateur</title>
 </head>
 <body>
+	<form action="SignIn" class="form" method="GET">
+		<input type="submit" value="Logout"/>
+	</form>
+
 	<button onclick="location.href='/ClientSide/MenuAdmin'">back</button>
 	<h1 style="text-align : center">Liste des comptes</h1>
 	<button onclick="location.href='/ClientSide/CreateAccount'">Créer un compte</button>

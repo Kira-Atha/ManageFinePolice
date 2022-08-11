@@ -78,5 +78,23 @@ public class Violation implements Serializable {
 		return violationDAOc.update(this);
 	}
 	
+	@Override
+	public boolean equals(Object o) {
+		if(this == o) {
+			return true;
+		}
+			
+		if((o == null) || (o.getClass() != this.getClass())) {
+			return false;
+		}
+
+		final Violation test = (Violation)o;
+		return this.getId() == (test.getId()) || this.getName().toLowerCase().equals(test.getName().toLowerCase());
+	}
+	@Override
+	public int hashCode() {
+		return this.getId()+this.getName().hashCode();
+	}
+	
 }
 

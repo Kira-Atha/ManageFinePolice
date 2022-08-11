@@ -9,6 +9,9 @@
 	<title>Create Account</title>
 </head>
 <body>
+	<form action="SignIn" class="form" method="GET">
+		<input type="submit" value="Logout"/>
+	</form>
 	<button onclick="window.history.go(-1)">back</button>
 	<h1 style="text-align : center">Creer un compte</h1>
 	<div justify-content: center;display: flex;">

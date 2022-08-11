@@ -1,4 +1,5 @@
 package be.pirbaert.DAOs;
+import java.io.IOException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,15 +24,13 @@ public class FineDAO extends DAO<Fine> {
 
 	public FineDAO(Connection connection) {
 		super(connection);
-		// TODO Auto-generated constructor stub
 	}
 
-	
-	// CREATE => TABLEAU DE INT POUR LES VIOLATIONS !!
 	@SuppressWarnings("deprecation")
 	@Override
 	public boolean create(Fine fine) {
 		CallableStatement procedure = null;
+		CallableStatement procedure2 = null;
 		int new_id = 0;
 		
 		try {
@@ -51,33 +50,36 @@ public class FineDAO extends DAO<Fine> {
 			procedure.executeQuery();
 			System.out.println("in dao server 1st query");
 			new_id = procedure.getInt(7);
+			System.out.println("NOUVEL ID = "+new_id);
 			if(new_id!=0) {
+				
 				fine.setId(new_id);
-				try {
-					System.out.println("Before pass array");
-					procedure = this.connect.prepareCall("{call manage_fine.create_fine_violation(?,?)}");
-					int[] idsViolations = new int[fine.getViolations().size()];
-					
-					for(int i=0;i<idsViolations.length;i++) {
-						idsViolations[i] = fine.getViolations().get(i).getId();
-					}
-					ArrayDescriptor descriptor = ArrayDescriptor.createDescriptor("TAB_NUM", procedure.getConnection());
-			        ARRAY array = new ARRAY(descriptor ,this.connect, idsViolations);
-					procedure.setArray(1,array);
-					procedure.setInt(2, fine.getId());
-					procedure.executeQuery();
-					System.out.println("after pass array");
-					return true;
-				}catch(SQLException e) {
-					e.printStackTrace();
-					return false;
+			
+				System.out.println("Before pass array");
+				procedure2 = this.connect.prepareCall("{call manage_fine.create_fine_violation(?,?)}");
+				int[] idsViolations = new int[fine.getViolations().size()];
+				
+				for(int i=0;i<idsViolations.length;i++) {
+					idsViolations[i] = fine.getViolations().get(i).getId();
 				}
+				for(int i=0;i<idsViolations.length;i++) {
+					System.out.println(idsViolations[i]);
+				}
+				
+				ArrayDescriptor descriptor = ArrayDescriptor.createDescriptor("TAB_NUM", procedure.getConnection());
+		        ARRAY array = new ARRAY(descriptor ,this.connect, idsViolations);
+				procedure2.setArray(1,array);
+				procedure2.setInt(2, fine.getId());
+				procedure2.executeQuery();
+				System.out.println("after pass array");
+				return true;
+			}else {
+				return false;
 			}
 		}catch(SQLException e) {
 			e.printStackTrace();
 			return false;
 		}
-		return false;
 	}
 //decline
 	@Override
@@ -115,7 +117,6 @@ public class FineDAO extends DAO<Fine> {
 		}
 	}
 
-// FIND/FINDALL => Policeman à null
 	@Override
 	public Fine find(int id) {
 		Fine fine = null;
@@ -150,7 +151,6 @@ public class FineDAO extends DAO<Fine> {
 				if(result.getInt("VALIDATED") == 1) {
 					validated = true;
 				}
-				
 				fine.setValidated(validated);
 			}
 		}catch(SQLException e) {
@@ -160,8 +160,6 @@ public class FineDAO extends DAO<Fine> {
 		return fine;
 	}
 
-	
-	// NEED TO FIX => Policeman null 
 	@Override
 	public List<Fine> findAll() {
 		List <Fine> allFines = new ArrayList <Fine>();

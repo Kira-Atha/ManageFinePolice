@@ -62,7 +62,7 @@ public class APIFine {
 			@FormParam("comment")String comment,
 			@FormParam("date") String s_date,
 			@FormParam("id_charged")int id_charged){
-		System.out.println("API CREATEFINE JE SUIS PASSE ICI");
+		//System.out.println("API CREATEFINE JE SUIS PASSE ICI");
 		Policeman policeman = (Policeman) Account.getAccount(id_policeman);
 		Charged charged = null;
 		if(id_charged!=0) {
@@ -72,7 +72,7 @@ public class APIFine {
 		String[] ids = ids_violation.split(";");
 		List<Violation> violations = new ArrayList<Violation>();
 		for(int i = 0; i < ids.length;i++) {
-			System.out.println(ids[i]);
+			//System.out.println(ids[i]);
 			violations.add(Violation.getViolation(Integer.parseInt(ids[i])));
 		}
 		  

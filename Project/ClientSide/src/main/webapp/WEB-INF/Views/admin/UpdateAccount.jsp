@@ -9,6 +9,10 @@
 <title>Update Account</title>
 </head>
 <body>
+	<form action="SignIn" class="form" method="GET">
+		<input type="submit" value="Logout"/>
+	</form>
+
 	<button onclick="location.href='/ClientSide/ManageAccount'">back</button>
 	<h1 style="text-align : center">Update account</h1>
 	<form action="UpdateAccount" class="form" method="POST">

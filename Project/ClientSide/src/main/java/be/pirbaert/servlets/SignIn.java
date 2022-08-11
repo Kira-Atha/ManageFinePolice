@@ -28,17 +28,15 @@ public class SignIn extends HttpServlet {
         super();
     }
 
-    /*
-    @Override
-    public void init()throws ServletException {
-    	super.init();
-    	
-    }
-    */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// Réinit la session à chaque passage ici 
+		HttpSession session = request.getSession();
+		if(!session.isNew()) {
+			session.invalidate();
+			session = request.getSession();
+		}
 		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/Views/SignIn.jsp");
 		dispatcher.forward(request, response);
-	
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -65,40 +63,34 @@ public class SignIn extends HttpServlet {
 			request.setAttribute("previous", request.getRequestURI());
 			request.setAttribute("errors", errors);
 			getServletContext().getRequestDispatcher("/WEB-INF/Views/errors.jsp").forward(request, response);
-
-		}
-	//Hash
-		Account account = Account.signIn(personelNumber,password);
-
-		if(!Objects.isNull(account)){
-			// Gérer session
-			
-			HttpSession session = request.getSession();
-			if(!session.isNew()) {
-				session.invalidate();
-				// Je veux la recréer
-				session = request.getSession();
-			}
-			session.setAttribute("account", account);
-			// Pour récup les values du compte connecté dans la page qui suit
-			//request.setAttribute("account", account);
-			if(account instanceof Chief) {
-				//Renvoyer vers la première page des chefs => Pourra consulter, lui
-				response.sendRedirect("ConsultFines");
-			}else if(account instanceof Policeman) {
-				//Renvoyer vers la première page des policiers => ConsultFines. Mais comme policeman, ne verra pas toutes les fines
-				response.sendRedirect("ConsultFines");
-			}
-			if(account instanceof Administrator) {
-				//Renvoyer vers la première page des admins ( Gestion des comptes ? )
-				response.sendRedirect("MenuAdmin");
-			}
-			if(account instanceof TaxCollector) {
-				response.sendRedirect("ConsultFines");
-			}
 		}else {
-			out.print("Incorrect account");
+			Account account = Account.signIn(personelNumber,password);
+
+			if(!Objects.isNull(account)){
+				HttpSession session = request.getSession();
+				if(!session.isNew()) {
+					session.invalidate();
+					session = request.getSession();
+				}
+		//Dispatch au bon endroit selon le type de compte
+				session.setAttribute("account", account);
+				if(account instanceof Chief) {
+					response.sendRedirect("ConsultFines");
+				}else if(account instanceof Policeman) {
+					response.sendRedirect("ConsultFines");
+				}
+				if(account instanceof Administrator) {
+					response.sendRedirect("MenuAdmin");
+				}
+				if(account instanceof TaxCollector) {
+					response.sendRedirect("ConsultFines");
+				}
+			}else {
+				errors.add("Incorrect account");
+				request.setAttribute("previous", request.getRequestURI());
+				request.setAttribute("errors", errors);
+				getServletContext().getRequestDispatcher("/WEB-INF/Views/errors.jsp").forward(request, response);
+			}
 		}
 	}
-
 }

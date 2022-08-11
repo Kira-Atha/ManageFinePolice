@@ -8,6 +8,9 @@
 	
 </head>
 <body>
+	<form action="SignIn" class="form" method="GET">
+		<input type="submit" value="Logout"/>
+	</form>
 	<h1 style="text-align : center" >Administrator Menu</h1>
 	<div style="text-align : center;justify-content: center;display: flex;">
 		<button onclick="location.href='/ClientSide/ManageAccount'">Manage user account</button>

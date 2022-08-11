@@ -17,7 +17,7 @@ public class SendLetter extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		response.sendRedirect("SignIn");
 	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Charged charged = Charged.getCharged(Integer.parseInt(request.getParameter("sendLetter")));

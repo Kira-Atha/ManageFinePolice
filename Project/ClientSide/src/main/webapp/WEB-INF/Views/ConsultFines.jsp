@@ -82,7 +82,7 @@
 					<p>No fines were recorded</p>
 				<%}%>
 					</span>
-<!--  -->				
+<!-- TAX COLLECTOR -->				
 			<%}else if(session.getAttribute("account") instanceof TaxCollector){
 				ArrayList<Fine> allFinesAccepted = (ArrayList<Fine>)request.getAttribute("allFinesAccepted");
 				if(allFinesAccepted.size()>0){%>
@@ -146,7 +146,7 @@
 		<%if(session.getAttribute("account") instanceof Policeman){%>
 			<p>ADD FINE</p>
 			<span id="span_add_fine">
-				<form action="ConsultFines" method="POST">
+				<form action="AddFine" method="POST">
 					<table>
 						<tr>
 							<td><fieldset>
@@ -154,7 +154,6 @@
 									<textarea name="comment" rows="4" cols="50"></textarea>
 							</fieldset></td>
 						</tr>
-						<!-- SELECT WITH OPTION -->
 						<tr>
 							<td><fieldset>
 								<legend>Charged</legend>
@@ -183,7 +182,6 @@
 								<%if(!Objects.isNull(request.getAttribute("allVehicles"))){
 									ArrayList<Vehicle> allVehicles = (ArrayList<Vehicle>)request.getAttribute("allVehicles");
 									for(Vehicle vehicle : allVehicles){%>
-									<!--  Oui mais dans le cas où il n'y a pas de numéro de plaque ?  -->
 										<%if(!Objects.isNull(vehicle.getRegistration())){ %>
 											<option value=<%=vehicle.getId()%>><%=vehicle.getType().getName()+"=>"+vehicle.getRegistration().getSerialNumber()%></option>
 										<%}else{%>
@@ -202,16 +200,17 @@
 						
 						<tr>
 							<td><fieldset>
-							<!--  JAVA SCRIPT POUR CALCULER LE TOTAL ? -->
 								<legend>Violations</legend>
 								<%if(!Objects.isNull(request.getAttribute("allViolations"))){
 									ArrayList<Violation> allViolations = (ArrayList<Violation>)request.getAttribute("allViolations");
 									for(Violation violation : allViolations){
+										if(!violation.getName().equals("Insurance default")){
 										String description = violation.getDescription();
 									%>
 										<input type="checkbox" name="violation" value=<%=violation.getId()%>/> <abbr title="<%=description%>"><%=violation.getName()%></abbr><br>
 									
-									<%}%>
+									<%}
+									}%>
 									<p> Not in the list? Ask admin to add one</p>
 									<%}else{%>
 										<p>No violations were recorded, please ask admin for add one</p>

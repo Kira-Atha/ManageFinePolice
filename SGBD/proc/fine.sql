@@ -1,7 +1,13 @@
-CREATE OR REPLACE TYPE tab_num IS VARRAY(50) OF NUMBER;
+CREATE OR REPLACE AND COMPILE JAVA SOURCE NAMED "FineDAO" AS
+	import java.io.*;
+	import java.sql.*;
+	import oracle.sql.*;
+	import oracle.jdbc.driver.*;
+/
+CREATE OR REPLACE TYPE tab_num IS table OF NUMBER;
 /
 CREATE OR REPLACE PACKAGE manage_fine IS
-	TYPE tab_num IS VARRAY(50) OF NUMBER;
+	TYPE tab_num IS table OF NUMBER;
 	PROCEDURE create_fine	(in_date IN FINE.DATEFINE%TYPE,in_COMMENTFINE IN FINE.COMMENTFINE%TYPE,
 							in_VALIDATED IN FINE.VALIDATED%TYPE,in_idVehicle IN FINE.IDVEHICLE%TYPE,in_idCharged IN FINE.IDCHARGED%TYPE,
 							in_idAccount IN FINE.IDACCOUNT%TYPE,new_id OUT Fine.IDFINE%TYPE);

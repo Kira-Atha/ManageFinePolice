@@ -11,7 +11,6 @@ public class Chief extends Policeman {
 		super(id,personelNumber, password);
 		this.setType(this.getClass().getSimpleName());
 		this.setSubordinates(new ArrayList<Policeman>());
-		
 	}
 	
 	public Chief(int id,String personelNumber) {

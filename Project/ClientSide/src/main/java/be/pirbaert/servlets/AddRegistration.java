@@ -30,6 +30,7 @@ public class AddRegistration extends HttpServlet {
 		HttpSession session = request.getSession(false);
 		PrintWriter out = response.getWriter();
 		Account account = null;
+		boolean auth = true;
 		if(session==null) {
 			out.println("No session");
 		}else {
@@ -38,6 +39,9 @@ public class AddRegistration extends HttpServlet {
 				account = (Policeman) session.getAttribute("account");
 			}else if(session.getAttribute("account") instanceof Chief) {
 				account = (Chief) session.getAttribute("account");
+			}else {
+				auth = false;
+				response.sendRedirect("SignIn");
 			}
 		}
 		
@@ -50,7 +54,7 @@ public class AddRegistration extends HttpServlet {
 			if(serialNumber.equals("")) {
 				errors.add("Serial number is empty");
 			}
-			if(!serialNumber.matches("^[0-2T]{1}-[A-Za-z]{3}-[0-9]{3}$")) {
+			if(!serialNumber.matches("^[0-2Tt]{1}-[A-Za-z]{3}-[0-9]{3}$")) {
 				errors.add("This is not a belgian registration. Format accepted => [0-ABC-012]");
 			}
 		}else {
@@ -60,21 +64,25 @@ public class AddRegistration extends HttpServlet {
 		if(errors.size() > 0) {
 			request.setAttribute("previous", request.getHeader("referer"));
 			request.setAttribute("errors", errors);
-			getServletContext().getRequestDispatcher("/WEB-INF/Views/errors.jsp").forward(request, response);
+			if(auth) {
+				getServletContext().getRequestDispatcher("/WEB-INF/Views/errors.jsp").forward(request, response);
+			}
 		}else {
 			Registration registration = new Registration(0,serialNumber);
 			if(registration.create()) {
 				response.sendRedirect("ConsultFines");
 			}else {
-				errors.add("Registration not created");
+				errors.add("Registration not created => Already exist");
 				request.setAttribute("previous", request.getHeader("referer"));
 				request.setAttribute("errors", errors);
-				getServletContext().getRequestDispatcher("/WEB-INF/Views/errors.jsp").forward(request, response);
+				if(auth) {
+					getServletContext().getRequestDispatcher("/WEB-INF/Views/errors.jsp").forward(request, response);
+				}
 			}
 		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("Je passe bien dans add registration POST");
+		response.sendRedirect("SignIn");
 	}
 }

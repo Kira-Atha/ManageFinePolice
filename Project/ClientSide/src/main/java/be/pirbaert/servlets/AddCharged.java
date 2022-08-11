@@ -32,6 +32,7 @@ public class AddCharged extends HttpServlet {
 		HttpSession session = request.getSession(false);
 		PrintWriter out = response.getWriter();
 		Account account = null;
+		boolean auth = true;
 		if(session==null) {
 			out.println("No session");
 		}else {
@@ -40,6 +41,9 @@ public class AddCharged extends HttpServlet {
 				account = (Policeman) session.getAttribute("account");
 			}else if(session.getAttribute("account") instanceof Chief) {
 				account = (Chief) session.getAttribute("account");
+			}else {
+				auth = false;
+				response.sendRedirect("SignIn");
 			}
 		}
 		
@@ -78,7 +82,9 @@ public class AddCharged extends HttpServlet {
 		if(errors.size()>0) {
 			request.setAttribute("previous", request.getHeader("referer"));
 			request.setAttribute("errors", errors);
-			getServletContext().getRequestDispatcher("/WEB-INF/Views/errors.jsp").forward(request, response);
+			if(auth) {
+				getServletContext().getRequestDispatcher("/WEB-INF/Views/errors.jsp").forward(request, response);
+			}
 		}else {
 			Charged charged = new Charged(0,firstname,lastname,address);
 			if(charged.create()) {
@@ -87,12 +93,12 @@ public class AddCharged extends HttpServlet {
 				errors.add("Charged not created");
 				request.setAttribute("previous", request.getHeader("referer"));
 				request.setAttribute("errors", errors);
-				getServletContext().getRequestDispatcher("/WEB-INF/Views/errors.jsp").forward(request, response);
+				if(auth) {
+					getServletContext().getRequestDispatcher("/WEB-INF/Views/errors.jsp").forward(request, response);
+				}
 			}
 		}
-
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	}
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {}
 }

@@ -43,6 +43,13 @@ public class Registration implements Serializable{
 		return registrationDAOc.findAll();
 	}
 	public boolean create() {
+		List <Registration> allRegistrations = Registration.getAllRegistrations();
+		for(Registration reg : allRegistrations) {
+			if(this.equals(reg)) {
+				//existe déjà
+				return false;
+			}
+		}
 		return registrationDAOc.create(this);
 	}
 	
@@ -57,11 +64,11 @@ public class Registration implements Serializable{
 		}
 
 		final Registration test = (Registration)o;
-		return this.getId() == (test.getId());
+		return this.getId() == (test.getId()) || this.getSerialNumber().toLowerCase().equals(test.getSerialNumber().toLowerCase());
 	}
 	@Override
 	public int hashCode() {
-		return this.getId();
+		return this.getId()+this.getSerialNumber().hashCode();
 	}	
 }
 

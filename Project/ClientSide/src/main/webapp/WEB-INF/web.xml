@@ -48,6 +48,46 @@
   		<servlet-name>SendLetter</servlet-name>
   		<servlet-class>be.pirbaert.servlets.SendLetter</servlet-class>
 	</servlet>
+	
+	<servlet>
+  		<servlet-name>AddFine</servlet-name>
+  		<servlet-class>be.pirbaert.servlets.AddFine</servlet-class>
+	</servlet>
+
+	<servlet>
+  		<servlet-name>CreateAccount</servlet-name>
+  		<servlet-class>be.pirbaert.servlets.CreateAccount</servlet-class>
+	</servlet>
+	
+	<servlet>
+  		<servlet-name>ManageAccount</servlet-name>
+  		<servlet-class>be.pirbaert.servlets.ManageAccount</servlet-class>
+	</servlet>	
+	
+	<servlet>
+ 		<servlet-name>MenuAdmin</servlet-name>
+  		<servlet-class>be.pirbaert.servlets.MenuAdmin</servlet-class>
+	</servlet>	
+
+	<servlet>
+ 		<servlet-name>UpdateAccount</servlet-name>
+  		<servlet-class>be.pirbaert.servlets.UpdateAccount</servlet-class>
+	</servlet>	
+
+	<servlet>
+ 		<servlet-name>ViolationCreate</servlet-name>
+  		<servlet-class>be.pirbaert.servlets.ViolationCreate</servlet-class>
+	</servlet>	
+	
+	<servlet>
+ 		<servlet-name>ViolationMenu</servlet-name>
+  		<servlet-class>be.pirbaert.servlets.ViolationMenu</servlet-class>
+	</servlet>	
+
+	<servlet>
+ 		<servlet-name>ViolationUpdate</servlet-name>
+  		<servlet-class>be.pirbaert.servlets.ViolationUpdate</servlet-class>
+	</servlet>		
   <!-- SERVLETS MAPPING -->
 	<servlet-mapping>
   		<servlet-name>SignIn</servlet-name>
@@ -83,4 +123,44 @@
   		<servlet-name>SendLetter</servlet-name>
   		<url-pattern>/SendLetter</url-pattern>
 	</servlet-mapping>
+	
+	<servlet-mapping>
+  		<servlet-name>AddFine</servlet-name>
+  		<url-pattern>/AddFine</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+  		<servlet-name>CreateAccount</servlet-name>
+  		<url-pattern>/CreateAccount</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+  		<servlet-name>ManageAccount</servlet-name>
+  		<url-pattern>/ManageAccount</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+  		<servlet-name>MenuAdmin</servlet-name>
+  		<url-pattern>/MenuAdmin</url-pattern>
+	</servlet-mapping>	
+
+	<servlet-mapping>
+  		<servlet-name>UpdateAccount</servlet-name>
+  		<url-pattern>/UpdateAccount</url-pattern>
+	</servlet-mapping>	
+
+	<servlet-mapping>
+  		<servlet-name>ViolationCreate</servlet-name>
+  		<url-pattern>/ViolationCreate</url-pattern>
+	</servlet-mapping>	
+	
+	<servlet-mapping>
+  		<servlet-name>ViolationMenu</servlet-name>
+  		<url-pattern>/ViolationMenu</url-pattern>
+	</servlet-mapping>	
+	
+	<servlet-mapping>
+  		<servlet-name>ViolationUpdate</servlet-name>
+  		<url-pattern>/ViolationUpdate</url-pattern>
+	</servlet-mapping>	
 </web-app>

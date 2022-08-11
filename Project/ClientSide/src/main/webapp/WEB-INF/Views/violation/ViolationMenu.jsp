@@ -13,6 +13,9 @@
 	<title>Violation list</title>
 </head>
 	<body>
+	<form action="SignIn" class="form" method="GET">
+		<input type="submit" value="Logout"/>
+	</form>
 		<%if(session.getAttribute("account") instanceof Administrator){%>
 			<button onclick="location.href='/ClientSide/MenuAdmin'">back</button>
 			<h1 style="text-align : center">Violation list</h1>
