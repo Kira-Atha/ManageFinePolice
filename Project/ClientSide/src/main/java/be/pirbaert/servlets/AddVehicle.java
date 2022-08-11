@@ -68,9 +68,7 @@ public class AddVehicle extends HttpServlet {
 		}
 
 		List<String> errors = new ArrayList<String>();
-		
-	// TODO => Gérer le fait qu'il ne puisse y avoir qu'un seul véhicule possédant une plaque. La supprimer de la liste d'affichage dans consultFines?
-		
+			
 		if(!Objects.isNull(request.getParameter("type")) || !Objects.isNull(request.getParameter("registration"))){
 			TypeVehicle type = TypeVehicle.getType(Integer.parseInt(request.getParameter("type")));
 			Registration registration = null;
@@ -90,7 +88,7 @@ public class AddVehicle extends HttpServlet {
 					if(vehicle.create()) {
 						response.sendRedirect("ConsultFines");
 					}else {
-						errors.add("Vehicle not created");
+						errors.add("Vehicle not created => Already exist");
 						request.setAttribute("previous", request.getHeader("referer"));
 						request.setAttribute("errors", errors);
 						getServletContext().getRequestDispatcher("/WEB-INF/Views/errors.jsp").forward(request, response);

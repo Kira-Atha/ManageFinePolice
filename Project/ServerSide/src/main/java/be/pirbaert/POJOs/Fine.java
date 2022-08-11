@@ -17,6 +17,7 @@ public class Fine implements Serializable {
 	private String commentary ;
 	private Date date;
 	private boolean validated;
+	private boolean letterSent;
 	private List<Violation> violations;
 	private Policeman policeman;
 	private Charged charged;
@@ -24,8 +25,6 @@ public class Fine implements Serializable {
 	private float totalPrice =0;
 	private static FactoryDAO afd = new FactoryDAO();
 	private static DAO<Fine> fineDAOs = afd.getFineDAO();
-	private static DAO<Charged> chargedDAOs = afd.getChargedDAO();
-	private static DAO<Vehicle> vehicleDAOs = afd.getVehicleDAO();
 	
 	public Fine() {}
 	
@@ -42,6 +41,7 @@ public class Fine implements Serializable {
 		this.date = date;
 		this.validated = false;
 		this.totalPrice = 0;
+		this.setLetterSent(false);
 	}
 
 	public Fine(List<Violation> violations,Policeman policeman,Vehicle vehicle,String commentary,Date date,Charged charged) {
@@ -54,6 +54,7 @@ public class Fine implements Serializable {
 		this.commentary = commentary;
 		this.date = date;
 		this.validated = false;
+		this.setLetterSent(false);
 		this.totalPrice = this.getTotalPrice();
 	}
 	
@@ -119,6 +120,14 @@ public class Fine implements Serializable {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public boolean isLetterSent() {
+		return letterSent;
+	}
+
+	public void setLetterSent(boolean letterSent) {
+		this.letterSent = letterSent;
 	}
 
 	public float getTotalPrice(){

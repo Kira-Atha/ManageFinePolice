@@ -109,9 +109,10 @@ public class TypeVehicleDAO extends DAO<TypeVehicle> {
 			
 			result = preparedStatement.executeQuery();
 			
-			while(result.next()) {
+			if(result.next()) {
 				type=new TypeVehicle(result.getInt("IdType"),result.getString("Name"));
 			}
+			result.close();
 		}catch(SQLException e) {
 			return null;
 		}
@@ -129,6 +130,7 @@ public class TypeVehicleDAO extends DAO<TypeVehicle> {
 				type=new TypeVehicle(result.getInt("IdType"),result.getString("Name"));
 				allTypes.add(type);
 			}
+			result.close();
 		}catch(SQLException e) {
 			return null;
 		}

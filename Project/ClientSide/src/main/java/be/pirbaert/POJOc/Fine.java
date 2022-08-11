@@ -13,6 +13,7 @@ public class Fine implements Serializable {
 	private String commentary ;
 	private Date date;
 	private boolean validated;
+	private boolean letterSent;
 	private List<Violation> violations;
 	private Policeman policeman;
 	private Charged charged;
@@ -35,6 +36,7 @@ public class Fine implements Serializable {
 		this.date = date;
 		this.validated = false;
 		this.totalPrice = 0;
+		this.setLetterSent(false);
 	}
 	
 	public String getCommentary() {
@@ -113,6 +115,14 @@ public class Fine implements Serializable {
 		return this.totalPrice;
 	}
 	
+	public boolean isLetterSent() {
+		return letterSent;
+	}
+
+	public void setLetterSent(boolean letterSent) {
+		this.letterSent = letterSent;
+	}
+
 	public static Fine getFine(int id) {
 		return fineDAOc.find(id);
 	}
@@ -136,7 +146,7 @@ public class Fine implements Serializable {
 	public String toString() {
 		return " Id du fine : "+this.getId()+" Commentaire : "+this.getCommentary();
 	}
-	// OVERRIDE POUR CONTAINS ( charged.addFine(fine) )
+
 	@Override
 	public boolean equals(Object o) {
 		if(this == o) {

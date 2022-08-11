@@ -25,7 +25,6 @@ public class AddCharged extends HttpServlet {
 
     public AddCharged() {
         super();
-
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

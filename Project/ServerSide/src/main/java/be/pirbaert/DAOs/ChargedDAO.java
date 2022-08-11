@@ -66,6 +66,7 @@ public class ChargedDAO extends DAO<Charged>{
 			if(result.next()) {
 				charged=new Charged(result.getInt("IdCharged"),result.getString("firstname"),result.getString("lastname"),result.getString("address"));
 			}
+			result.close();
 		}catch(SQLException e) {
 			e.printStackTrace();
 			return null;

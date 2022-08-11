@@ -21,7 +21,6 @@ public class AccountDAO extends DAO<Account> {
 
 	public AccountDAO(Connection connection) {
 		super(connection);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -147,8 +146,6 @@ public class AccountDAO extends DAO<Account> {
 		PreparedStatement preparedStatement = null;
 
 		try{
-			
-
 			preparedStatement = this.connect.prepareStatement("SELECT * FROM Account WHERE IDACCOUNT =?");
 			preparedStatement.setInt(1, id);
 			
@@ -170,6 +167,7 @@ public class AccountDAO extends DAO<Account> {
 						break;
 				}
 			}
+			result.close();
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
@@ -192,6 +190,7 @@ public class AccountDAO extends DAO<Account> {
 						break;
 					case "Policeman":
 						account = new Policeman(result.getInt("IdAccount"),result.getString("PersonelNumber"));
+						((Policeman)account).setChief((Chief)Account.getAccount(result.getInt("IdChief")));
 						allAccounts.add(account);
 						break;
 					case "Administrator":
@@ -204,6 +203,7 @@ public class AccountDAO extends DAO<Account> {
 						break;
 				}
 			}
+			result.close();
 		}catch(SQLException e) {
 			
 		}

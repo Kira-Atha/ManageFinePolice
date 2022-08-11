@@ -30,6 +30,7 @@ public class DownstreamFine extends HttpServlet {
 		if(!Objects.isNull(request.getParameter("accept"))) {
 			id_fine = request.getParameter("accept");
 			Fine fineToUpdate = Fine.getFine(Integer.parseInt(id_fine));
+			fineToUpdate.setValidated(true);
 			if(fineToUpdate.update()) {
 				System.out.println("Le fine a été accepté ( msg temp)");
 				response.sendRedirect("ConsultFines");

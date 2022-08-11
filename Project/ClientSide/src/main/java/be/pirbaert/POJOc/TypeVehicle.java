@@ -43,5 +43,22 @@ public class TypeVehicle implements Serializable{
 		this.id = id;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if(this == o) {
+			return true;
+		}
+			
+		if((o == null) || (o.getClass() != this.getClass())) {
+			return false;
+		}
+
+		final TypeVehicle test = (TypeVehicle)o;
+		return this.getId() == (test.getId()) || this.getName().equals(test.getName());
+	}
+	@Override
+	public int hashCode() {
+		return this.getId()+this.getName().hashCode();
+	}
 	
 }

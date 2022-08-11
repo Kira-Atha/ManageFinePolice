@@ -20,6 +20,6 @@ INSERT INTO FINE VALUES(1,to_date('20-12-2021','dd-mm-yyyy'),'Call to order igno
 INSERT INTO VIO_FIN VALUES(3,1);
 
 INSERT INTO FINE VALUES(FINE_SEQ.NEXTVAL,to_date('18-01-2021','dd-mm-yyyy'),'To decline',0,1,1,2);
-INSERT INTO VIO_FIN VALUES(2,81);
+INSERT INTO VIO_FIN VALUES(2,85);
 
 commit;

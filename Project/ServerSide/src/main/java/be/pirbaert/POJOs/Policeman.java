@@ -3,18 +3,19 @@ package be.pirbaert.POJOs;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
 import be.pirbaert.DAOs.DAO;
+
 
 public class Policeman extends Account{
 	private static final long serialVersionUID = 8562421127622269285L;
 	private List <Fine> fines;
+	private Chief chief;
 	private static DAO<Fine> fineDAOs = afd.getFineDAO();
 	
 	public Policeman(int id,String personelNumber, String password) {
-		super(id,personelNumber, password);
-		this.setType(this.getClass().getSimpleName());
-		setFines(new ArrayList<Fine>());
+		super(id,personelNumber,password);
+		this.fines = new ArrayList<Fine>();
+		this.type=this.getClass().getSimpleName();
 	}
 	
 	public Policeman(int id,String personelNumber) {
@@ -28,12 +29,25 @@ public class Policeman extends Account{
 		setFines(new ArrayList<Fine>());
 	}
 
+	/*
 	public List <Fine> getFines() {
+		List<Fine> allFines = Fine.getAllFines();
+		for(Fine fine : allFines) {
+			if(fine.getPoliceman().equals(this) && !this.fines.contains(fine)) {
+				fines.add(fine);
+			}
+		}
 		return fines;
-	}
-
+	}*/
 	public void setFines(List <Fine> fines) {
 		this.fines = fines;
+	}
+	
+	public Chief getChief() {
+		return chief;
+	}
+	public void setChief(Chief chief) {
+		this.chief = chief;
 	}
 	public boolean createFine(Fine fine) {
 		boolean success = false;
@@ -46,4 +60,21 @@ public class Policeman extends Account{
 		}
 		return success;
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(this == o) {
+			return true;
+		}
+		if((o == null) || (o.getClass() != this.getClass())) {
+			return false;
+		}
+
+		final Policeman test = (Policeman)o;
+		return this.getId() == (test.getId());
+	}
+	@Override
+	public int hashCode() {
+		return this.getId();
+	}	
 }

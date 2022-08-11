@@ -71,7 +71,6 @@ public class FineDAO extends DAO<Fine> {
 		return false;
 	}
 
-	//S'il y a update, c'est forcément pour mettre validated à true
 	@Override
 	public boolean update(Fine fine) {
 		MultivaluedMap<String,String> paramsPut = new MultivaluedMapImpl();
@@ -79,6 +78,8 @@ public class FineDAO extends DAO<Fine> {
 		//paramsPut.add("validated",String.valueOf(boolValue));
 		
 		paramsPut.add("id_fine", String.valueOf(fine.getId()));
+		paramsPut.add("validated",String.valueOf(fine.isValidated()?1:0));
+		paramsPut.add("letterSent", String.valueOf(fine.isLetterSent()?1:0));
 		ClientResponse responseJSON = this.getResource()
 				.path("fine")
 				.put(ClientResponse.class,paramsPut);

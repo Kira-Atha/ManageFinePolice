@@ -65,6 +65,40 @@ public class Vehicle implements Serializable{
 	}
 	
 	public boolean create() {
+		List <Vehicle> allVehicles = Vehicle.getAllVehicles();
+		for(Vehicle veh : allVehicles) {
+			if(this.equals(veh)) {
+				//existe déjà
+				return false;
+			}
+		}
 		return vehicleDAOc.create(this);
 	}
+	
+	// Pour le cas où je veux ajouter un camion sans plaque alors qu'il existe déjà
+	@Override
+	public boolean equals(Object o) {
+		if(this == o) {
+			return true;
+		}
+			
+		if((o == null) || (o.getClass() != this.getClass())) {
+			return false;
+		}
+
+		final Vehicle test = (Vehicle)o;
+		if(!Objects.isNull(this.getRegistration())) {
+			return this.getId() == (test.getId()) || (this.getRegistration().getSerialNumber().toLowerCase().equals(test.getRegistration().getSerialNumber().toLowerCase()) && this.getType().equals(test.getType()));
+		}else {
+			return this.getId() == (test.getId()) || Objects.isNull(this.getRegistration()) && Objects.isNull(test.getRegistration()) && this.getType().equals(test.getType());
+		}
+	}
+	@Override
+	public int hashCode() {
+		if(!Objects.isNull(this.getRegistration())) {
+			return this.getId()+this.getType().getName().hashCode()+this.getRegistration().getSerialNumber().hashCode();
+		}else {
+			return this.getId()+this.getType().getName().hashCode();
+		}
+	}	
 }

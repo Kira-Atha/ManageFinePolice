@@ -114,6 +114,7 @@ public class ViolationDAO extends DAO<Violation> {
 			if(result.next()) {
 				violation=new Violation(result.getInt("IdViolation"),result.getString("Name"),result.getString("Description"),result.getFloat("Price"));
 			}
+			result.close();
 		}catch(SQLException e) {
 			return null;
 		}
@@ -131,6 +132,7 @@ public class ViolationDAO extends DAO<Violation> {
 				violation=new Violation(result.getInt("IdViolation"),result.getString("Name"),result.getString("Description"),result.getFloat("Price"));
 				allViolations.add(violation);
 			}
+			result.close();
 		}catch(SQLException e) {
 			return null;
 		}

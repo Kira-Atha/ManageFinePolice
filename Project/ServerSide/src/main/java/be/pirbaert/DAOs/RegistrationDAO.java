@@ -16,7 +16,6 @@ public class RegistrationDAO extends DAO<Registration> {
 
 	public RegistrationDAO(Connection connection) {
 		super(connection);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -94,15 +93,13 @@ public class RegistrationDAO extends DAO<Registration> {
 		PreparedStatement preparedStatement = null;
 		
 		try{
-			
 			preparedStatement = this.connect.prepareStatement("SELECT * FROM Registration where IdRegistration=?");
 			preparedStatement.setInt(1, id);
-			
-			
 			result = preparedStatement.executeQuery();
-			while(result.next()) {
+			if(result.next()) {
 				registration=new Registration(result.getInt("IdRegistration"),result.getString("SerialNumber"));
 			}
+			result.close();
 		}catch(SQLException e) {
 			return null;
 		}
@@ -120,6 +117,7 @@ public class RegistrationDAO extends DAO<Registration> {
 				registration=new Registration(result.getInt("IdRegistration"),result.getString("SerialNumber"));
 				allRegistrations.add(registration);
 			}
+			result.close();
 		}catch(SQLException e) {
 			return null;
 		}

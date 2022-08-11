@@ -53,13 +53,11 @@ public class VehicleDAO extends DAO<Vehicle> {
 
 	@Override
 	public boolean delete(Vehicle obj) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean update(Vehicle obj) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -77,6 +75,7 @@ public class VehicleDAO extends DAO<Vehicle> {
 			if(result.next()) {
 				vehicle=new Vehicle(result.getInt("IdVehicle"),Registration.getRegistration(result.getInt("IdRegistration")),TypeVehicle.getType(result.getInt("IdType")));
 			}
+			result.close();
 		}catch(SQLException e) {
 			return null;
 		}
@@ -94,10 +93,10 @@ public class VehicleDAO extends DAO<Vehicle> {
 				vehicle=new Vehicle(result.getInt("IdVehicle"),Registration.getRegistration(result.getInt("IdRegistration")),TypeVehicle.getType(result.getInt("IdType")));
 				allVehicles.add(vehicle);
 			}
+			result.close();
 		}catch(SQLException e) {
 			return null;
 		}
 		return allVehicles;
 	}
-
 }

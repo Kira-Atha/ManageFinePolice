@@ -31,8 +31,8 @@
 			<form action="ViolationMenu" method="GET">
 				<button type="submit" class="btn" id="btn_updateViolationChief">Update violation</button> 
 			</form>
-			<%if(!Objects.isNull(request.getAttribute("allFines"))){
-				ArrayList<Fine> allFines = (ArrayList<Fine>)request.getAttribute("allFines");%>
+			<%if(!Objects.isNull(request.getAttribute("finesSubordinates")) && ((ArrayList<Fine>)request.getAttribute("finesSubordinates")).size() >0){
+				ArrayList<Fine> finesSubordinates = (ArrayList<Fine>)request.getAttribute("finesSubordinates");%>
 				<span id="span_consult_fines">
 				<p>Consult fines</p>
 					<table border="1">
@@ -47,7 +47,8 @@
 							<th>Status</th>
 						</tr>
 						
-					<%for(Fine fine : allFines){
+					<%for(Fine fine : finesSubordinates){
+						
 						String fine_id = String.valueOf(fine.getId());
 					%>	
 						<tr>
@@ -79,7 +80,7 @@
 					<%}%>
 					</table>
 				<%}else{%>
-					<p>No fines were recorded</p>
+					<p>No fines were registered by your team</p>
 				<%}%>
 					</span>
 <!-- TAX COLLECTOR -->				
@@ -118,11 +119,15 @@
 							<td><%= fine.getPoliceman().getPersonnelNumber()%></td>
 							<td><%= fine.getTotalPrice() %></td>
 							<td>
-							<%if(!Objects.isNull(fine.getCharged())){ %>
-							<form action="SendLetter" method="POST">
-								<button type="submit" class="btn" id="btn_sendLetter" name="sendLetter" value=<%=fine.getCharged().getId() %>>send letter</button> 
-							</form>
-							<%}%>
+							<%if(!Objects.isNull(fine.getCharged())){ 
+								if(!fine.isLetterSent()){%>
+									<form action="SendLetter" method="POST">
+										<button type="submit" class="btn" id="btn_sendLetter" name="sendLetter" value=<%=fine.getId() %>>send letter</button> 
+									</form>
+							<%	}else{%>
+									<p>Letter already sent</p>
+								<%}
+							}%>
 							</td>
 						</tr>
 					<%}%>

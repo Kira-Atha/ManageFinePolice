@@ -49,8 +49,16 @@ public class ConsultFines extends HttpServlet {
 			account = (Account) session.getAttribute("account");
 			if(session.getAttribute("account") instanceof Chief) {
 				account = (Chief) session.getAttribute("account");
+				for(Policeman policeman : ((Chief)account).getSubordinates()) {
+					//System.out.println("TEST => Subordinates to chief :"+policeman.getId());
+				}
 			}else if(session.getAttribute("account") instanceof Policeman) {
 				account = (Policeman) session.getAttribute("account");
+				
+				for(Fine fine : ((Policeman)account).getFines()) {
+					//System.out.println("TEST => Fine qu'a fait le policeman "+fine.getId());
+				}
+				
 			}else if(session.getAttribute("account") instanceof TaxCollector) {
 				account = (TaxCollector) session.getAttribute("account");
 			}else {
@@ -86,8 +94,16 @@ public class ConsultFines extends HttpServlet {
 			}
 			List<TypeVehicle> allTypes = TypeVehicle.getAllTypes();
 			
+			List<Fine> finesSubordinates = new ArrayList<Fine>();
+		// Les contraventions des policiers dont account est le chef	
+			for(Policeman police :((Chief)account).getSubordinates()) {
+				for(Fine fine : police.getFines()) {
+					finesSubordinates.add(fine);
+				}
+			}
 			
-			request.setAttribute("allFines", allFines);
+			//request.setAttribute("allFines", allFines);
+			request.setAttribute("finesSubordinates", finesSubordinates);
 			request.setAttribute("allViolations", allViolations);
 			request.setAttribute("allChargeds", allChargeds);
 			request.setAttribute("allVehicles", allVehicles);

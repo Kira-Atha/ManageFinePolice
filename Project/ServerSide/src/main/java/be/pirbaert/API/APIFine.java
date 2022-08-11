@@ -21,6 +21,7 @@ import javax.ws.rs.core.Response.Status;
 
 import be.pirbaert.POJOs.Account;
 import be.pirbaert.POJOs.Charged;
+import be.pirbaert.POJOs.Chief;
 import be.pirbaert.POJOs.Fine;
 import be.pirbaert.POJOs.Policeman;
 import be.pirbaert.POJOs.Vehicle;
@@ -63,7 +64,9 @@ public class APIFine {
 			@FormParam("date") String s_date,
 			@FormParam("id_charged")int id_charged){
 		//System.out.println("API CREATEFINE JE SUIS PASSE ICI");
-		Policeman policeman = (Policeman) Account.getAccount(id_policeman);
+
+		Account account = Account.getAccount(id_policeman);
+		
 		Charged charged = null;
 		if(id_charged!=0) {
 			charged = Charged.getCharged(id_charged);
@@ -83,8 +86,12 @@ public class APIFine {
 			e.printStackTrace();
 		}
 		
-		Fine fine = new Fine(violations,policeman,Vehicle.getVehicle(id_vehicle),comment,date,charged);
-		if(policeman.createFine(fine)) {
+		Fine fine = new Fine(violations,(Policeman)account,Vehicle.getVehicle(id_vehicle),comment,date,charged);
+		// d'office accepté si chef qui a créé
+		if(account instanceof Chief) {
+			fine.setValidated(true);
+		}
+		if(((Policeman)account).createFine(fine)) {
 			return Response
 					.status(Status.CREATED)
 					.header("Location","fine"+fine.getId())
@@ -97,12 +104,13 @@ public class APIFine {
 	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateFine(
-			@FormParam("id_fine") int id_fine){
-		
+			@FormParam("id_fine") int id_fine,
+			@FormParam("validated") int validated,
+			@FormParam("letterSent")int letterSent){
 		Fine fine = Fine.getFine(id_fine);
-		fine.setValidated(true);
-		
-		
+
+		fine.setValidated(intToBool(validated));
+		fine.setLetterSent(intToBool(letterSent));
 		if(fine.update()) {
 			return Response
 					.status(Status.NO_CONTENT)
@@ -120,5 +128,12 @@ public class APIFine {
 			return Response.status(Status.NO_CONTENT).build();
 		}
 		else return Response.status(Status.NOT_FOUND).build();
+	}
+	
+	public static boolean intToBool(int val) {
+	    if (val <= 0) {
+	    	return false;
+	    }
+	    return true;
 	}
 }

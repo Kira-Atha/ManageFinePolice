@@ -4,29 +4,29 @@ CREATE OR REPLACE AND COMPILE JAVA SOURCE NAMED "FineDAO" AS
 	import oracle.sql.*;
 	import oracle.jdbc.driver.*;
 /
+CREATE SEQUENCE fine_seq
+	INCREMENT BY 1;
+/
 CREATE OR REPLACE TYPE tab_num IS table OF NUMBER;
 /
 CREATE OR REPLACE PACKAGE manage_fine IS
 	TYPE tab_num IS table OF NUMBER;
 	PROCEDURE create_fine	(in_date IN FINE.DATEFINE%TYPE,in_COMMENTFINE IN FINE.COMMENTFINE%TYPE,
 							in_VALIDATED IN FINE.VALIDATED%TYPE,in_idVehicle IN FINE.IDVEHICLE%TYPE,in_idCharged IN FINE.IDCHARGED%TYPE,
-							in_idAccount IN FINE.IDACCOUNT%TYPE,new_id OUT Fine.IDFINE%TYPE);
+							in_idAccount IN FINE.IDACCOUNT%TYPE,in_LETTERSENT in FINE.LETTERSENT%TYPE,new_id OUT Fine.IDFINE%TYPE);
 	PROCEDURE create_fine_violation(in_idsViolation IN tab_num,in_idFine IN FINE.IDFINE%TYPE);
 	PROCEDURE delete_fine(in_idFine IN Fine.IDFINE%TYPE);
 	PROCEDURE delete_fine_violation(in_idFine IN FINE.IDFINE%TYPE);
-	PROCEDURE update_fine(in_idFine IN FINE.IDFINE%TYPE);
+	PROCEDURE update_fine(in_idFine IN FINE.IDFINE%TYPE,in_validated IN FINE.VALIDATED%TYPE, in_letterSent IN FINE.letterSent%TYPE);
 END manage_fine;
-/
-CREATE SEQUENCE fine_seq
-	INCREMENT BY 1;
 /
 CREATE OR REPLACE package body manage_fine IS
 	PROCEDURE create_fine(in_date IN FINE.DATEFINE%TYPE,in_COMMENTFINE IN FINE.COMMENTFINE%TYPE,
 							in_VALIDATED IN FINE.VALIDATED%TYPE,in_idVehicle IN FINE.IDVEHICLE%TYPE,in_idCharged IN FINE.IDCHARGED%TYPE,
-							in_idAccount IN FINE.IDACCOUNT%TYPE,new_id OUT Fine.IDFINE%TYPE) IS
+							in_idAccount IN FINE.IDACCOUNT%TYPE,in_LETTERSENT in FINE.LETTERSENT%TYPE,new_id OUT Fine.IDFINE%TYPE) IS
 		BEGIN
-			INSERT INTO FINE (IDFINE,DATEFINE,COMMENTFINE,VALIDATED,IDVEHICLE,IDCHARGED,IDACCOUNT)
-			VALUES (fine_seq.NEXTVAL,in_date,in_COMMENTFINE,in_VALIDATED,in_idVehicle,in_idCharged,in_idAccount)
+			INSERT INTO FINE (IDFINE,DATEFINE,COMMENTFINE,VALIDATED,IDVEHICLE,IDCHARGED,LETTERSENT,IDACCOUNT)
+			VALUES (fine_seq.NEXTVAL,in_date,in_COMMENTFINE,in_VALIDATED,in_idVehicle,in_idCharged,in_LETTERSENT,in_idAccount)
 			returning IDFINE into new_id;
 			COMMIT;
 		exception
@@ -113,10 +113,10 @@ CREATE OR REPLACE package body manage_fine IS
 		END delete_fine_violation;
 		
 		
-	PROCEDURE update_fine(in_idFine IN FINE.IDFINE%TYPE) IS
+	PROCEDURE update_fine(in_idFine IN FINE.IDFINE%TYPE,in_validated IN FINE.VALIDATED%TYPE, in_letterSent IN FINE.letterSent%TYPE) IS
 		BEGIN
 			UPDATE FINE 
-			SET VALIDATED = 1
+			SET VALIDATED = in_validated, LETTERSENT = in_letterSent
 			WHERE IDFINE = in_idFine;
 			COMMIT;
 		exception

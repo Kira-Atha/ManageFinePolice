@@ -34,10 +34,10 @@ public class FineDAO extends DAO<Fine> {
 		int new_id = 0;
 		
 		try {
-			procedure = this.connect.prepareCall("{call manage_fine.create_fine(?,?,?,?,?,?,?)}");
+			procedure = this.connect.prepareCall("{call manage_fine.create_fine(?,?,?,?,?,?,?,?)}");
 			procedure.setDate(1,new java.sql.Date(fine.getDate().getTime()));
 			procedure.setString(2, fine.getCommentary());
-			procedure.setInt(3, 0);
+			procedure.setInt(3, fine.isValidated()?1:0);
 			procedure.setInt(4, fine.getVehicle().getId());
 
 			if(!Objects.isNull(fine.getCharged())) {
@@ -46,7 +46,8 @@ public class FineDAO extends DAO<Fine> {
 				procedure.setNull(5, Types.INTEGER);
 			}
 			procedure.setInt(6, fine.getPoliceman().getId());
-			procedure.registerOutParameter(7, Types.NUMERIC);
+			procedure.setInt(7, 0);
+			procedure.registerOutParameter(8, Types.NUMERIC);
 			procedure.executeQuery();
 			System.out.println("in dao server 1st query");
 			new_id = procedure.getInt(7);
@@ -102,13 +103,17 @@ public class FineDAO extends DAO<Fine> {
 			return false;
 		}
 	}
-//accept
+//accept + send letter
 	@Override
 	public boolean update(Fine fine) {
 		CallableStatement procedure = null;
+		System.out.println("VALIDATED ="+fine.isValidated());
+		System.out.println("LETTER SENT ="+fine.isLetterSent());
 		try {
-			procedure = this.connect.prepareCall("{call manage_fine.update_fine(?)}");
+			procedure = this.connect.prepareCall("{call manage_fine.update_fine(?,?,?)}");
 			procedure.setInt(1, fine.getId());
+			procedure.setInt(2, fine.isValidated()?1:0);
+			procedure.setInt(3, fine.isLetterSent()?1:0);
 			procedure.executeQuery();
 			return true;
 		}catch(SQLException e) {
@@ -147,12 +152,15 @@ public class FineDAO extends DAO<Fine> {
 					e.printStackTrace();
 				}
 				fine=new Fine(result.getInt("IdFine"),fineViolations,(Policeman)Account.getAccount(result.getInt("IdAccount")),Vehicle.getVehicle(result.getInt("IdVehicle")),result.getString("commentfine"),result.getDate("datefine"),Charged.getCharged(result.getInt("IdCharged")));
-				boolean validated = false;
 				if(result.getInt("VALIDATED") == 1) {
-					validated = true;
+					fine.setValidated(true);
 				}
-				fine.setValidated(validated);
+				if(result.getInt("LETTERSENT")==1) {
+					fine.setLetterSent(true);
+				}
 			}
+			result.close();
+			result2.close();
 		}catch(SQLException e) {
 			e.printStackTrace();
 			return null;
@@ -179,14 +187,17 @@ public class FineDAO extends DAO<Fine> {
 					e.printStackTrace();
 				}
 				fine=new Fine(result.getInt("IdFine"),fineViolations,(Policeman)Account.getAccount(result.getInt("IdAccount")),Vehicle.getVehicle(result.getInt("IdVehicle")),result.getString("commentfine"),result.getDate("datefine"),Charged.getCharged(result.getInt("IdCharged")));
-				boolean validated = false;
-				if(result.getInt("VALIDATED") == 1) {
-					validated = true;
-				}
 				
-				fine.setValidated(validated);
+				if(result.getInt("VALIDATED") == 1) {
+					fine.setValidated(true);
+				}
+				if(result.getInt("LETTERSENT")==1) {
+					fine.setLetterSent(true);
+				}
 				allFines.add(fine);
 			}
+			result.close();
+			result2.close();
 		}catch(SQLException e) {
 			e.printStackTrace();
 			return null;

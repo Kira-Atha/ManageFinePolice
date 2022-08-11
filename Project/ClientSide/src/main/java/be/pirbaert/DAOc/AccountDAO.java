@@ -27,13 +27,9 @@ public class AccountDAO extends DAO<Account> {
 	public AccountDAO() {
 	}
 
-	// -> API
 	@Override
 	public boolean create(Account obj) {
-		
-		
 		MultivaluedMap<String,String> paramsPost = new MultivaluedMapImpl();
-		
 		paramsPost.add("personnelNumber",obj.getPersonnelNumber());
 		paramsPost.add("password",obj.getPassword());
 		paramsPost.add("type",obj.getType());
@@ -49,8 +45,6 @@ public class AccountDAO extends DAO<Account> {
 
 	@Override
 	public boolean delete(Account obj) {
-		
-		
 		ClientResponse responseJSON = this.getResource()
 				.path("account")
 				.path(String.valueOf(obj.getId()))

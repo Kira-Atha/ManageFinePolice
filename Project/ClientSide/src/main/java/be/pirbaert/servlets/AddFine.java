@@ -111,7 +111,10 @@ public class AddFine extends HttpServlet {
 				Date localToDate = Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant());
 				
 				Fine fine = new Fine(0,violations,(Policeman)account,vehicle,commentary,localToDate,charged);
-				
+		// Si le chef ajoute une contravention, elle est automatiquement acceptée ( il n'a pas de chef pour accepter )
+				if(account instanceof Chief) {
+					fine.setValidated(true);
+				}
 				if(fine.create()) {
 					System.out.println("Le fine a été créé ( msg temp)");
 					request.setAttribute("fine", fine);
