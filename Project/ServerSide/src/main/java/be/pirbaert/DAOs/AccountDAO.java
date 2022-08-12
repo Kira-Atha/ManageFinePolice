@@ -174,7 +174,7 @@ public class AccountDAO extends DAO<Account> {
 		//System.out.println(account.getClass().getSimpleName());
 		return account;
 	}
-
+	
 	@Override
 	public List<Account> findAll() {
 		List <Account> allAccounts = new ArrayList <Account>();
@@ -184,23 +184,23 @@ public class AccountDAO extends DAO<Account> {
 			result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Account");
 			while(result.next()) {
 				switch(result.getString("TypeAccount")) {
-					case "Chief":
-						account = new Chief(result.getInt("IdAccount"),result.getString("PersonelNumber"));
-						allAccounts.add(account);
-						break;
-					case "Policeman":
-						account = new Policeman(result.getInt("IdAccount"),result.getString("PersonelNumber"));
-						((Policeman)account).setChief((Chief)Account.getAccount(result.getInt("IdChief")));
-						allAccounts.add(account);
-						break;
-					case "Administrator":
-						account = new Administrator(result.getInt("IdAccount"),result.getString("PersonelNumber"));
-						allAccounts.add(account);
-						break;
-					case "TaxCollector":
-						account = new TaxCollector(result.getInt("IdAccount"),result.getString("PersonelNumber"));
-						allAccounts.add(account);
-						break;
+				case "Chief":
+					account = new Chief(result.getInt("IdAccount"),result.getString("PersonelNumber"));
+					allAccounts.add(account);
+					break;
+				case "Policeman":
+					account = new Policeman(result.getInt("IdAccount"),result.getString("PersonelNumber"));
+					((Policeman)account).setChief((Chief)Account.getAccount(result.getInt("IdChief")));
+					allAccounts.add(account);
+					break;
+				case "Administrator":
+					account = new Administrator(result.getInt("IdAccount"),result.getString("PersonelNumber"));
+					allAccounts.add(account);
+					break;
+				case "TaxCollector":
+					account = new TaxCollector(result.getInt("IdAccount"),result.getString("PersonelNumber"));
+					allAccounts.add(account);
+					break;
 				}
 			}
 			result.close();
@@ -209,6 +209,38 @@ public class AccountDAO extends DAO<Account> {
 		}
 		//System.out.println(allAccounts.get(0));
 		return allAccounts;
+	}
+	
+	public List<Chief> findAllChief() {
+		List <Chief> allChiefs = new ArrayList <Chief>();
+		ResultSet result = null;
+		try{
+			result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Account WHERE TYPEACCOUNT = 'Chief'");
+			while(result.next()) {
+				allChiefs.add(new Chief(result.getInt("IdAccount"),result.getString("PersonelNumber")));
+				
+			}
+			result.close();
+		}catch(SQLException e) {
+			
+		}
+		return allChiefs;
+	}
+
+	public List<Policeman> findAllPoliceman() {
+		List <Policeman> allPolicemans = new ArrayList <Policeman>();
+		ResultSet result = null;
+		try{
+			result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Account WHERE TYPEACCOUNT = 'Policeman'");
+			while(result.next()) {
+						allPolicemans.add(new Policeman(result.getInt("IdAccount"),result.getString("PersonelNumber")));
+				
+			}
+			result.close();
+		}catch(SQLException e) {
+			
+		}
+		return allPolicemans;
 	}
 	
 	public Account connect(String personelNumber, String password) {

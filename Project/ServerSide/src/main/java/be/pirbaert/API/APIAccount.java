@@ -55,12 +55,52 @@ public class APIAccount{
 			@QueryParam("password") String password) {
 		
 		Account account = Account.connect(personelNumber,password);
-				
+		
 		if(account != null) 
 			
 			return Response
 					.status(Status.OK)
 					.entity(account)
+					.build();
+		
+		return Response
+				.status(Status.BAD_REQUEST)
+				.build();
+		
+	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/chief")
+	public Response getAllChief() {
+		
+		List<Chief> chiefs = Chief.getAll();
+		
+		if(chiefs != null) 
+			
+			return Response
+					.status(Status.OK)
+					.entity(chiefs)
+					.build();
+		
+		return Response
+				.status(Status.BAD_REQUEST)
+				.build();
+		
+	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/policeman")
+	public Response getAllPoliceman() {
+		
+		List<Policeman> policemans = Policeman.getAll();
+				
+		if(policemans != null) 
+			
+			return Response
+					.status(Status.OK)
+					.entity(policemans)
 					.build();
 		
 		return Response

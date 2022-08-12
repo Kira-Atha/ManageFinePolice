@@ -16,7 +16,7 @@ public class Account implements Serializable{
 	private String personnelNumber ;
 	private String password ;
 	protected static FactoryDAO afd = new FactoryDAO();
-	private static AccountDAO accountDAOs = (AccountDAO) afd.getAccountDAO();
+	protected static AccountDAO accountDAOs = (AccountDAO) afd.getAccountDAO();
 	protected String type;
 	
 	public Account() {}

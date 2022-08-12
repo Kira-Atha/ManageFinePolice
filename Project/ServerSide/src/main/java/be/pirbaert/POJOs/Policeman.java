@@ -77,4 +77,8 @@ public class Policeman extends Account{
 	public int hashCode() {
 		return this.getId();
 	}	
+	
+	public static List<Policeman > getAll(){
+		return accountDAOs.findAllPoliceman();
+	}
 }
