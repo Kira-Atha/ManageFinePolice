@@ -54,7 +54,7 @@
 				</tr>
 				<tr>
 					 <td colspan="2" align="center">
-					 	<button type="submit" name="add" value="vehicle">Add Vehicle</button> 
+					 	<button type="submit" class="btn" name="add" value="vehicle">Add Vehicle</button> 
 					 </td>
 				</tr>
 			</table>

@@ -20,11 +20,56 @@
 	<head>
 		<meta charset="ISO-8859-1">
 		<title>Consult fines</title>
-		<link rel="stylesheet" type="text/css" href="/resources/style.css"/>
+		<style>
+			.btn{
+				width:auto;
+			    background-color: rgba(0, 0, 144, 0.41);
+			    box-shadow: 3px 3px 2px 1px rgba(0, 0, 45, 0.3);
+			    border-radius: 100% 100% 100% 100%;
+			    line-height:50px;
+			    text-align:center;
+			    vertical-align:middle;
+			    color:white;
+			}
+			/* */
+			.span_consult_fines{	
+			}
+			.span_add_fine{
+			}
+			.span_add_charged{
+			}
+			.span_add_vehicle{
+			}
+			.span_add_violations{
+			}
+			th,td{
+			    margin:auto;
+			    border:1px solid black;
+			    width:auto;
+			    padding : 5px;
+			}
+			th{
+				background-color : rgb(172, 134, 224);
+				font-weight : bold;
+			}
+			table{
+				border-collapse : collapse;
+			}
+			#btn_logout{
+				position:absolute;
+				top:0%;
+				right:0%;
+			}
+			body{
+			    background-color: rgba(129, 189, 236, 0.46);
+			    font-family: Georgia,"Times New Roman",sans-serif;
+			    font-size: 15px;
+			}
+		</style>
 	</head>
 	<body>
 		<form action="SignIn" class="form" method="GET">
-			<input type="submit" value="Logout"/>
+			<input type="submit" class="btn" id="btn_logout" value="Logout"/>
 		</form>
 <!--  CONSULT FINE POUR LES CONTRAVENTION d'UN CHEF OU D4UN MEMBRE DE SON EQUIPE -->
 		<%if(session.getAttribute("account") instanceof Chief){%>
@@ -33,9 +78,9 @@
 			</form>
 			<%if(!Objects.isNull(session.getAttribute("finesToChief")) && ((ArrayList<Fine>)session.getAttribute("finesToChief")).size() >0){
 				ArrayList<Fine> finesToChief = (ArrayList<Fine>)session.getAttribute("finesToChief");%>
-				<span id="span_consult_fines">
+				<span class="span_consult_fines">
 				<p>Consult fines</p>
-					<table border="1">
+					<table>
 						<tr>
 							<th>Date</th>
 							<th>Comment</th>
@@ -91,9 +136,9 @@
 			<%}else if(session.getAttribute("account") instanceof TaxCollector){
 				ArrayList<Fine> allFinesAccepted = (ArrayList<Fine>)session.getAttribute("allFinesAccepted");
 				if(allFinesAccepted.size()>0){%>
-				<span id="span_consult_fines">
+				<span class="span_consult_fines">
 				<p>Consult fines</p>
-					<table border="1">
+					<table>
 						<tr>
 							<th>Date</th>
 							<th>Comment</th>
@@ -156,7 +201,7 @@
 		
 		<%if(session.getAttribute("account") instanceof Policeman){%>
 			<p>ADD FINE</p>
-			<span id="span_add_fine">
+			<span class="span_add_fine">
 				<form action="AddFine" method="POST">
 					<table>
 						<tr>
@@ -166,10 +211,12 @@
 							</fieldset></td>
 						</tr>
 						<tr>
-							<td><fieldset>
+							<td>
+							<span class="span_add_charged">
+							<fieldset>
 								<legend>Charged</legend>
 								<select name="charged">
-									<%if(!Objects.isNull(session.getAttribute("allChargeds"))){
+									<%if(!Objects.isNull(session.getAttribute("allChargeds")) && ((ArrayList<Charged>)session.getAttribute("allChargeds")).size() >0){
 										ArrayList<Charged> allChargeds = (ArrayList<Charged>)session.getAttribute("allChargeds");%>
 										<option value="0">- - UNKNOWN - -</option><%
 										for(Charged charged : allChargeds){%>
@@ -183,14 +230,18 @@
 										<p>No chargeds were recorded</p>
 										<%@ include file="AddCharged.jsp" %>
 									<%}%>
-							</fieldset></td>
+							</fieldset>
+							</span>
+							</td>
 						</tr>
 						
 						<tr>
-							<td><fieldset>
+							<td>
+							<span class="span_add_vehicle">
+							<fieldset>
 								<legend>Vehicle</legend>
 								<select name="vehicle">
-								<%if(!Objects.isNull(session.getAttribute("allVehicles"))){
+								<%if(!Objects.isNull(session.getAttribute("allVehicles")) && ((ArrayList<Vehicle>)session.getAttribute("allVehicles")).size() >0){
 									ArrayList<Vehicle> allVehicles = (ArrayList<Vehicle>)session.getAttribute("allVehicles");
 									for(Vehicle vehicle : allVehicles){%>
 										<%if(!Objects.isNull(vehicle.getRegistration())){ %>
@@ -206,13 +257,17 @@
 										<p>No vehicles were recorded</p>
 										<%@ include file="AddVehicle.jsp" %>
 									<%}%>
-							</fieldset></td>
+							</fieldset>
+							</span>
+							</td>
 						</tr>
 						
 						<tr>
-							<td><fieldset>
+							<td>
+							<span class="span_add_violations">
+							<fieldset>
 								<legend>Violations</legend>
-								<%if(!Objects.isNull(session.getAttribute("allViolations"))){
+								<%if(!Objects.isNull(session.getAttribute("allViolations")) && ((ArrayList<Violation>)session.getAttribute("allViolations")).size()>0){
 									ArrayList<Violation> allViolations = (ArrayList<Violation>)session.getAttribute("allViolations");
 									for(Violation violation : allViolations){
 										if(!violation.getName().equals("Insurance default")){
@@ -226,7 +281,9 @@
 									<%}else{%>
 										<p>No violations were recorded, please ask admin for add one</p>
 									<%}%>
-							</fieldset></td>
+							</fieldset>
+							</span>
+							</td>
 						</tr>
 						
 						<tr>

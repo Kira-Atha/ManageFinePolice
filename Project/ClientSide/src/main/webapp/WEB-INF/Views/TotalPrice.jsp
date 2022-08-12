@@ -10,14 +10,15 @@
 		<title>Total price</title>
 	</head>
 	<script type="text/javascript">
-		var obj = 'window.location.replace("localhost:8080:ClientSide/ConsultFines");';
+		var obj = 'window.location.replace("http://localhost:8080/ClientSide/ConsultFines");';
 		setTimeout(obj,5000);
 	</script>
 <body>
-	<%if(!Objects.isNull(request.getParameter("fine"))){%>
+	<%if(!Objects.isNull(request.getAttribute("fine"))){%>
 		<%Fine fine = (Fine)request.getAttribute("fine");%>
 		<span class="TotalPrice">
 			Total price : <%=fine.getTotalPrice()%>
+			<p>Wait 5 seconds, you will be automatically redirected</p>
 		</span>
 	<%}%>
 </body>

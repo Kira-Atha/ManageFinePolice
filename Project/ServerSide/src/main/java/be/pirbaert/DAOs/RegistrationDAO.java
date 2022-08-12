@@ -37,6 +37,12 @@ public class RegistrationDAO extends DAO<Registration> {
 		}catch(SQLException e) {
 			e.printStackTrace();
 			return false;
+		}finally {
+			try {
+				procedure.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return false;
 	}
@@ -61,6 +67,12 @@ public class RegistrationDAO extends DAO<Registration> {
 			e.printStackTrace();
 			return false;
 
+		}finally {
+			try {
+				proc.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -83,6 +95,12 @@ public class RegistrationDAO extends DAO<Registration> {
 			e.printStackTrace();
 			return false;
 	
+		}finally {
+			try {
+				proc.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -99,9 +117,15 @@ public class RegistrationDAO extends DAO<Registration> {
 			if(result.next()) {
 				registration=new Registration(result.getInt("IDREGISTRATION"),result.getString("SERIALNUMBER"));
 			}
-			result.close();
 		}catch(SQLException e) {
 			return null;
+		}finally {
+			try {
+				result.close();
+				preparedStatement.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return registration;
 	}
@@ -117,9 +141,14 @@ public class RegistrationDAO extends DAO<Registration> {
 				registration=new Registration(result.getInt("IDREGISTRATION"),result.getString("SERIALNUMBER"));
 				allRegistrations.add(registration);
 			}
-			result.close();
 		}catch(SQLException e) {
 			return null;
+		}finally {
+			try {
+				result.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return allRegistrations;
 	}

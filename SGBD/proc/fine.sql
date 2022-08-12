@@ -1,11 +1,9 @@
-
 CREATE SEQUENCE fine_seq
 	INCREMENT BY 1;
 /
-CREATE OR REPLACE TYPE TAB_NUM IS table OF NUMBER;
+CREATE OR REPLACE TYPE TAB_NUM AS table OF NUMBER;
 /
 CREATE OR REPLACE PACKAGE manage_fine IS
-	TYPE TAB_NUM IS table OF NUMBER;
 	PROCEDURE create_fine	(in_date IN FINE.DATEFINE%TYPE,in_COMMENTFINE IN FINE.COMMENTFINE%TYPE,
 							in_VALIDATED IN FINE.VALIDATED%TYPE,in_idVehicle IN FINE.IDVEHICLE%TYPE,in_idCharged IN FINE.IDCHARGED%TYPE,
 							in_idAccount IN FINE.IDACCOUNT%TYPE,in_LETTERSENT in FINE.LETTERSENT%TYPE,new_id OUT Fine.IDFINE%TYPE);
@@ -41,9 +39,9 @@ CREATE OR REPLACE package body manage_fine IS
 		
 	PROCEDURE create_fine_violation(in_idsViolation IN TAB_NUM,in_idFine IN FINE.IDFINE%TYPE) IS
 		BEGIN
-			IF in_idsViolation.COUNT > 0
+			IF in_idsViolation.count > 0
 			THEN
-				FOR i IN 0..in_idsViolation.COUNT
+				FOR i IN 1..in_idsViolation.count
 				LOOP
 					INSERT INTO VIO_FIN (IDVIOLATION,IDFINE)
 					VALUES (in_idsViolation(i),in_idFine);
@@ -130,3 +128,4 @@ CREATE OR REPLACE package body manage_fine IS
 		END update_fine;
 END manage_fine;
 /
+

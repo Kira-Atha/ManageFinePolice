@@ -16,7 +16,7 @@ public class Policeman extends Account{
 	}
 	public Policeman(String personelNumber,String password) {
 		super(personelNumber,password);
-		setFines(new ArrayList<Fine>());
+		this.fines = new ArrayList<Fine>();
 		this.type=this.getClass().getSimpleName();
 	}
 	
@@ -44,7 +44,7 @@ public class Policeman extends Account{
 	}
 	public boolean createFine(Fine fine) {
 		if(fine.create()) {
-			this.fines.add(fine);
+			this.getFines().add(fine);
 			return true;
 		}
 		return false;

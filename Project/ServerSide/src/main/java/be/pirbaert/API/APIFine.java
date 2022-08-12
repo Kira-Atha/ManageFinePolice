@@ -64,7 +64,6 @@ public class APIFine {
 			@FormParam("id_charged")int id_charged,
 			@FormParam("validated")int validated)
 	{
-		System.out.println("API FINE JE SUIS PASSE ICI");
 		Policeman policeman = (Policeman) Account.getAccount(id_policeman);
 		Charged charged = null;
 		if(id_charged!=0) {
@@ -74,7 +73,6 @@ public class APIFine {
 		String[] ids = ids_violation.split(";");
 		List<Violation> violations = new ArrayList<Violation>();
 		for(int i = 0; i < ids.length;i++) {
-			System.out.println(ids[i]);
 			violations.add(Violation.getViolation(Integer.parseInt(ids[i])));
 		}
 		  
@@ -86,6 +84,7 @@ public class APIFine {
 		}
 		
 		Fine fine = new Fine(violations,policeman,Vehicle.getVehicle(id_vehicle),comment,date,charged);
+		//System.out.println("API CHARGED IS : "+fine.getCharged().getFirstname());
 		fine.setValidated(intToBool(validated));
 		
 		if(policeman.createFine(fine)) {
@@ -121,7 +120,6 @@ public class APIFine {
 	@Path("{id}")
 	public Response deleteFine(@PathParam("id") int id) {
 		Fine fine = Fine.getFine(id);
-		//System.out.print(fine.getId());
 		if(fine.delete()) {
 			return Response.status(Status.NO_CONTENT).build();
 		}
@@ -135,6 +133,4 @@ public class APIFine {
 	    }
 	    return true;
 	}
-	
 }
-

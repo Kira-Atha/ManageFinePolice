@@ -47,6 +47,12 @@ public class TypeVehicleDAO extends DAO<TypeVehicle> {
 			e.printStackTrace();
 			return false;
 	
+		}finally {
+			try {
+				proc.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -71,6 +77,12 @@ public class TypeVehicleDAO extends DAO<TypeVehicle> {
 			e.printStackTrace();
 			return false;
 
+		}finally {
+			try {
+				proc.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -93,6 +105,12 @@ public class TypeVehicleDAO extends DAO<TypeVehicle> {
 			e.printStackTrace();
 			return false;
 	
+		}finally {
+			try {
+				proc.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -112,9 +130,15 @@ public class TypeVehicleDAO extends DAO<TypeVehicle> {
 			if(result.next()) {
 				type=new TypeVehicle(result.getInt("IdType"),result.getString("Name"));
 			}
-			result.close();
 		}catch(SQLException e) {
 			return null;
+		}finally {
+			try {
+				result.close();
+				preparedStatement.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return type;
 	}
@@ -130,11 +154,15 @@ public class TypeVehicleDAO extends DAO<TypeVehicle> {
 				type=new TypeVehicle(result.getInt("IdType"),result.getString("Name"));
 				allTypes.add(type);
 			}
-			result.close();
 		}catch(SQLException e) {
 			return null;
+		}finally {
+			try {
+				result.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return allTypes;
 	}
-
 }

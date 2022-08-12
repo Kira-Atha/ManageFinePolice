@@ -69,7 +69,7 @@ public class AccountDAO extends DAO<Account> {
 
 			proc.executeQuery();
 
-					
+			
 			return true;
 			
 
@@ -78,6 +78,12 @@ public class AccountDAO extends DAO<Account> {
 			e.printStackTrace();
 			return false;
 
+		}finally {
+			try {
+				proc.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -100,7 +106,7 @@ public class AccountDAO extends DAO<Account> {
 
 			proc.executeQuery();
 
-					
+			
 			return true;
 			
 
@@ -109,6 +115,12 @@ public class AccountDAO extends DAO<Account> {
 			e.printStackTrace();
 			return false;
 
+		}finally {
+			try {
+				proc.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		
 	}
@@ -126,7 +138,7 @@ public class AccountDAO extends DAO<Account> {
 
 			proc.executeQuery();
 
-					
+			
 			return true;
 			
 
@@ -135,6 +147,12 @@ public class AccountDAO extends DAO<Account> {
 			e.printStackTrace();
 			return false;
 
+		}finally {
+			try {
+				proc.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		
 	}
@@ -168,9 +186,16 @@ public class AccountDAO extends DAO<Account> {
 						break;
 				}
 			}
-			result.close();
+
 		}catch(SQLException e) {
 			e.printStackTrace();
+		}finally {
+			try {
+				result.close();
+				preparedStatement.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		//System.out.println(account.getClass().getSimpleName());
 		return account;
@@ -204,11 +229,16 @@ public class AccountDAO extends DAO<Account> {
 					break;
 				}
 			}
-			result.close();
 		}catch(SQLException e) {
 			
+		}finally {
+			try {
+				result.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
-		//System.out.println(allAccounts.get(0));
+
 		return allAccounts;
 	}
 	
@@ -224,6 +254,12 @@ public class AccountDAO extends DAO<Account> {
 			result.close();
 		}catch(SQLException e) {
 			
+		}finally {
+			try {
+				result.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return allChiefs;
 	}
@@ -241,6 +277,12 @@ public class AccountDAO extends DAO<Account> {
 			result.close();
 		}catch(SQLException e) {
 			
+		}finally {
+			try {
+				result.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return allPolicemans;
 	}
@@ -279,6 +321,12 @@ public class AccountDAO extends DAO<Account> {
 		}catch(Exception e) {
 			e.printStackTrace();
 			return null;
+		}finally {
+			try {
+				proc.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		return account;
@@ -305,6 +353,12 @@ public class AccountDAO extends DAO<Account> {
 			e.printStackTrace();
 			return false;
 
+		}finally {
+			try {
+				proc.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }
