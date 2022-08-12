@@ -15,10 +15,8 @@ public class Charged implements Serializable{
 	private String firstname;
 	private String lastname;
 	private String address;
-	private List <Fine> fines;
 	private static FactoryDAO adf = new FactoryDAO();
 	private static DAO<Charged>chargedDAOs = adf.getChargedDAO();
-	private static DAO<Fine> fineDAOs = adf.getFineDAO();
 	
 	public Charged() {}
 	
@@ -27,14 +25,12 @@ public class Charged implements Serializable{
 		this.setFirstname(firstname);
 		this.setLastname(lastname);
 		this.setAddress(address);
-		fines = new ArrayList<Fine>();
 	}
 	
 	public Charged(String firstname, String lastname, String address) {
 		this.setFirstname(firstname);
 		this.setLastname(lastname);
 		this.setAddress(address);
-		fines = new ArrayList<Fine>();
 	}
 
 	public int getId() {
@@ -67,19 +63,6 @@ public class Charged implements Serializable{
 
 	public void setFirstname(String firstname) {
 		this.firstname = firstname;
-	}
-	
-	public boolean addFine(Fine fine) {
-		if(!this.fines.contains(fine)) {
-			this.fines.add(fine);
-			
-			//DAO CREATE
-			/*
-			if(fineDAOs.create(fine)) {
-				return true;
-			}*/
-		}
-		return false;
 	}
 	
 	public static Charged getCharged(int id) {

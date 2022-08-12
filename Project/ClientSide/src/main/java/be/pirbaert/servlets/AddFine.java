@@ -66,7 +66,13 @@ public class AddFine extends HttpServlet {
 				response.sendRedirect("AddCharged");
 		}else if(!Objects.isNull(choice) && choice.equals("fine")) {
 			List <String> errors = new ArrayList<String>();
-			String commentary = request.getParameter("comment");
+			String commentary;
+			
+			if(((String)request.getParameter("comment")).length() == 0) {
+				commentary ="N/C";
+			}else {
+				commentary = request.getParameter("comment");
+			}
 			Charged charged = null;
 			Vehicle vehicle = null;
 			List <Violation> violations = null;
@@ -105,7 +111,6 @@ public class AddFine extends HttpServlet {
 						}
 					}
 				}
-				
 				Date in = new Date();
 				LocalDateTime ldt = LocalDateTime.ofInstant(in.toInstant(),ZoneId.systemDefault());
 				Date localToDate = Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant());
@@ -115,7 +120,16 @@ public class AddFine extends HttpServlet {
 				if(account instanceof Chief) {
 					fine.setValidated(true);
 				}
-				if(fine.create()) {
+				
+				if(((Policeman)account).createFine(fine)) {
+					// Si c'est un chief qui créé, la liste doit être mise à jour avec la nouvelle contravention. Dans le cas de policeman,
+					// on s'en fiche il ne les consulte pas. 
+					if(account instanceof Chief) {
+						List <Fine> finesToChief = (List<Fine>) session.getAttribute("finesToChief");
+						finesToChief.add(fine);
+						session.setAttribute("finesToChief", finesToChief);
+					}
+					
 					System.out.println("Le fine a été créé ( msg temp)");
 					request.setAttribute("fine", fine);
 					getServletContext().getRequestDispatcher("/WEB-INF/Views/TotalPrice.jsp").forward(request, response);

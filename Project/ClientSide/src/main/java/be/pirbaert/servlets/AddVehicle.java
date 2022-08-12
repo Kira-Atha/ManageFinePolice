@@ -68,33 +68,38 @@ public class AddVehicle extends HttpServlet {
 		}
 
 		List<String> errors = new ArrayList<String>();
-			
-		if(!Objects.isNull(request.getParameter("type")) || !Objects.isNull(request.getParameter("registration"))){
-			TypeVehicle type = TypeVehicle.getType(Integer.parseInt(request.getParameter("type")));
-			Registration registration = null;
-			if(Integer.parseInt(request.getParameter("registration")) != 0) {
-				registration = Registration.getRegistration(Integer.parseInt(request.getParameter("registration")));
-			}
-			
-			String choice = request.getParameter("add");
-			switch(choice) {
-				case "registration":
-					String serialNumber = request.getParameter("serialNumber");
-					session.setAttribute("serialNumber", serialNumber);
-					response.sendRedirect("AddRegistration");
-					break;
-				case "vehicle":
-					Vehicle vehicle = new Vehicle(0,registration,type);
-					if(vehicle.create()) {
-						response.sendRedirect("ConsultFines");
-					}else {
-						errors.add("Vehicle not created => Already exist");
-						request.setAttribute("previous", request.getHeader("referer"));
-						request.setAttribute("errors", errors);
-						getServletContext().getRequestDispatcher("/WEB-INF/Views/errors.jsp").forward(request, response);
-					}
-					break;
-			}
+		TypeVehicle type = TypeVehicle.getType(Integer.parseInt(request.getParameter("type")));
+		Registration registration = null;
+		System.out.println("ID DU REGISTRATION CHOISI "+Integer.parseInt(request.getParameter("registration")));
+		if(Integer.parseInt(request.getParameter("registration")) != 0) {
+			registration = Registration.getRegistration(Integer.parseInt(request.getParameter("registration")));
+		}
+		
+		String choice = request.getParameter("add");
+		switch(choice) {
+			case "registration":
+				String serialNumber = request.getParameter("serialNumber");
+				session.setAttribute("serialNumber", serialNumber);
+				response.sendRedirect("AddRegistration");
+				break;
+			case "vehicle":
+				Vehicle vehicle = new Vehicle(0,registration,type);
+				//System.out.println(vehicle.getRegistration().getId());
+				if(vehicle.create()) {
+					List<Vehicle> allVehicles = (List<Vehicle>) session.getAttribute("allVehicles");
+					allVehicles.add(vehicle);
+					session.setAttribute("allVehicles", allVehicles);
+					List<Registration> allRegistrationsWithoutVehicle = (List<Registration>) session.getAttribute("allRegistrationsWithoutVehicle");
+					allRegistrationsWithoutVehicle.remove(registration);
+					session.setAttribute("allRegistrationsWithoutVehicle", allRegistrationsWithoutVehicle);
+					response.sendRedirect("ConsultFines");
+				}else {
+					errors.add("Vehicle not created => Already exist");
+					request.setAttribute("previous", request.getHeader("referer"));
+					request.setAttribute("errors", errors);
+					getServletContext().getRequestDispatcher("/WEB-INF/Views/errors.jsp").forward(request, response);
+				}
+				break;
 		}
 	}
 }

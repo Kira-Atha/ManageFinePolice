@@ -11,7 +11,6 @@ import be.pirbaert.DAOc.VehicleDAO;
 public class Vehicle implements Serializable{
 	private static final long serialVersionUID = 5524624060193895070L;
 	private int id;
-	private List <Fine> fines;
 	private Registration registration;
 	private TypeVehicle type;
 	private static VehicleDAO vehicleDAOc = new VehicleDAO();
@@ -22,7 +21,6 @@ public class Vehicle implements Serializable{
 		this.id = id;
 		this.registration = registration;
 		this.type = type;
-		this.fines = new ArrayList<Fine>();
 	}
 
 	public int getId() {
@@ -31,14 +29,6 @@ public class Vehicle implements Serializable{
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public List<Fine> getFines() {
-		return fines;
-	}
-
-	public void setFines(List<Fine> fines) {
-		this.fines = fines;
 	}
 
 	public Registration getRegistration() {
@@ -87,10 +77,14 @@ public class Vehicle implements Serializable{
 		}
 
 		final Vehicle test = (Vehicle)o;
+		//System.out.println("IN THE EQUALS Client => "+this.getRegistration().getSerialNumber());
 		if(!Objects.isNull(this.getRegistration())) {
+			if(Objects.isNull(test.getRegistration())){
+				return false;
+			}
 			return this.getId() == (test.getId()) || (this.getRegistration().getSerialNumber().toLowerCase().equals(test.getRegistration().getSerialNumber().toLowerCase()) && this.getType().equals(test.getType()));
 		}else {
-			return this.getId() == (test.getId()) || Objects.isNull(this.getRegistration()) && Objects.isNull(test.getRegistration()) && this.getType().equals(test.getType());
+			return this.getId() == (test.getId()) || this.getType().equals(test.getType());
 		}
 	}
 	@Override

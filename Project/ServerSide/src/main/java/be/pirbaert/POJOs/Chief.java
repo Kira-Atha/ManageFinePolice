@@ -13,7 +13,6 @@ public class Chief extends Policeman {
 		super(id,personelNumber, password);
 		this.setType(this.getClass().getSimpleName());
 		this.setSubordinates(new ArrayList<Policeman>());
-		//getSubordinates();
 	}
 	
 	public Chief(int id,String personelNumber) {
@@ -27,26 +26,6 @@ public class Chief extends Policeman {
 		this.setType(this.getClass().getSimpleName());		
 	}
 
-	/*
-	public List<Policeman> getSubordinates() {
-		List<Account> allAccounts = Account.getAllAccounts();
-		List<Policeman> allPolicemans = new ArrayList<Policeman>();
-		
-		for(Account account : allAccounts) {
-			if(account.getClass().getSimpleName().equals("Policeman")) {
-				allPolicemans.add((Policeman)account);
-			}
-		}
-		for(Policeman account : allPolicemans) {
-			if(Objects.isNull(account.getChief())) {
-				continue;
-			}else if(account.getChief().equals(this)) {
-				this.subordinates.add((Policeman) account);
-			}
-		}
-		return subordinates;
-	}
-	*/
 	public void setSubordinates(List<Policeman> subordinates) {
 		this.subordinates = subordinates;
 	}

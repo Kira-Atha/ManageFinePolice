@@ -1,20 +1,15 @@
-CREATE OR REPLACE AND COMPILE JAVA SOURCE NAMED "FineDAO" AS
-	import java.io.*;
-	import java.sql.*;
-	import oracle.sql.*;
-	import oracle.jdbc.driver.*;
-/
+
 CREATE SEQUENCE fine_seq
 	INCREMENT BY 1;
 /
-CREATE OR REPLACE TYPE tab_num IS table OF NUMBER;
+CREATE OR REPLACE TYPE TAB_NUM IS table OF NUMBER;
 /
 CREATE OR REPLACE PACKAGE manage_fine IS
-	TYPE tab_num IS table OF NUMBER;
+	TYPE TAB_NUM IS table OF NUMBER;
 	PROCEDURE create_fine	(in_date IN FINE.DATEFINE%TYPE,in_COMMENTFINE IN FINE.COMMENTFINE%TYPE,
 							in_VALIDATED IN FINE.VALIDATED%TYPE,in_idVehicle IN FINE.IDVEHICLE%TYPE,in_idCharged IN FINE.IDCHARGED%TYPE,
 							in_idAccount IN FINE.IDACCOUNT%TYPE,in_LETTERSENT in FINE.LETTERSENT%TYPE,new_id OUT Fine.IDFINE%TYPE);
-	PROCEDURE create_fine_violation(in_idsViolation IN tab_num,in_idFine IN FINE.IDFINE%TYPE);
+	PROCEDURE create_fine_violation(in_idsViolation IN TAB_NUM,in_idFine IN FINE.IDFINE%TYPE);
 	PROCEDURE delete_fine(in_idFine IN Fine.IDFINE%TYPE);
 	PROCEDURE delete_fine_violation(in_idFine IN FINE.IDFINE%TYPE);
 	PROCEDURE update_fine(in_idFine IN FINE.IDFINE%TYPE,in_validated IN FINE.VALIDATED%TYPE, in_letterSent IN FINE.letterSent%TYPE);
@@ -44,7 +39,7 @@ CREATE OR REPLACE package body manage_fine IS
 				dbms_output.put_line('Error -> ' ||substr(SQLERRM,1,60));
 		END create_fine;
 		
-	PROCEDURE create_fine_violation(in_idsViolation IN tab_num,in_idFine IN FINE.IDFINE%TYPE) IS
+	PROCEDURE create_fine_violation(in_idsViolation IN TAB_NUM,in_idFine IN FINE.IDFINE%TYPE) IS
 		BEGIN
 			IF in_idsViolation.COUNT > 0
 			THEN

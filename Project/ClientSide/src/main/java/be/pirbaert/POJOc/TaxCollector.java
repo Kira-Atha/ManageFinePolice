@@ -11,7 +11,6 @@ public class TaxCollector extends Account{
 	}
 	public TaxCollector(String personelNumber,String password) {
 		super(personelNumber,password);
-		
 		this.type=this.getClass().getSimpleName();
 	}
 }

@@ -45,4 +45,13 @@ public class Chief extends Policeman{
 	public void setSubordinates(List<Policeman> subordinates) {
 		this.subordinates = subordinates;
 	}
+	
+	public boolean acceptDeclineFine(String choice,Fine fine) {
+		if(choice.equals("accept") && fine.update()) {
+			return true;
+		}else if(choice.equals("decline") && fine.delete()) {
+			return true;
+		}
+		return false;
+	}
 }

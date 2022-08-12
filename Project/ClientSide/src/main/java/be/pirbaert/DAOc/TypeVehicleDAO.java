@@ -19,7 +19,6 @@ import be.pirbaert.POJOc.TypeVehicle;
 public class TypeVehicleDAO extends DAO<TypeVehicle> {
 
 	public TypeVehicleDAO() {
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -96,7 +95,4 @@ public class TypeVehicleDAO extends DAO<TypeVehicle> {
 		}
 		return null;
 	}
-
-
-
 }

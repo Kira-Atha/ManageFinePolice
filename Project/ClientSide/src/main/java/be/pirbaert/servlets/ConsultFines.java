@@ -49,16 +49,8 @@ public class ConsultFines extends HttpServlet {
 			account = (Account) session.getAttribute("account");
 			if(session.getAttribute("account") instanceof Chief) {
 				account = (Chief) session.getAttribute("account");
-				for(Policeman policeman : ((Chief)account).getSubordinates()) {
-					//System.out.println("TEST => Subordinates to chief :"+policeman.getId());
-				}
 			}else if(session.getAttribute("account") instanceof Policeman) {
 				account = (Policeman) session.getAttribute("account");
-				
-				for(Fine fine : ((Policeman)account).getFines()) {
-					//System.out.println("TEST => Fine qu'a fait le policeman "+fine.getId());
-				}
-				
 			}else if(session.getAttribute("account") instanceof TaxCollector) {
 				account = (TaxCollector) session.getAttribute("account");
 			}else {
@@ -66,52 +58,71 @@ public class ConsultFines extends HttpServlet {
 				response.sendRedirect("SignIn");
 			}
 		}
-		
+		List<Violation> allViolations = null;
+		List<Charged> allChargeds = null;
+		List<Vehicle> allVehicles = null;
+		List<Registration> allRegistrations = null;
+		List<TypeVehicle> allTypes = null;
+		List<Fine> finesToChief = null;
+		List<Registration> allRegistrationsWithoutVehicle = null;
+		List<Registration> allRegistrationsInVehicle;
+		List<Fine> allFines;
+		List<Fine> allFinesAccepted = null;
 		if(auth) {
-			List<Fine> allFines = Fine.getAllFines();
-			List<Fine> allFinesAccepted = new ArrayList<Fine>();
-			for (Fine fine : allFines) {
-				if(fine.isValidated()) {
-					allFinesAccepted.add(fine);
+			// Si allViolations est à null dans la session, premier passage. Si pas à null, cela veut dire que ces listes contiennent déjà les infos
+			// ( éviter les passages inutiles en db )
+			if(Objects.isNull(session.getAttribute("allViolations"))) {
+				allFines = Fine.getAllFines();
+				allViolations = Violation.getAllViolations();
+				allChargeds = Charged.getAllChargeds();
+				allVehicles = Vehicle.getAllVehicles();
+				allRegistrations = Registration.getAllRegistrations();
+				allTypes = TypeVehicle.getAllTypes();
+			// Pour tax collector	
+				if(account instanceof TaxCollector) {
+					allFinesAccepted = new ArrayList<Fine>();
+					for (Fine fine : allFines) {
+						if(fine.isValidated()) {
+							allFinesAccepted.add(fine);
+						}
+					}
+					session.setAttribute("allFinesAccepted", allFinesAccepted);
 				}
-			}
-			List<Violation> allViolations = Violation.getAllViolations();
-			List<Charged> allChargeds = Charged.getAllChargeds();
-			List<Vehicle> allVehicles = Vehicle.getAllVehicles();
-			List<Registration> allRegistrations = Registration.getAllRegistrations();
-			List<Registration> allRegistrationsWithoutVehicle = new ArrayList<Registration>();
-			List<Registration> allRegistrationsInVehicle = new ArrayList<Registration>();
-			for(Vehicle vehicle  : allVehicles) {
-				allRegistrationsInVehicle.add(vehicle.getRegistration());
-			}
-			
-			for(int i = 0; i < allRegistrations.size() ; i++) {
-				for(int j=0; j<allVehicles.size();j++) {
-					if(!allRegistrationsWithoutVehicle.contains(allRegistrations.get(i)) && !allRegistrationsInVehicle.contains(allRegistrations.get(i))) {
-						allRegistrationsWithoutVehicle.add(allRegistrations.get(i));
+
+			//
+				allRegistrationsWithoutVehicle = new ArrayList<Registration>();
+				allRegistrationsInVehicle = new ArrayList<Registration>();
+				for(Vehicle vehicle  : allVehicles) {
+					allRegistrationsInVehicle.add(vehicle.getRegistration());
+				}
+				
+				for(int i = 0; i < allRegistrations.size() ; i++) {
+					for(int j=0; j<allVehicles.size();j++) {
+						if(!allRegistrationsWithoutVehicle.contains(allRegistrations.get(i)) && !allRegistrationsInVehicle.contains(allRegistrations.get(i))) {
+							allRegistrationsWithoutVehicle.add(allRegistrations.get(i));
+						}
 					}
 				}
-			}
-			List<TypeVehicle> allTypes = TypeVehicle.getAllTypes();
-			
-			List<Fine> finesSubordinates = new ArrayList<Fine>();
-		// Les contraventions des policiers dont account est le chef	
-			for(Policeman police :((Chief)account).getSubordinates()) {
-				for(Fine fine : police.getFines()) {
-					finesSubordinates.add(fine);
+			// Pour chief
+			if(account instanceof Chief) {
+				finesToChief = new ArrayList<Fine>();
+			// Les contraventions des policiers dont account est le chef	
+				for(Policeman police :((Chief)account).getSubordinates()) {
+					for(Fine fine : police.getFines()) {
+						finesToChief.add(fine);
+					}
 				}
+				finesToChief.addAll(((Chief)account).getFines());
+				session.setAttribute("finesToChief", finesToChief);
 			}
-			
-			//request.setAttribute("allFines", allFines);
-			request.setAttribute("finesSubordinates", finesSubordinates);
-			request.setAttribute("allViolations", allViolations);
-			request.setAttribute("allChargeds", allChargeds);
-			request.setAttribute("allVehicles", allVehicles);
-			request.setAttribute("allRegistrationsWithoutVehicle", allRegistrationsWithoutVehicle);
-			request.setAttribute("allTypes", allTypes);	
-			request.setAttribute("allFinesAccepted", allFinesAccepted);
-			session.setAttribute("allViolations", allViolations);
-			
+				session.setAttribute("allViolations", allViolations);
+				session.setAttribute("allChargeds", allChargeds);
+				session.setAttribute("allVehicles", allVehicles);
+				session.setAttribute("allRegistrationsWithoutVehicle", allRegistrationsWithoutVehicle);
+				session.setAttribute("allTypes", allTypes);	
+				session.setAttribute("allViolations", allViolations);
+			}
+
 			request.setAttribute("previous", request.getHeader("referer"));
 			RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/Views/ConsultFines.jsp");
 			dispatcher.forward(request, response);

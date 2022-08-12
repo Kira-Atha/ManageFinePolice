@@ -20,7 +20,6 @@ import be.pirbaert.POJOc.Registration;
 public class RegistrationDAO extends DAO<Registration> {
 
 	public RegistrationDAO() {
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -31,7 +30,6 @@ public class RegistrationDAO extends DAO<Registration> {
 		ClientResponse res = this.getResource()
 				.path("registration")
 				.post(ClientResponse.class,params);
-		System.out.println(res.getStatus());
 		if(res.getStatus() == 201) {
 			return true;
 		}
@@ -40,13 +38,11 @@ public class RegistrationDAO extends DAO<Registration> {
 
 	@Override
 	public boolean delete(Registration obj) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean update(Registration obj) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -83,7 +79,4 @@ public class RegistrationDAO extends DAO<Registration> {
 		}
 		return null;
 	}
-
-
-
 }

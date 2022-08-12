@@ -70,6 +70,9 @@ public class AddRegistration extends HttpServlet {
 		}else {
 			Registration registration = new Registration(0,serialNumber);
 			if(registration.create()) {
+				List<Registration> allRegistrationsWithoutVehicle = (List<Registration>) session.getAttribute("allRegistrationsWithoutVehicle");
+				allRegistrationsWithoutVehicle.add(registration);
+				session.setAttribute("allRegistrationsWithoutVehicle", allRegistrationsWithoutVehicle);
 				response.sendRedirect("ConsultFines");
 			}else {
 				errors.add("Registration not created => Already exist");

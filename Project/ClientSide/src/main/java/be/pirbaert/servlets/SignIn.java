@@ -31,6 +31,7 @@ public class SignIn extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// Réinit la session à chaque passage ici 
 		HttpSession session = request.getSession();
+		
 		if(!session.isNew()) {
 			session.invalidate();
 			session = request.getSession();

@@ -26,13 +26,13 @@
 		<form action="SignIn" class="form" method="GET">
 			<input type="submit" value="Logout"/>
 		</form>
-<!--  CONSULT ALL + ACCEPT CHIEF CONCERNE UNIQUEMENT SES POLICIERS MAIS ALL POUR L'INSTANT -->
+<!--  CONSULT FINE POUR LES CONTRAVENTION d'UN CHEF OU D4UN MEMBRE DE SON EQUIPE -->
 		<%if(session.getAttribute("account") instanceof Chief){%>
 			<form action="ViolationMenu" method="GET">
 				<button type="submit" class="btn" id="btn_updateViolationChief">Update violation</button> 
 			</form>
-			<%if(!Objects.isNull(request.getAttribute("finesSubordinates")) && ((ArrayList<Fine>)request.getAttribute("finesSubordinates")).size() >0){
-				ArrayList<Fine> finesSubordinates = (ArrayList<Fine>)request.getAttribute("finesSubordinates");%>
+			<%if(!Objects.isNull(session.getAttribute("finesToChief")) && ((ArrayList<Fine>)session.getAttribute("finesToChief")).size() >0){
+				ArrayList<Fine> finesToChief = (ArrayList<Fine>)session.getAttribute("finesToChief");%>
 				<span id="span_consult_fines">
 				<p>Consult fines</p>
 					<table border="1">
@@ -47,7 +47,7 @@
 							<th>Status</th>
 						</tr>
 						
-					<%for(Fine fine : finesSubordinates){
+					<%for(Fine fine : finesToChief){
 						
 						String fine_id = String.valueOf(fine.getId());
 					%>	
@@ -64,11 +64,15 @@
 							<%}else{%>
 								<td><%= fine.getCharged().getFirstname() %> <%= fine.getCharged().getLastname() %></td>
 							<%}%>
-							<td><%= fine.getVehicle().getType().getName() %></td>
+							<% if(!Objects.isNull(fine.getVehicle().getRegistration())){%>
+								<td><%= fine.getVehicle().getType().getName()%> => <%=fine.getVehicle().getRegistration().getSerialNumber()%></td>
+							<%}else{%>
+								<td><%= fine.getVehicle().getType().getName()%> => NO REGISTRATION</td>
+							<%}%>
 							<td><%= fine.getPoliceman().getPersonnelNumber()%></td>
 							<td><%= fine.getTotalPrice() %></td>
 							<td><%if(!fine.isValidated()){ %>
-								<form action="DownstreamFine" method="POST">
+								<form action="AcceptDeclineFine" method="POST">
 									<button type="submit" class="btn" name="accept" value=<%=fine_id %>>Accept</button> 
 									<button type="submit" class="btn" name="decline" value=<%=fine_id %>>Decline</button> 
 								</form>
@@ -85,7 +89,7 @@
 					</span>
 <!-- TAX COLLECTOR -->				
 			<%}else if(session.getAttribute("account") instanceof TaxCollector){
-				ArrayList<Fine> allFinesAccepted = (ArrayList<Fine>)request.getAttribute("allFinesAccepted");
+				ArrayList<Fine> allFinesAccepted = (ArrayList<Fine>)session.getAttribute("allFinesAccepted");
 				if(allFinesAccepted.size()>0){%>
 				<span id="span_consult_fines">
 				<p>Consult fines</p>
@@ -127,7 +131,9 @@
 							<%	}else{%>
 									<p>Letter already sent</p>
 								<%}
-							}%>
+							}else{%>
+								<p>Impossible to send a letter to "UNKNOWN"</p>
+							<%}%>
 							</td>
 						</tr>
 					<%}%>
@@ -138,12 +144,12 @@
 					</span>
 			<%}%>
 <!--  ADD  -->
-			<%if(!Objects.isNull(request.getAttribute("allViolations"))){
-				ArrayList<Violation> allViolations = (ArrayList<Violation>)request.getAttribute("allViolations");%>
+			<%if(!Objects.isNull(session.getAttribute("allViolations"))){
+				ArrayList<Violation> allViolations = (ArrayList<Violation>)session.getAttribute("allViolations");%>
 			<%}%>
 			
-			<%if(!Objects.isNull(request.getAttribute("allVehicles"))){
-				ArrayList<Vehicle> allVehicles = (ArrayList<Vehicle>)request.getAttribute("allVehicles");%>
+			<%if(!Objects.isNull(session.getAttribute("allVehicles"))){
+				ArrayList<Vehicle> allVehicles = (ArrayList<Vehicle>)session.getAttribute("allVehicles");%>
 				
 			<%}%>
 		
@@ -163,8 +169,8 @@
 							<td><fieldset>
 								<legend>Charged</legend>
 								<select name="charged">
-									<%if(!Objects.isNull(request.getAttribute("allChargeds"))){
-										ArrayList<Charged> allChargeds = (ArrayList<Charged>)request.getAttribute("allChargeds");%>
+									<%if(!Objects.isNull(session.getAttribute("allChargeds"))){
+										ArrayList<Charged> allChargeds = (ArrayList<Charged>)session.getAttribute("allChargeds");%>
 										<option value="0">- - UNKNOWN - -</option><%
 										for(Charged charged : allChargeds){%>
 											<option value=<%=charged.getId()%>><%=charged.getFirstname()+ " "+charged.getLastname()%> </option>
@@ -184,8 +190,8 @@
 							<td><fieldset>
 								<legend>Vehicle</legend>
 								<select name="vehicle">
-								<%if(!Objects.isNull(request.getAttribute("allVehicles"))){
-									ArrayList<Vehicle> allVehicles = (ArrayList<Vehicle>)request.getAttribute("allVehicles");
+								<%if(!Objects.isNull(session.getAttribute("allVehicles"))){
+									ArrayList<Vehicle> allVehicles = (ArrayList<Vehicle>)session.getAttribute("allVehicles");
 									for(Vehicle vehicle : allVehicles){%>
 										<%if(!Objects.isNull(vehicle.getRegistration())){ %>
 											<option value=<%=vehicle.getId()%>><%=vehicle.getType().getName()+"=>"+vehicle.getRegistration().getSerialNumber()%></option>
@@ -206,8 +212,8 @@
 						<tr>
 							<td><fieldset>
 								<legend>Violations</legend>
-								<%if(!Objects.isNull(request.getAttribute("allViolations"))){
-									ArrayList<Violation> allViolations = (ArrayList<Violation>)request.getAttribute("allViolations");
+								<%if(!Objects.isNull(session.getAttribute("allViolations"))){
+									ArrayList<Violation> allViolations = (ArrayList<Violation>)session.getAttribute("allViolations");
 									for(Violation violation : allViolations){
 										if(!violation.getName().equals("Insurance default")){
 										String description = violation.getDescription();

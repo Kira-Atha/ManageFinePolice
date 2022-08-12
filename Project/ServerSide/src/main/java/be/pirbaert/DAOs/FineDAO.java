@@ -50,7 +50,7 @@ public class FineDAO extends DAO<Fine> {
 			procedure.registerOutParameter(8, Types.NUMERIC);
 			procedure.executeQuery();
 			System.out.println("in dao server 1st query");
-			new_id = procedure.getInt(7);
+			new_id = procedure.getInt(8);
 			System.out.println("NOUVEL ID = "+new_id);
 			if(new_id!=0) {
 				

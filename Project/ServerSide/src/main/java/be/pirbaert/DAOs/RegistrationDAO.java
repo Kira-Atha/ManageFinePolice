@@ -97,7 +97,7 @@ public class RegistrationDAO extends DAO<Registration> {
 			preparedStatement.setInt(1, id);
 			result = preparedStatement.executeQuery();
 			if(result.next()) {
-				registration=new Registration(result.getInt("IdRegistration"),result.getString("SerialNumber"));
+				registration=new Registration(result.getInt("IDREGISTRATION"),result.getString("SERIALNUMBER"));
 			}
 			result.close();
 		}catch(SQLException e) {
@@ -114,7 +114,7 @@ public class RegistrationDAO extends DAO<Registration> {
 		try{
 			result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Registration");
 			while(result.next()) {
-				registration=new Registration(result.getInt("IdRegistration"),result.getString("SerialNumber"));
+				registration=new Registration(result.getInt("IDREGISTRATION"),result.getString("SERIALNUMBER"));
 				allRegistrations.add(registration);
 			}
 			result.close();

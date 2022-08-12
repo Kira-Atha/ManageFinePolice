@@ -15,7 +15,6 @@ public class Charged implements Serializable {
 	private String lastname;
 	private String address;
 	private static ChargedDAO chargedDAOc = new ChargedDAO();
-	private List <Fine> fines;
 	
 	public Charged() {}
 	
@@ -24,7 +23,6 @@ public class Charged implements Serializable {
 		this.setFirstname(firstname);
 		this.setLastname(lastname);
 		this.setAddress(address);
-		fines = new ArrayList<Fine>();
 	}
 	
 
@@ -60,14 +58,6 @@ public class Charged implements Serializable {
 		this.firstname = firstname;
 	}
 
-	public boolean addFine(Fine fine) {
-		if(!this.fines.contains(fine)) {
-			this.fines.add(fine);
-			
-		}
-		return false;
-	}
-	
 	public static Charged getCharged(int id) {
 		return chargedDAOc.find(id);
 	}

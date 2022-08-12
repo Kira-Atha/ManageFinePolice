@@ -8,10 +8,10 @@ import java.util.Objects;
 import be.pirbaert.DAOs.DAO;
 import be.pirbaert.DAOs.FactoryDAO;
 
+
 public class Vehicle implements Serializable{
 	private static final long serialVersionUID = 5524624060193895070L;
 	private int id;
-	private List <Fine> fines;
 	private Registration registration;
 	private TypeVehicle type;
 	private static FactoryDAO afd = new FactoryDAO();
@@ -22,13 +22,11 @@ public class Vehicle implements Serializable{
 		this.id = id;
 		this.registration = registration;
 		this.type = type;
-		this.fines = new ArrayList<Fine>();
 	}
 
 	public Vehicle(Registration registration,TypeVehicle type) {
 		this.registration = registration;
 		this.type = type;
-		this.fines = new ArrayList<Fine>();
 	}
 	
 	public int getId() {
@@ -37,14 +35,6 @@ public class Vehicle implements Serializable{
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public List<Fine> getFines() {
-		return fines;
-	}
-
-	public void setFines(List<Fine> fines) {
-		this.fines = fines;
 	}
 
 	public Registration getRegistration() {

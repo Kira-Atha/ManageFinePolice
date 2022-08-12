@@ -18,8 +18,8 @@
 					<td>Type vehicle</td>
 					<td>
 						<select name="type">
-							<%if(!Objects.isNull(request.getAttribute("allTypes"))){
-								ArrayList<TypeVehicle> allTypes = (ArrayList<TypeVehicle>)request.getAttribute("allTypes");%>
+							<%if(!Objects.isNull(session.getAttribute("allTypes"))){
+								ArrayList<TypeVehicle> allTypes = (ArrayList<TypeVehicle>)session.getAttribute("allTypes");%>
 								<%
 								for(TypeVehicle type : allTypes){%>
 									<option value=<%=type.getId()%>><%=type.getName()%> </option>
@@ -36,8 +36,8 @@
 					<td>Registration </td>
 					<td>
 						<select name="registration">
-							<%if(!Objects.isNull(request.getAttribute("allRegistrationsWithoutVehicle"))){
-								ArrayList<Registration> allRegistrationsWithoutVehicle = (ArrayList<Registration>)request.getAttribute("allRegistrationsWithoutVehicle");
+							<%if(!Objects.isNull(session.getAttribute("allRegistrationsWithoutVehicle"))){
+								ArrayList<Registration> allRegistrationsWithoutVehicle = (ArrayList<Registration>)session.getAttribute("allRegistrationsWithoutVehicle");
 								%><option value="0">- - UNKNOWN - -</option>
 								<%for(Registration registration : allRegistrationsWithoutVehicle){%>
 									<option value=<%=registration.getId()%>><%=registration.getSerialNumber()%></option>

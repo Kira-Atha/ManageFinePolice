@@ -48,10 +48,10 @@ public class FineDAO extends DAO<Fine> {
 		}
 
 		params.add("id_charged", id_charged);
+		params.add("validated", String.valueOf(fine.isValidated()?1:0));
 		ClientResponse res = this.getResource()
 				.path("fine")
 				.post(ClientResponse.class,params);
-		System.out.println("DAO côté client => "+res.getStatus());
 		if(res.getStatus() == 201) {
 			return true;
 		}
@@ -74,8 +74,6 @@ public class FineDAO extends DAO<Fine> {
 	@Override
 	public boolean update(Fine fine) {
 		MultivaluedMap<String,String> paramsPut = new MultivaluedMapImpl();
-		//int boolValue = fine.isValidated()?1:0;
-		//paramsPut.add("validated",String.valueOf(boolValue));
 		
 		paramsPut.add("id_fine", String.valueOf(fine.getId()));
 		paramsPut.add("validated",String.valueOf(fine.isValidated()?1:0));
