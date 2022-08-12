@@ -74,7 +74,7 @@ public class APIAccount{
 	@Path("/chief")
 	public Response getAllChief() {
 		
-		List<Chief> chiefs = Chief.getAll();
+		List<Chief> chiefs = Chief.getAllChief();
 		
 		if(chiefs != null) 
 			
@@ -108,6 +108,26 @@ public class APIAccount{
 				.build();
 		
 	}
+	
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/addChief")
+	public Response addChief(	
+			@FormParam("id_chief") int id_chief,
+			@FormParam("id_policeman") int id_policeman) {
+		
+		
+		Policeman subordnate = (Policeman) Policeman.getAccount(id_policeman);
+		
+		if(subordnate.setChief(id_chief)) {
+			return Response
+					.status(Status.CREATED)
+					.header("Location","account"+subordnate.getId())
+					.build();
+		}
+		else return Response.status(Status.CONFLICT).build();
+	}
+
 	
 	
 	@POST

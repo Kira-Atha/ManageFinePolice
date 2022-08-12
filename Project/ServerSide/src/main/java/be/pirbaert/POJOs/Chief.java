@@ -51,7 +51,7 @@ public class Chief extends Policeman {
 		this.subordinates = subordinates;
 	}
 	
-	public static List<Chief> getAll(){
+	public static List<Chief> getAllChief(){
 		return accountDAOs.findAllChief();
 	}
 }

@@ -11,6 +11,8 @@ CREATE OR REPLACE PACKAGE manage_account IS
 	
 	PROCEDURE delete_account(id IN ACCOUNT.IDACCOUNT%TYPE);
 	
+	PROCEDURE set_chief(id_chief IN ACCOUNT.IDACCOUNT%TYPE, id_subordinate IN ACCOUNT.IDACCOUNT%TYPE);
+	
 END manage_account;
 /
 CREATE OR REPLACE package body manage_account IS
@@ -101,6 +103,15 @@ CREATE OR REPLACE package body manage_account IS
 			WHERE IDACCOUNT = id;
 			COMMIT;
 		END delete_account;
+		
+	PROCEDURE set_chief(id_chief IN ACCOUNT.IDACCOUNT%TYPE, id_subordinate IN ACCOUNT.IDACCOUNT%TYPE) IS
+		BEGIN
+			UPDATE account
+			SET IDCHIEF = id_chief		
+			WHERE IDACCOUNT = id_subordinate;
+			COMMIT;
+		END set_chief;
+	
 		
 END manage_account;
 /

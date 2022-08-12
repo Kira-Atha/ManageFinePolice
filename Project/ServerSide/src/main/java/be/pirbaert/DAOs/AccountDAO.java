@@ -282,4 +282,27 @@ public class AccountDAO extends DAO<Account> {
 		return account;
 		
 	}
+	
+	public boolean setChief(Policeman policeman, int id_chief) {
+		CallableStatement proc = null;
+		
+		try {
+			proc = this.connect.prepareCall("{call manage_account.set_chief(?,?)}");
+			proc.setInt(1, id_chief);
+			proc.setInt(2, policeman.getId());
+			
+
+			proc.executeQuery();
+
+					
+			return true;
+			
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+
+		}
+	}
 }

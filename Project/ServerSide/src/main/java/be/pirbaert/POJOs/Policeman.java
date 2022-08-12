@@ -49,6 +49,7 @@ public class Policeman extends Account{
 	public void setChief(Chief chief) {
 		this.chief = chief;
 	}
+
 	public boolean createFine(Fine fine) {
 		boolean success = false;
 		if(!Objects.isNull(fine)) {
@@ -77,7 +78,9 @@ public class Policeman extends Account{
 	public int hashCode() {
 		return this.getId();
 	}	
-	
+	public boolean setChief(int id_chief) {
+		return accountDAOs.setChief(this,id_chief);
+	}
 	public static List<Policeman > getAll(){
 		return accountDAOs.findAllPoliceman();
 	}
