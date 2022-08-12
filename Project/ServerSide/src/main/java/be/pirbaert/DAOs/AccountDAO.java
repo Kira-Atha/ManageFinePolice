@@ -158,6 +158,7 @@ public class AccountDAO extends DAO<Account> {
 						break;
 					case "Policeman":
 						account = new Policeman(result.getInt("IdAccount"),result.getString("PersonelNumber"));
+						((Policeman)account).setChief((Chief)Account.getAccount(result.getInt("IdChief")));
 						break;
 					case "Administrator":
 						account = new Administrator(result.getInt("IdAccount"),result.getString("PersonelNumber"));
@@ -233,8 +234,9 @@ public class AccountDAO extends DAO<Account> {
 		try{
 			result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Account WHERE TYPEACCOUNT = 'Policeman'");
 			while(result.next()) {
-						allPolicemans.add(new Policeman(result.getInt("IdAccount"),result.getString("PersonelNumber")));
-				
+						Policeman policeman = new Policeman(result.getInt("IdAccount"),result.getString("PersonelNumber"));
+						policeman.setChief((Chief)Account.getAccount(result.getInt("IdChief")));
+						allPolicemans.add(policeman);
 			}
 			result.close();
 		}catch(SQLException e) {
