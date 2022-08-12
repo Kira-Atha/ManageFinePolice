@@ -15,7 +15,7 @@
 	<form action="SignIn" class="form" method="GET">
 		<input type="submit" value="Logout"/>
 	</form>
-<button onclick="location.href='/ClientSide/ViolationMenu'">back</button>
+	<button onclick="location.href='/ClientSide/ViolationMenu'">back</button>
 	<h1 style="text-align : center">Update Violation</h1>
 	
 	<%if(session.getAttribute("account") instanceof Administrator){ %>

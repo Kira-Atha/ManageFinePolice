@@ -18,5 +18,8 @@
 	<div style="text-align : center;justify-content: center;display: flex;">
 		<button onclick="location.href='/ClientSide/ViolationMenu'">Manage violation type</button>
 	</div>
+	<div style="text-align : center;justify-content: center;display: flex;">
+		<button onclick="location.href='/ClientSide/VehicleTypeManage'">Manage vehicle type</button>
+	</div>
 </body>
 </html>

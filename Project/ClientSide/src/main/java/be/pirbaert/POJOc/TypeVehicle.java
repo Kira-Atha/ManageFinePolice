@@ -19,6 +19,11 @@ public class TypeVehicle implements Serializable{
 	}
 	
 	
+	public TypeVehicle(String name) {
+		this.setName(name);
+	}
+	
+	
 	public static List<TypeVehicle> getAllTypes() {
 		return typeVehicleDAOc.findAll();
 	}
@@ -59,6 +64,21 @@ public class TypeVehicle implements Serializable{
 	@Override
 	public int hashCode() {
 		return this.getId()+this.getName().hashCode();
+	}
+	
+	public boolean delete() {
+		return typeVehicleDAOc.delete(this);
+		
+	}
+	
+	public boolean save() {
+		return typeVehicleDAOc.create(this);
+		
+	}
+
+	public boolean update() {
+		return typeVehicleDAOc.update(this);
+		
 	}
 	
 }
