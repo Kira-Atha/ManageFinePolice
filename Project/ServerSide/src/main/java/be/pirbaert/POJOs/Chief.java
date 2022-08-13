@@ -12,14 +12,14 @@ public class Chief extends Policeman {
 	public Chief(int id,String personelNumber, String password) {
 		super(id,personelNumber, password);
 		this.setType(this.getClass().getSimpleName());
-		this.setSubordinates(new ArrayList<Policeman>());
+		this.setSubordinates();
 		//getSubordinates();
 	}
 	
 	public Chief(int id,String personelNumber) {
 		super(id,personelNumber);
 		this.setType(this.getClass().getSimpleName());
-		setSubordinates(new ArrayList<Policeman>());
+		setSubordinates();
 	}
 	
 	public Chief(String personelNumber, String password) {
@@ -46,9 +46,12 @@ public class Chief extends Policeman {
 		}
 		return subordinates;
 	}
-	*/
+	 */
 	public void setSubordinates(List<Policeman> subordinates) {
 		this.subordinates = subordinates;
+	}
+	public void setSubordinates() {
+		this.subordinates = accountDAOs.findSubordinate(this);
 	}
 	
 	public static List<Chief> getAllChief(){

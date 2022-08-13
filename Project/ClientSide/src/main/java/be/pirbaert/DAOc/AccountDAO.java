@@ -21,6 +21,7 @@ import be.pirbaert.POJOc.Administrator;
 import be.pirbaert.POJOc.Chief;
 import be.pirbaert.POJOc.Policeman;
 import be.pirbaert.POJOc.TaxCollector;
+import be.pirbaert.POJOc.Violation;
 
 public class AccountDAO extends DAO<Account> {
 
@@ -117,6 +118,7 @@ public class AccountDAO extends DAO<Account> {
 			
 			
 			for(JSONObject account : JSONaccounts) {
+
 				switch(String.valueOf( account.get("type"))) {
 					case "Administrator":
 						allAccounts.add( this.getMapper().readValue(account.toJSONString(),Administrator.class));
@@ -172,5 +174,56 @@ public class AccountDAO extends DAO<Account> {
 		}
 		return null;
 		
+	}
+	
+	public List<Chief> findAllChief() {
+		String responseJSON = this.getResource()
+				.path("account/chief")
+				.accept(MediaType.APPLICATION_JSON)
+				.get(String.class);
+		
+		try{
+			
+			return  this.getMapper().readValue(responseJSON,new TypeReference<List<Chief>>(){});
+			
+			
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public List<Policeman> findAllPoliceman() {
+		String responseJSON = this.getResource()
+				.path("account/policeman")
+				.accept(MediaType.APPLICATION_JSON)
+				.get(String.class);
+	
+		try{
+			
+			return  this.getMapper().readValue(responseJSON,new TypeReference<List<Policeman>>(){});
+					
+			
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public boolean setChief(Policeman policeman, int id_chief) {
+		MultivaluedMap<String,String> paramsPost = new MultivaluedMapImpl();
+		paramsPost.add("id_policeman",String.valueOf(policeman.getId()));
+		paramsPost.add("id_chief",String.valueOf(id_chief));
+		
+			
+		ClientResponse responseJSON = this.getResource()
+				.path("account/addChief")
+				.post(ClientResponse.class, paramsPost);
+
+		if(responseJSON.getStatus() == 201) return true;
+		
+		return false;
 	}
 }

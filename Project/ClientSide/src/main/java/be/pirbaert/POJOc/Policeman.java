@@ -2,11 +2,13 @@ package be.pirbaert.POJOc;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Policeman extends Account{
 	private static final long serialVersionUID = 2142714243766177482L;
 	private List <Fine> fines;
-	private Chief chief;
+	private int chief;
+//	private Map<String, Chief> chief;
 	
 	public Policeman() {}
 	public Policeman(int id,String personelNumber,String password) {
@@ -36,10 +38,10 @@ public class Policeman extends Account{
 		this.fines = fines;
 	}
 	
-	public Chief getChief() {
+	public int getChief() {
 		return chief;
 	}
-	public void setChief(Chief chief) {
+	public void setChief(int chief) {
 		this.chief = chief;
 	}
 	@Override
@@ -58,5 +60,12 @@ public class Policeman extends Account{
 	@Override
 	public int hashCode() {
 		return this.getId();
-	}	
+	}
+	
+	public static List<Policeman> getAllPoliceman(){
+		return accountDAOc.findAllPoliceman();
+	}
+	public boolean saveChief(int id_chef) {
+		return accountDAOc.setChief(this,id_chef );
+	}
 }

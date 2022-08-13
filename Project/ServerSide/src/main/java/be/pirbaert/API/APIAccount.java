@@ -93,11 +93,10 @@ public class APIAccount{
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/policeman")
 	public Response getAllPoliceman() {
-		
+
 		List<Policeman> policemans = Policeman.getAll();
-				
 		if(policemans != null) 
-			
+		
 			return Response
 					.status(Status.OK)
 					.entity(policemans)
@@ -116,10 +115,11 @@ public class APIAccount{
 			@FormParam("id_chief") int id_chief,
 			@FormParam("id_policeman") int id_policeman) {
 		
+		System.out.println("chief : "+id_chief);		
+		System.out.println("sub : "+id_policeman);	
 		
 		Policeman subordnate = (Policeman) Policeman.getAccount(id_policeman);
-		
-		if(subordnate.setChief(id_chief)) {
+		if(subordnate.saveSetChief(id_chief)) {
 			return Response
 					.status(Status.CREATED)
 					.header("Location","account"+subordnate.getId())

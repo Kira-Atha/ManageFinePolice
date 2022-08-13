@@ -21,5 +21,9 @@
 	<div style="text-align : center;justify-content: center;display: flex;">
 		<button onclick="location.href='/ClientSide/VehicleTypeManage'">Manage vehicle type</button>
 	</div>
+	</div>
+	<div style="text-align : center;justify-content: center;display: flex;">
+		<button onclick="location.href='/ClientSide/SubordinateAdd'">Manage subordinate</button>
+	</div>
 </body>
 </html>

@@ -9,7 +9,7 @@ import be.pirbaert.DAOs.DAO;
 public class Policeman extends Account{
 	private static final long serialVersionUID = 8562421127622269285L;
 	private List <Fine> fines;
-	private Chief chief;
+	private int chief;
 	private static DAO<Fine> fineDAOs = afd.getFineDAO();
 	
 	public Policeman(int id,String personelNumber, String password) {
@@ -43,10 +43,10 @@ public class Policeman extends Account{
 		this.fines = fines;
 	}
 	
-	public Chief getChief() {
+	public int getChief() {
 		return chief;
 	}
-	public void setChief(Chief chief) {
+	public void setChief(int chief) {
 		this.chief = chief;
 	}
 
@@ -78,7 +78,7 @@ public class Policeman extends Account{
 	public int hashCode() {
 		return this.getId();
 	}	
-	public boolean setChief(int id_chief) {
+	public boolean saveSetChief(int id_chief) {
 		return accountDAOs.setChief(this,id_chief);
 	}
 	public static List<Policeman > getAll(){

@@ -11,7 +11,7 @@ public class Account implements Serializable {
 	private int id;
 	private String personnelNumber;
 	private String password;
-	private static AccountDAO accountDAOc = new AccountDAO();
+	protected static AccountDAO accountDAOc = new AccountDAO();
 	protected String type;
 
 	public Account() {
@@ -51,38 +51,6 @@ public class Account implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
-/*
-	  public Account signIn() {
-	  
-	  List <Account> allAccounts = getAllAccounts(); 
-	  Account toCast = null;
-	  List <Account> fakeAllAccounts = new ArrayList <Account>();
-	  fakeAllAccounts.add(new Chief(1,"Chief0","012345")); 
-	  fakeAllAccounts.add(new Chief(2,"Chief1","012345"));
-	  fakeAllAccounts.add(new Policeman(3,"Policeman0","012345")); 
-	  fakeAllAccounts.add(new Policeman(4,"Policeman1","012345"));
-	  for(Account account : fakeAllAccounts) {
-		  if(this.getPassword().equals(account.getPassword()) && this.getPersonnelNumber().equals(account.getPersonnelNumber())) {
-			  if(account instanceof Chief ) {
-				  toCast = (Chief)account;
-			  }
-			  if(account instanceof Policeman){ 
-				  toCast =(Policeman)account; 
-			  }
-			  if(account instanceof Administrator){ 
-				  toCast = (Administrator)account; 
-			  }
-			  if(account instanceof TaxCollector){
-				  toCast = (TaxCollector)account;
-			  }
-		  }
-	  } 
-	  System.out.println(toCast); 
-	  return toCast; 
-	 }
-	 
-*/
 	
 	public static Account signIn(String personelNumber, String password) {
 		return accountDAOc.connect(personelNumber, password);

@@ -158,7 +158,7 @@ public class AccountDAO extends DAO<Account> {
 						break;
 					case "Policeman":
 						account = new Policeman(result.getInt("IdAccount"),result.getString("PersonelNumber"));
-						((Policeman)account).setChief((Chief)Account.getAccount(result.getInt("IdChief")));
+						((Policeman)account).setChief(result.getInt("IdChief"));
 						break;
 					case "Administrator":
 						account = new Administrator(result.getInt("IdAccount"),result.getString("PersonelNumber"));
@@ -191,7 +191,7 @@ public class AccountDAO extends DAO<Account> {
 					break;
 				case "Policeman":
 					account = new Policeman(result.getInt("IdAccount"),result.getString("PersonelNumber"));
-					((Policeman)account).setChief((Chief)Account.getAccount(result.getInt("IdChief")));
+					((Policeman)account).setChief(result.getInt("IdChief"));
 					allAccounts.add(account);
 					break;
 				case "Administrator":
@@ -227,22 +227,36 @@ public class AccountDAO extends DAO<Account> {
 		}
 		return allChiefs;
 	}
-
+	
 	public List<Policeman> findAllPoliceman() {
 		List <Policeman> allPolicemans = new ArrayList <Policeman>();
 		ResultSet result = null;
 		try{
 			result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Account WHERE TYPEACCOUNT = 'Policeman'");
 			while(result.next()) {
-						Policeman policeman = new Policeman(result.getInt("IdAccount"),result.getString("PersonelNumber"));
-						policeman.setChief((Chief)Account.getAccount(result.getInt("IdChief")));
-						allPolicemans.add(policeman);
+				Policeman policeman = new Policeman(result.getInt("IdAccount"),result.getString("PersonelNumber"));
+				policeman.setChief(result.getInt("IdChief"));
+				allPolicemans.add(policeman);
 			}
 			result.close();
 		}catch(SQLException e) {
 			
 		}
 		return allPolicemans;
+	}
+	public List<Policeman> findSubordinate(Chief chief) {
+		List <Policeman> allSubordinates = new ArrayList <Policeman>();
+		ResultSet result = null;
+		try{
+			result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Account WHERE TYPEACCOUNT = 'Policeman' AND IDCHIEF ="+chief.getId());
+			while(result.next()) {
+				allSubordinates.add( new Policeman(result.getInt("IdAccount"),result.getString("PersonelNumber")));
+			}
+			result.close();
+		}catch(SQLException e) {
+			
+		}		
+		return allSubordinates;
 	}
 	
 	public Account connect(String personelNumber, String password) {
