@@ -32,6 +32,16 @@ CREATE OR REPLACE package body manage_account IS
 		
 		COMMIT;
 		exception
+			WHEN NOT_LOGGED_ON THEN
+				dbms_output.put_line('You are not connected');
+			WHEN LOGIN_DENIED THEN
+				dbms_output.put_line('Connection to db impossible');
+			WHEN STORAGE_ERROR THEN
+				dbms_output.put_line('Not enough memory');
+			WHEN VALUE_ERROR THEN
+				dbms_output.put_line('Wrong values (format? number->String?)');
+			WHEN NO_DATA_FOUND THEN
+				dbms_output.put_line('IN values not found');
 			when Others then
 				DBMS_OUTPUT.PUT_LINE('Erreur:'||substr(SQLERRM,1,40) );
 		END create_account;
@@ -47,6 +57,14 @@ CREATE OR REPLACE package body manage_account IS
 		EXCEPTION
 			WHEN NO_DATA_FOUND THEN
 				type_account := 'nom utilisateur/mot de passe incorrect';
+			WHEN NOT_LOGGED_ON THEN
+				dbms_output.put_line('You are not connected');
+			WHEN LOGIN_DENIED THEN
+				dbms_output.put_line('Connection to db impossible');
+			WHEN STORAGE_ERROR THEN
+				dbms_output.put_line('Not enough memory');
+			WHEN VALUE_ERROR THEN
+				dbms_output.put_line('Wrong values (format? number->String?)');
 			when Others then
 				DBMS_OUTPUT.PUT_LINE('Erreur:'||substr(SQLERRM,1,40) );
 		END connect_account;
@@ -73,7 +91,19 @@ CREATE OR REPLACE package body manage_account IS
 			WHERE IDACCOUNT = id;
 			
 			COMMIT;
-		
+			exception
+				WHEN NOT_LOGGED_ON THEN
+					dbms_output.put_line('You are not connected');
+				WHEN LOGIN_DENIED THEN
+					dbms_output.put_line('Connection to db impossible');
+				WHEN STORAGE_ERROR THEN
+					dbms_output.put_line('Not enough memory');
+				WHEN VALUE_ERROR THEN
+					dbms_output.put_line('Wrong values (format? number->String?)');
+				WHEN NO_DATA_FOUND THEN
+					dbms_output.put_line('IN values not found');
+				when Others then
+					DBMS_OUTPUT.PUT_LINE('Erreur:'||substr(SQLERRM,1,40) );
 		END change_account;
 		
 	PROCEDURE change_password (pn IN ACCOUNT.PERSONELNUMBER%TYPE,new_password IN ACCOUNT.PASSWORD%TYPE) IS
@@ -84,7 +114,19 @@ CREATE OR REPLACE package body manage_account IS
 			WHERE personelNumber = pn;
 			
 			COMMIT;
-		
+			exception
+				WHEN NOT_LOGGED_ON THEN
+					dbms_output.put_line('You are not connected');
+				WHEN LOGIN_DENIED THEN
+					dbms_output.put_line('Connection to db impossible');
+				WHEN STORAGE_ERROR THEN
+					dbms_output.put_line('Not enough memory');
+				WHEN VALUE_ERROR THEN
+					dbms_output.put_line('Wrong values (format? number->String?)');
+				WHEN NO_DATA_FOUND THEN
+					dbms_output.put_line('IN values not found');
+				when Others then
+					DBMS_OUTPUT.PUT_LINE('Erreur:'||substr(SQLERRM,1,40) );
 		END change_password;	
 		
 	PROCEDURE change_personelNumber (id IN ACCOUNT.IDACCOUNT%TYPE, new_personelNumber IN ACCOUNT.PERSONELNUMBER%TYPE) IS
@@ -94,7 +136,19 @@ CREATE OR REPLACE package body manage_account IS
 			WHERE IDACCOUNT = id;
 			
 			COMMIT;
-		
+			exception
+				WHEN NOT_LOGGED_ON THEN
+					dbms_output.put_line('You are not connected');
+				WHEN LOGIN_DENIED THEN
+					dbms_output.put_line('Connection to db impossible');
+				WHEN STORAGE_ERROR THEN
+					dbms_output.put_line('Not enough memory');
+				WHEN VALUE_ERROR THEN
+					dbms_output.put_line('Wrong values (format? number->String?)');
+				WHEN NO_DATA_FOUND THEN
+					dbms_output.put_line('IN values not found');
+				when Others then
+					DBMS_OUTPUT.PUT_LINE('Erreur:'||substr(SQLERRM,1,40) );
 		END change_personelNumber;	
 		
 	PROCEDURE delete_account (id IN ACCOUNT.IDACCOUNT%TYPE) IS
@@ -102,6 +156,19 @@ CREATE OR REPLACE package body manage_account IS
 			DELETE FROM account
 			WHERE IDACCOUNT = id;
 			COMMIT;
+			exception
+				WHEN NOT_LOGGED_ON THEN
+					dbms_output.put_line('You are not connected');
+				WHEN LOGIN_DENIED THEN
+					dbms_output.put_line('Connection to db impossible');
+				WHEN STORAGE_ERROR THEN
+					dbms_output.put_line('Not enough memory');
+				WHEN VALUE_ERROR THEN
+					dbms_output.put_line('Wrong values (format? number->String?)');
+				WHEN NO_DATA_FOUND THEN
+					dbms_output.put_line('IN values not found');
+				when Others then
+					DBMS_OUTPUT.PUT_LINE('Erreur:'||substr(SQLERRM,1,40) );
 		END delete_account;
 		
 	PROCEDURE set_chief(id_chief IN ACCOUNT.IDACCOUNT%TYPE, id_subordinate IN ACCOUNT.IDACCOUNT%TYPE) IS
@@ -110,6 +177,19 @@ CREATE OR REPLACE package body manage_account IS
 			SET IDCHIEF = id_chief		
 			WHERE IDACCOUNT = id_subordinate;
 			COMMIT;
+			exception
+				WHEN NOT_LOGGED_ON THEN
+					dbms_output.put_line('You are not connected');
+				WHEN LOGIN_DENIED THEN
+					dbms_output.put_line('Connection to db impossible');
+				WHEN STORAGE_ERROR THEN
+					dbms_output.put_line('Not enough memory');
+				WHEN VALUE_ERROR THEN
+					dbms_output.put_line('Wrong values (format? number->String?)');
+				WHEN NO_DATA_FOUND THEN
+					dbms_output.put_line('IN values not found');
+				when Others then
+					DBMS_OUTPUT.PUT_LINE('Erreur:'||substr(SQLERRM,1,40) );
 		END set_chief;
 	
 		

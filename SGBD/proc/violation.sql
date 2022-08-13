@@ -20,6 +20,16 @@ CREATE OR REPLACE package body manage_violation IS
 			
 			COMMIT;
 			exception
+			WHEN NOT_LOGGED_ON THEN
+				dbms_output.put_line('You are not connected');
+			WHEN LOGIN_DENIED THEN
+				dbms_output.put_line('Connection to db impossible');
+			WHEN STORAGE_ERROR THEN
+				dbms_output.put_line('Not enough memory');
+			WHEN VALUE_ERROR THEN
+				dbms_output.put_line('Wrong values (format? number->String?)');
+			WHEN NO_DATA_FOUND THEN
+				dbms_output.put_line('IN values not found');
 			when Others then
 				DBMS_OUTPUT.PUT_LINE('Erreur:'||substr(SQLERRM,1,40) );
 		END create_violation;
@@ -29,6 +39,19 @@ CREATE OR REPLACE package body manage_violation IS
 			DELETE FROM violation
 			WHERE IDVIOLATION = id;
 			COMMIT;
+			exception
+			WHEN NOT_LOGGED_ON THEN
+				dbms_output.put_line('You are not connected');
+			WHEN LOGIN_DENIED THEN
+				dbms_output.put_line('Connection to db impossible');
+			WHEN STORAGE_ERROR THEN
+				dbms_output.put_line('Not enough memory');
+			WHEN VALUE_ERROR THEN
+				dbms_output.put_line('Wrong values (format? number->String?)');
+			WHEN NO_DATA_FOUND THEN
+				dbms_output.put_line('IN values not found');
+			when Others then
+				DBMS_OUTPUT.PUT_LINE('Erreur:'||substr(SQLERRM,1,40) );
 		END delete_violation;
 		
 	PROCEDURE update_violation (id IN VIOLATION.IDVIOLATION%TYPE,new_name IN VIOLATION.NAME%TYPE ,new_price IN VIOLATION.PRICE%TYPE,new_description IN VIOLATION.DESCRIPTION%TYPE) IS
@@ -40,6 +63,19 @@ CREATE OR REPLACE package body manage_violation IS
 			WHERE IDVIOLATION = id;
 			
 			COMMIT;
+			exception
+			WHEN NOT_LOGGED_ON THEN
+				dbms_output.put_line('You are not connected');
+			WHEN LOGIN_DENIED THEN
+				dbms_output.put_line('Connection to db impossible');
+			WHEN STORAGE_ERROR THEN
+				dbms_output.put_line('Not enough memory');
+			WHEN VALUE_ERROR THEN
+				dbms_output.put_line('Wrong values (format? number->String?)');
+			WHEN NO_DATA_FOUND THEN
+				dbms_output.put_line('IN values not found');
+			when Others then
+				DBMS_OUTPUT.PUT_LINE('Erreur:'||substr(SQLERRM,1,40) );
 		END update_violation;
 
 END manage_violation;
