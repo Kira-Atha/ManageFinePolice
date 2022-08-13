@@ -33,7 +33,6 @@ public class ChargedDAO extends DAO<Charged>{
 		ClientResponse res = this.getResource()
 				.path("charged")
 				.post(ClientResponse.class,params);
-		System.out.println(res.getStatus());
 		if(res.getStatus() == 201) {
 			return true;
 		}
@@ -42,13 +41,11 @@ public class ChargedDAO extends DAO<Charged>{
 
 	@Override
 	public boolean delete(Charged obj) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean update(Charged obj) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -84,6 +81,4 @@ public class ChargedDAO extends DAO<Charged>{
 		}
 		return allChargeds;
 	}
-
-
 }

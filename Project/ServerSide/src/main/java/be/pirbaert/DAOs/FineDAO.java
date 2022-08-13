@@ -1,9 +1,9 @@
 package be.pirbaert.DAOs;
-import java.io.IOException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
@@ -13,9 +13,11 @@ import java.util.Objects;
 import be.pirbaert.POJOs.Account;
 import be.pirbaert.POJOs.Charged;
 import be.pirbaert.POJOs.Violation;
+import oracle.jdbc.OracleConnection;
 import oracle.jdbc.OracleDriver;
-import oracle.sql.ARRAY;
-import oracle.sql.ArrayDescriptor;
+import oracle.jdbc.OraclePreparedStatement;
+import oracle.sql.*;
+import java.sql.*;
 import be.pirbaert.POJOs.Vehicle;
 import be.pirbaert.POJOs.Fine;
 import be.pirbaert.POJOs.Policeman;
@@ -49,30 +51,28 @@ public class FineDAO extends DAO<Fine> {
 			procedure.setInt(7, 0);
 			procedure.registerOutParameter(8, Types.NUMERIC);
 			procedure.executeQuery();
-			System.out.println("in dao server 1st query");
-			new_id = procedure.getInt(7);
-			System.out.println("NOUVEL ID = "+new_id);
+			new_id = procedure.getInt(8);
 			if(new_id!=0) {
-				
 				fine.setId(new_id);
-			
-				System.out.println("Before pass array");
 				procedure2 = this.connect.prepareCall("{call manage_fine.create_fine_violation(?,?)}");
-				int[] idsViolations = new int[fine.getViolations().size()];
+				int idsViolations[] = new int[fine.getViolations().size()];
 				
 				for(int i=0;i<idsViolations.length;i++) {
 					idsViolations[i] = fine.getViolations().get(i).getId();
 				}
-				for(int i=0;i<idsViolations.length;i++) {
-					System.out.println(idsViolations[i]);
-				}
-				
-				ArrayDescriptor descriptor = ArrayDescriptor.createDescriptor("TAB_NUM", procedure.getConnection());
-		        ARRAY array = new ARRAY(descriptor ,this.connect, idsViolations);
+				ArrayDescriptor descriptor = ArrayDescriptor.createDescriptor("TAB_NUM", procedure2.getConnection());
+		        ARRAY array = new ARRAY(descriptor ,procedure2.getConnection(), idsViolations);
+
+	        /* LE TABLEAU CONTIENT BIEN LES VALEURS ...
+		        Datum[] datumArr = array.getOracleArray();
+		        System.out.println("Content of ARRAY : ");
+		        for (Datum datum: datumArr){
+		            System.out.println(datum.stringValue()+" ");
+		        }*/
+		        
 				procedure2.setArray(1,array);
 				procedure2.setInt(2, fine.getId());
-				procedure2.executeQuery();
-				System.out.println("after pass array");
+				procedure2.execute();
 				return true;
 			}else {
 				return false;
@@ -80,6 +80,13 @@ public class FineDAO extends DAO<Fine> {
 		}catch(SQLException e) {
 			e.printStackTrace();
 			return false;
+		}finally {
+			try {
+				procedure.close();
+				procedure2.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 //decline
@@ -87,7 +94,6 @@ public class FineDAO extends DAO<Fine> {
 	public boolean delete(Fine fine) {
 		CallableStatement procedure = null;
 		CallableStatement procedure2 = null;
-		System.out.println(fine.getId());
 		try {
 			procedure2 = this.connect.prepareCall("{call manage_fine.delete_fine_violation(?)}");
 			procedure2.setInt(1, fine.getId());
@@ -101,14 +107,19 @@ public class FineDAO extends DAO<Fine> {
 		}catch(SQLException e) {
 			e.printStackTrace();
 			return false;
+		}finally {
+			try {
+				procedure2.close();
+				procedure.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 //accept + send letter
 	@Override
 	public boolean update(Fine fine) {
 		CallableStatement procedure = null;
-		System.out.println("VALIDATED ="+fine.isValidated());
-		System.out.println("LETTER SENT ="+fine.isLetterSent());
 		try {
 			procedure = this.connect.prepareCall("{call manage_fine.update_fine(?,?,?)}");
 			procedure.setInt(1, fine.getId());
@@ -119,6 +130,12 @@ public class FineDAO extends DAO<Fine> {
 		}catch(SQLException e) {
 			e.printStackTrace();
 			return false;
+		}finally {
+			try {
+				procedure.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -159,11 +176,18 @@ public class FineDAO extends DAO<Fine> {
 					fine.setLetterSent(true);
 				}
 			}
-			result.close();
-			result2.close();
 		}catch(SQLException e) {
 			e.printStackTrace();
 			return null;
+		}finally {
+			try {
+				result.close();
+				preparedStatement.close();
+				result2.close();
+				preparedStatement2.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return fine;
 	}
@@ -196,11 +220,16 @@ public class FineDAO extends DAO<Fine> {
 				}
 				allFines.add(fine);
 			}
-			result.close();
-			result2.close();
 		}catch(SQLException e) {
 			e.printStackTrace();
 			return null;
+		}finally {
+			try {
+				result.close();
+				result2.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return allFines;
 	}

@@ -18,7 +18,7 @@ public class Policeman extends Account{
 	}
 	public Policeman(String personelNumber,String password) {
 		super(personelNumber,password);
-		setFines(new ArrayList<Fine>());
+		this.fines = new ArrayList<Fine>();
 		this.type=this.getClass().getSimpleName();
 	}
 	
@@ -44,13 +44,21 @@ public class Policeman extends Account{
 	public void setChief(int chief) {
 		this.chief = chief;
 	}
+	public boolean createFine(Fine fine) {
+		if(fine.create()) {
+			this.getFines().add(fine);
+			return true;
+		}
+		return false;
+	}
 	@Override
 	public boolean equals(Object o) {
 		if(this == o) {
 			return true;
 		}
-			
-		if((o == null) || (o.getClass() != this.getClass())) {
+	// Si c'est un chief, il sera forcément aussi instanceof Policeman, je ne peux pas dire que la classe est différente et que ça retourne faux,
+	// Sinon, dans les faits chief != policeman et ça retournera toujours faux quand je voudrais récupérer les fines du chief en passant par GetFines de Policeman 
+		if((o == null) || this instanceof Policeman == false || o instanceof Policeman == false) {
 			return false;
 		}
 

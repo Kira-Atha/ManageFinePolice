@@ -55,6 +55,7 @@ public class Fine implements Serializable {
 		this.date = date;
 		this.validated = false;
 		this.setLetterSent(false);
+		this.charged = charged;
 		this.totalPrice = this.getTotalPrice();
 	}
 	

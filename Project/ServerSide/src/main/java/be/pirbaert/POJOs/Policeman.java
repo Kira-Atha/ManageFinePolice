@@ -29,16 +29,6 @@ public class Policeman extends Account{
 		setFines(new ArrayList<Fine>());
 	}
 
-	/*
-	public List <Fine> getFines() {
-		List<Fine> allFines = Fine.getAllFines();
-		for(Fine fine : allFines) {
-			if(fine.getPoliceman().equals(this) && !this.fines.contains(fine)) {
-				fines.add(fine);
-			}
-		}
-		return fines;
-	}*/
 	public void setFines(List <Fine> fines) {
 		this.fines = fines;
 	}

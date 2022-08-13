@@ -36,19 +36,23 @@ public class ChargedDAO extends DAO<Charged>{
 		}catch(SQLException e) {
 			e.printStackTrace();
 			return false;
+		}finally {
+			try {
+				procedure.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return false;
 	}
 
 	@Override
 	public boolean delete(Charged obj) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean update(Charged obj) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -70,6 +74,13 @@ public class ChargedDAO extends DAO<Charged>{
 		}catch(SQLException e) {
 			e.printStackTrace();
 			return null;
+		}finally {
+			try {
+				result.close();
+				preparedStatement.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return charged;
 	}
@@ -88,8 +99,13 @@ public class ChargedDAO extends DAO<Charged>{
 		}catch(SQLException e) {
 			e.printStackTrace();
 			return null;
+		}finally {
+			try {
+				result.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return allChargeds;
 	}
-
 }

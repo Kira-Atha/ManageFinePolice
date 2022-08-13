@@ -14,7 +14,6 @@ public class ViolationDAO extends DAO<Violation> {
 
 	public ViolationDAO(Connection connection) {
 		super(connection);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -48,6 +47,12 @@ public class ViolationDAO extends DAO<Violation> {
 			e.printStackTrace();
 			return false;
 
+		}finally {
+			try {
+				proc.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -72,6 +77,12 @@ public class ViolationDAO extends DAO<Violation> {
 			e.printStackTrace();
 			return false;
 
+		}finally {
+			try {
+				proc.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -96,6 +107,12 @@ public class ViolationDAO extends DAO<Violation> {
 			e.printStackTrace();
 			return false;
 	
+		}finally {
+			try {
+				proc.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -114,9 +131,15 @@ public class ViolationDAO extends DAO<Violation> {
 			if(result.next()) {
 				violation=new Violation(result.getInt("IdViolation"),result.getString("Name"),result.getString("Description"),result.getFloat("Price"));
 			}
-			result.close();
 		}catch(SQLException e) {
 			return null;
+		}finally {
+			try {
+				result.close();
+				preparedStatement.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return violation;
 	}
@@ -132,9 +155,14 @@ public class ViolationDAO extends DAO<Violation> {
 				violation=new Violation(result.getInt("IdViolation"),result.getString("Name"),result.getString("Description"),result.getFloat("Price"));
 				allViolations.add(violation);
 			}
-			result.close();
 		}catch(SQLException e) {
 			return null;
+		}finally {
+			try {
+				result.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return allViolations;
 	}

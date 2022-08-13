@@ -35,7 +35,7 @@ public class Chief extends Policeman{
 		for(Policeman account : allPolicemans) {
 			if(Objects.isNull(account.getChief())) {
 				continue;
-			}else if(account.getChief().equals(this)) {
+			}else if(account.getChief() == this.getId()) {
 				this.subordinates.add((Policeman) account);
 			}
 		}
@@ -48,5 +48,14 @@ public class Chief extends Policeman{
 	
 	public static List<Chief> getAllChief(){
 		return accountDAOc.findAllChief();
+	}
+		
+	public boolean acceptDeclineFine(String choice,Fine fine) {
+		if(choice.equals("accept") && fine.update()) {
+			return true;
+		}else if(choice.equals("decline") && fine.delete()) {
+			return true;
+		}
+		return false;
 	}
 }

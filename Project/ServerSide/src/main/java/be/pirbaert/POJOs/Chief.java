@@ -12,14 +12,13 @@ public class Chief extends Policeman {
 	public Chief(int id,String personelNumber, String password) {
 		super(id,personelNumber, password);
 		this.setType(this.getClass().getSimpleName());
-		this.setSubordinates();
-		//getSubordinates();
+		this.setSubordinates(new ArrayList<Policeman>());
 	}
 	
 	public Chief(int id,String personelNumber) {
 		super(id,personelNumber);
 		this.setType(this.getClass().getSimpleName());
-		setSubordinates();
+		this.setSubordinates(new ArrayList<Policeman>());
 	}
 	
 	public Chief(String personelNumber, String password) {
@@ -27,32 +26,10 @@ public class Chief extends Policeman {
 		this.setType(this.getClass().getSimpleName());		
 	}
 
-	/*
-	public List<Policeman> getSubordinates() {
-		List<Account> allAccounts = Account.getAllAccounts();
-		List<Policeman> allPolicemans = new ArrayList<Policeman>();
-		
-		for(Account account : allAccounts) {
-			if(account.getClass().getSimpleName().equals("Policeman")) {
-				allPolicemans.add((Policeman)account);
-			}
-		}
-		for(Policeman account : allPolicemans) {
-			if(Objects.isNull(account.getChief())) {
-				continue;
-			}else if(account.getChief().equals(this)) {
-				this.subordinates.add((Policeman) account);
-			}
-		}
-		return subordinates;
-	}
-	 */
 	public void setSubordinates(List<Policeman> subordinates) {
 		this.subordinates = subordinates;
 	}
-	public void setSubordinates() {
-		this.subordinates = accountDAOs.findSubordinate(this);
-	}
+
 	
 	public static List<Chief> getAllChief(){
 		return accountDAOs.findAllChief();

@@ -1,9 +1,7 @@
 package be.pirbaert.POJOc;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
-
 import be.pirbaert.DAOc.AccountDAO;
 
 public class Account implements Serializable {

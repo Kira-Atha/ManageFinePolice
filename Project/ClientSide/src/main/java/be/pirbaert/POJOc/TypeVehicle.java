@@ -59,7 +59,7 @@ public class TypeVehicle implements Serializable{
 		}
 
 		final TypeVehicle test = (TypeVehicle)o;
-		return this.getId() == (test.getId()) || this.getName().equals(test.getName());
+		return this.getId() == test.getId() || this.getName().equals(test.getName());
 	}
 	@Override
 	public int hashCode() {

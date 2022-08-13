@@ -37,7 +37,7 @@
 			%>
 		</ul>
 		<form action="<%=back%>" method="GET">
-			<input type="submit" value=back>
+			<input type="submit" class="btn" value=back>
 		</form>
 	</body>
 </html>

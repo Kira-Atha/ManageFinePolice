@@ -156,7 +156,6 @@ public class AccountDAO extends DAO<Account> {
 			JSONParser parser = new JSONParser();
 			JSONObject obj = (JSONObject)parser.parse(responseJSON);
 			
-			//System.out.println(obj.get("type"));
 			switch(String.valueOf(obj.get("type"))) {
 				case "Administrator":
 					return this.getMapper().readValue(responseJSON,Administrator.class);

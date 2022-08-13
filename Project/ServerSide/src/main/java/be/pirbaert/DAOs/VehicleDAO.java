@@ -47,6 +47,12 @@ public class VehicleDAO extends DAO<Vehicle> {
 		}catch(SQLException e) {
 			e.printStackTrace();
 			return false;
+		}finally {
+			try {
+				procedure.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return false;
 	}
@@ -75,9 +81,15 @@ public class VehicleDAO extends DAO<Vehicle> {
 			if(result.next()) {
 				vehicle=new Vehicle(result.getInt("IdVehicle"),Registration.getRegistration(result.getInt("IdRegistration")),TypeVehicle.getType(result.getInt("IdType")));
 			}
-			result.close();
 		}catch(SQLException e) {
 			return null;
+		}finally {
+			try {
+				result.close();
+				preparedStatement.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return vehicle;
 	}
@@ -93,9 +105,14 @@ public class VehicleDAO extends DAO<Vehicle> {
 				vehicle=new Vehicle(result.getInt("IdVehicle"),Registration.getRegistration(result.getInt("IdRegistration")),TypeVehicle.getType(result.getInt("IdType")));
 				allVehicles.add(vehicle);
 			}
-			result.close();
 		}catch(SQLException e) {
 			return null;
+		}finally {
+			try {
+				result.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return allVehicles;
 	}

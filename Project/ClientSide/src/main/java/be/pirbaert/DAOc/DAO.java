@@ -46,5 +46,4 @@ public abstract class DAO<T> {
 	public WebResource getResource() {
 		return resource;
 	}
-
 }

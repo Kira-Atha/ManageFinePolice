@@ -5,7 +5,7 @@
 <html>
 	<head>
 		<meta charset="ISO-8859-1">
-		<title>ADD CHARGED</title>
+		<title>Add charged</title>
 	</head>
 	<body>
 		<form action="AddCharged" class="form" method="POST">
@@ -30,7 +30,7 @@
 				</tr>
 				<tr>
 					 <td colspan="2" align="center">
-					 	<button type="submit" name="add" value="charged">Add Charged</button> 
+					 	<button type="submit" class="btn" name="add" value="charged">Add Charged</button> 
 					 </td>
 				</tr>
 			</table>

@@ -34,7 +34,6 @@ public class VehicleDAO extends DAO<Vehicle> {
 		ClientResponse res = this.getResource()
 				.path("vehicle")
 				.post(ClientResponse.class,params);
-		System.out.println(res.getStatus());
 		if(res.getStatus() == 201) {
 			return true;
 		}
@@ -43,13 +42,11 @@ public class VehicleDAO extends DAO<Vehicle> {
 
 	@Override
 	public boolean delete(Vehicle obj) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean update(Vehicle obj) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -86,7 +83,4 @@ public class VehicleDAO extends DAO<Vehicle> {
 		}
 		return null;
 	}
-
-
-
 }

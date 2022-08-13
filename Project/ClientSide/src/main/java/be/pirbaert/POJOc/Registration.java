@@ -8,7 +8,6 @@ public class Registration implements Serializable{
 	private static final long serialVersionUID = -27936165462947993L;
 	private int id;
 	private String serialNumber;
-	//private Vehicle vehicle;
 	private static RegistrationDAO registrationDAOc = new RegistrationDAO();
 	
 	public Registration() {}
@@ -16,7 +15,6 @@ public class Registration implements Serializable{
 	public Registration(int id, String serialNumber) {
 		this.setId(id);
 		this.setSerialNumber(serialNumber);
-		//this.setVehicle(vehicle);
 	}
 
 	public int getId() {

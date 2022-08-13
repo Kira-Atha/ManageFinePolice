@@ -10,6 +10,8 @@ import java.util.Objects;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -59,9 +61,9 @@ public class APIFine {
 			@FormParam("id_vehicle") int id_vehicle,
 			@FormParam("comment")String comment,
 			@FormParam("date") String s_date,
-			@FormParam("id_charged")int id_charged)
+			@FormParam("id_charged")int id_charged,
+			@FormParam("validated")int validated)
 	{
-		System.out.println("API FINE JE SUIS PASSE ICI");
 		Policeman policeman = (Policeman) Account.getAccount(id_policeman);
 		Charged charged = null;
 		if(id_charged!=0) {
@@ -71,7 +73,6 @@ public class APIFine {
 		String[] ids = ids_violation.split(";");
 		List<Violation> violations = new ArrayList<Violation>();
 		for(int i = 0; i < ids.length;i++) {
-			System.out.println(ids[i]);
 			violations.add(Violation.getViolation(Integer.parseInt(ids[i])));
 		}
 		  
@@ -83,6 +84,9 @@ public class APIFine {
 		}
 		
 		Fine fine = new Fine(violations,policeman,Vehicle.getVehicle(id_vehicle),comment,date,charged);
+		//System.out.println("API CHARGED IS : "+fine.getCharged().getFirstname());
+		fine.setValidated(intToBool(validated));
+		
 		if(policeman.createFine(fine)) {
 			return Response
 					.status(Status.CREATED)
@@ -91,5 +95,42 @@ public class APIFine {
 		}else {
 			return Response.status(Status.CONFLICT).build();
 		}
+	}
+	
+//accept
+	@PUT
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response updateFine(
+			@FormParam("id_fine") int id_fine,
+			@FormParam("validated") int validated,
+			@FormParam("letterSent")int letterSent){
+		Fine fine = Fine.getFine(id_fine);
+
+		fine.setValidated(intToBool(validated));
+		fine.setLetterSent(intToBool(letterSent));
+		if(fine.update()) {
+			return Response
+					.status(Status.NO_CONTENT)
+					.build();
+		}
+		else return Response.status(Status.NOT_FOUND).build();
+	}
+//decline
+	@DELETE
+	@Path("{id}")
+	public Response deleteFine(@PathParam("id") int id) {
+		Fine fine = Fine.getFine(id);
+		if(fine.delete()) {
+			return Response.status(Status.NO_CONTENT).build();
+		}
+		else return Response.status(Status.NOT_FOUND).build();
+	}
+
+	
+	public static boolean intToBool(int val) {
+	    if (val <= 0) {
+	    	return false;
+	    }
+	    return true;
 	}
 }

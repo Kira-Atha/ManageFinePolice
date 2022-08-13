@@ -87,6 +87,9 @@ public class AddCharged extends HttpServlet {
 		}else {
 			Charged charged = new Charged(0,firstname,lastname,address);
 			if(charged.create()) {
+				List <Charged> allChargeds = (List<Charged>) session.getAttribute("allChargeds");
+				allChargeds.add(charged);
+				session.setAttribute("allChargeds", allChargeds);
 				response.sendRedirect("ConsultFines");
 			}else {
 				errors.add("Charged not created");
