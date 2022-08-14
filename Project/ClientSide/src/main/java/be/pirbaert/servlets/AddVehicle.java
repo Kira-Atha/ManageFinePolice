@@ -68,13 +68,7 @@ public class AddVehicle extends HttpServlet {
 		}
 
 		List<String> errors = new ArrayList<String>();
-		TypeVehicle type = TypeVehicle.getType(Integer.parseInt(request.getParameter("type")));
-		Registration registration = null;
-		System.out.println("ID DU REGISTRATION CHOISI "+Integer.parseInt(request.getParameter("registration")));
-		if(Integer.parseInt(request.getParameter("registration")) != 0) {
-			registration = Registration.getRegistration(Integer.parseInt(request.getParameter("registration")));
-		}
-		
+
 		String choice = request.getParameter("add");
 		switch(choice) {
 			case "registration":
@@ -83,8 +77,12 @@ public class AddVehicle extends HttpServlet {
 				response.sendRedirect("AddRegistration");
 				break;
 			case "vehicle":
+				Registration registration = null;
+				if(Integer.parseInt(request.getParameter("registration")) != 0) {
+					registration = Registration.getRegistration(Integer.parseInt(request.getParameter("registration")));
+				}
+				TypeVehicle type = TypeVehicle.getType(Integer.parseInt(request.getParameter("type")));
 				Vehicle vehicle = new Vehicle(0,registration,type);
-				//System.out.println(vehicle.getRegistration().getId());
 				if(vehicle.create()) {
 					List<Vehicle> allVehicles = (List<Vehicle>) session.getAttribute("allVehicles");
 					allVehicles.add(vehicle);

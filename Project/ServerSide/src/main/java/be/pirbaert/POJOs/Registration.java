@@ -49,7 +49,10 @@ public class Registration implements Serializable{
 	}
 	
 	public boolean save() {
-		return registrationDAOs.create(this);
+		boolean success = registrationDAOs.create(this);
+		System.out.println("ID POJOs "+this.getId());
+		return success;
+		//return registrationDAOs.create(this);
 	}
 	
 	public boolean delete() {

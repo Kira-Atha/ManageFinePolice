@@ -46,8 +46,6 @@ public class AddRegistration extends HttpServlet {
 		}
 		
 		String serialNumber = (String) session.getAttribute("serialNumber");
-		System.out.println(serialNumber);
-
 		List <String> errors = new ArrayList<String>();
 		
 		if(serialNumber != null) {
@@ -70,9 +68,12 @@ public class AddRegistration extends HttpServlet {
 		}else {
 			Registration registration = new Registration(0,serialNumber);
 			if(registration.create()) {
+				/*
+				System.out.println("a la création du registration : "+registration.getId());
 				List<Registration> allRegistrationsWithoutVehicle = (List<Registration>) session.getAttribute("allRegistrationsWithoutVehicle");
 				allRegistrationsWithoutVehicle.add(registration);
 				session.setAttribute("allRegistrationsWithoutVehicle", allRegistrationsWithoutVehicle);
+				*/
 				response.sendRedirect("ConsultFines");
 			}else {
 				errors.add("Registration not created => Already exist");

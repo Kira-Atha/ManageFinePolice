@@ -58,6 +58,8 @@ public class Vehicle implements Serializable{
 		List <Vehicle> allVehicles = Vehicle.getAllVehicles();
 		for(Vehicle veh : allVehicles) {
 			if(this.equals(veh)) {
+				//System.out.println(this.id+this.getRegistration().getSerialNumber() + this.getType().getName());
+				//System.out.println(veh.id+veh.getRegistration().getSerialNumber()+veh.getType().getName());
 				//existe déjà
 				return false;
 			}
@@ -77,7 +79,7 @@ public class Vehicle implements Serializable{
 		}
 
 		final Vehicle test = (Vehicle)o;
-		//System.out.println("IN THE EQUALS Client => "+this.getRegistration().getSerialNumber());
+
 		if(!Objects.isNull(this.getRegistration())) {
 			if(Objects.isNull(test.getRegistration())){
 				return false;

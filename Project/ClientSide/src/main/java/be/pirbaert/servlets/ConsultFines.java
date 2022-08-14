@@ -69,14 +69,9 @@ public class ConsultFines extends HttpServlet {
 		List<Fine> allFines;
 		List<Fine> allFinesAccepted = null;
 		if(auth) {
-			// Si allViolations est à null dans la session, premier passage. Si pas à null, cela veut dire que ces listes contiennent déjà les infos
-			// ( éviter les passages inutiles en db )
 			if(Objects.isNull(session.getAttribute("allViolations"))) {
-				allFines = Fine.getAllFines();
 				allViolations = Violation.getAllViolations();
-				allChargeds = Charged.getAllChargeds();
-				allVehicles = Vehicle.getAllVehicles();
-				allRegistrations = Registration.getAllRegistrations();
+				allFines = Fine.getAllFines();
 				allTypes = TypeVehicle.getAllTypes();
 			// Pour tax collector	
 				if(account instanceof TaxCollector) {
@@ -88,21 +83,7 @@ public class ConsultFines extends HttpServlet {
 					}
 					session.setAttribute("allFinesAccepted", allFinesAccepted);
 				}
-
-			//
-				allRegistrationsWithoutVehicle = new ArrayList<Registration>();
-				allRegistrationsInVehicle = new ArrayList<Registration>();
-				for(Vehicle vehicle  : allVehicles) {
-					allRegistrationsInVehicle.add(vehicle.getRegistration());
-				}
-				
-				for(int i = 0; i < allRegistrations.size() ; i++) {
-					for(int j=0; j<allVehicles.size();j++) {
-						if(!allRegistrationsWithoutVehicle.contains(allRegistrations.get(i)) && !allRegistrationsInVehicle.contains(allRegistrations.get(i))) {
-							allRegistrationsWithoutVehicle.add(allRegistrations.get(i));
-						}
-					}
-				}
+	
 			// Pour chief
 			if(account instanceof Chief) {
 				finesToChief = new ArrayList<Fine>();
@@ -115,14 +96,33 @@ public class ConsultFines extends HttpServlet {
 				finesToChief.addAll(((Chief)account).getFines());
 				session.setAttribute("finesToChief", finesToChief);
 			}
-				session.setAttribute("allViolations", allViolations);
-				session.setAttribute("allChargeds", allChargeds);
-				session.setAttribute("allVehicles", allVehicles);
-				session.setAttribute("allRegistrationsWithoutVehicle", allRegistrationsWithoutVehicle);
-				session.setAttribute("allTypes", allTypes);	
-				session.setAttribute("allViolations", allViolations);
+			
+			
+			session.setAttribute("allViolations", allViolations);
+			session.setAttribute("allTypes", allTypes);	
 			}
-
+			allChargeds = Charged.getAllChargeds();
+			allVehicles = Vehicle.getAllVehicles();
+			allRegistrations = Registration.getAllRegistrations();
+			
+			allRegistrationsWithoutVehicle = new ArrayList<Registration>();
+			allRegistrationsInVehicle = new ArrayList<Registration>();
+			for(Vehicle vehicle  : allVehicles) {
+				allRegistrationsInVehicle.add(vehicle.getRegistration());
+			}
+			
+			for(int i = 0; i < allRegistrations.size() ; i++) {
+				for(int j=0; j<allVehicles.size();j++) {
+					if(!allRegistrationsWithoutVehicle.contains(allRegistrations.get(i)) && !allRegistrationsInVehicle.contains(allRegistrations.get(i))) {
+						allRegistrationsWithoutVehicle.add(allRegistrations.get(i));
+					}
+				}
+			}
+			
+			session.setAttribute("allChargeds", allChargeds);
+			session.setAttribute("allVehicles", allVehicles);
+			session.setAttribute("allRegistrationsWithoutVehicle", allRegistrationsWithoutVehicle);
+			
 			request.setAttribute("previous", request.getHeader("referer"));
 			RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/Views/ConsultFines.jsp");
 			dispatcher.forward(request, response);
