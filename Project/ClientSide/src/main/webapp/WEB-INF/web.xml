@@ -87,7 +87,28 @@
 	<servlet>
  		<servlet-name>ViolationUpdate</servlet-name>
   		<servlet-class>be.pirbaert.servlets.ViolationUpdate</servlet-class>
-	</servlet>		
+	</servlet>	
+	
+	<servlet>
+ 		<servlet-name>SubordinateAdd</servlet-name>
+  		<servlet-class>be.pirbaert.servlets.SubordinateAdd</servlet-class>
+	</servlet>	
+	
+	<servlet>
+ 		<servlet-name>VehicleTypeCreate</servlet-name>
+  		<servlet-class>be.pirbaert.servlets.VehicleTypeCreate</servlet-class>
+	</servlet>	
+	
+	<servlet>
+ 		<servlet-name>VehicleTypeManage</servlet-name>
+  		<servlet-class>be.pirbaert.servlets.VehicleTypeManage</servlet-class>
+	</servlet>	
+	
+	<servlet>
+ 		<servlet-name>VehicleTypeUpdate</servlet-name>
+  		<servlet-class>be.pirbaert.servlets.VehicleTypeUpdate</servlet-class>
+	</servlet>	
+			
   <!-- SERVLETS MAPPING -->
 	<servlet-mapping>
   		<servlet-name>SignIn</servlet-name>
@@ -162,5 +183,22 @@
 	<servlet-mapping>
   		<servlet-name>ViolationUpdate</servlet-name>
   		<url-pattern>/ViolationUpdate</url-pattern>
+	</servlet-mapping>	
+	
+	<servlet-mapping>
+  		<servlet-name>VehicleTypeCreate</servlet-name>
+  		<url-pattern>/VehicleTypeCreate</url-pattern>
+	</servlet-mapping>	
+		<servlet-mapping>
+  		<servlet-name>VehicleTypeManage</servlet-name>
+  		<url-pattern>/VehicleTypeManage</url-pattern>
+	</servlet-mapping>	
+		<servlet-mapping>
+  		<servlet-name>SubordinateAdd</servlet-name>
+  		<url-pattern>/SubordinateAdd</url-pattern>
+	</servlet-mapping>	
+		<servlet-mapping>
+  		<servlet-name>VehicleTypeUpdate</servlet-name>
+  		<url-pattern>/VehicleTypeUpdate</url-pattern>
 	</servlet-mapping>	
 </web-app>

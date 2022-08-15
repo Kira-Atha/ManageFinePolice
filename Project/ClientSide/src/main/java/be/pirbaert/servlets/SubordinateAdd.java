@@ -17,10 +17,6 @@ import be.pirbaert.POJOc.Administrator;
 import be.pirbaert.POJOc.Chief;
 import be.pirbaert.POJOc.Policeman;
 
-/**
- * Servlet implementation class SubordonateAdd
- */
-@WebServlet("/SubordinateAdd")
 public class SubordinateAdd extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

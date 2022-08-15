@@ -16,10 +16,6 @@ import be.pirbaert.POJOc.Account;
 import be.pirbaert.POJOc.Administrator;
 import be.pirbaert.POJOc.TypeVehicle;
 
-/**
- * Servlet implementation class VehicleTypeCreate
- */
-@WebServlet("/VehicleTypeCreate")
 public class VehicleTypeCreate extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

@@ -37,7 +37,7 @@ public class SendLetter extends HttpServlet {
 		}else {
 			account = (Account) session.getAttribute("account");
 			if(session.getAttribute("account") instanceof TaxCollector) {
-				account = (Chief) session.getAttribute("account");
+				account = (TaxCollector) session.getAttribute("account");
 			}else {
 				// Les autres n'ont rien à faire ici
 				response.sendRedirect("SignIn");

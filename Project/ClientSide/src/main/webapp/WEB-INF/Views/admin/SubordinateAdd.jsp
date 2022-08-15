@@ -44,7 +44,7 @@
 			</tr>
 			<tr>
 				 <td colspan="2" align="center">
-				 	<button type="submit" name="add" value="add">Update Vehicle Type</button> 
+				 	<button type="submit" name="add" value="add">Add subordinate to Chief</button> 
 				 </td>
 			</tr>
 		</table>
